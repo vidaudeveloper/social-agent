@@ -23,7 +23,9 @@ memories/
 sessions/
 logs/
 plans/
-workspace/
+workspace/*
+!workspace/references/
+!workspace/templates/
 home/
 
 # Caches & generated artifacts
