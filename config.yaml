@@ -13,6 +13,11 @@ model:
   default: "DeepSeek：DeepSeek V4 Flash"   # tokenware 模型 ID（全角冒号），非 deepseek-v4-flash
   base_url: https://www.tokenware.ai/v1
   api_key: "${TOKENWARE_API_KEY}"       # 从 .env 读取，安装后填写
+custom_providers:
+  - name: tokenware
+    base_url: https://www.tokenware.ai/v1
+    api_key: "${TOKENWARE_API_KEY}"
+    model: "DeepSeek：DeepSeek V4 Flash"
 providers: {}
 fallback_providers: []
 credential_pool_strategies: {}

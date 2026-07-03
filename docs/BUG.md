@@ -46,4 +46,8 @@ tokenware `/v1/models` 返回的 id 为 **`DeepSeek：DeepSeek V4 Flash`**（全
 
 ### 修复
 
-将 `model.default` 改为 `"DeepSeek：DeepSeek V4 Flash"`。详见 `workspace/references/tokenware-models.md`。
+将 `model.default` 改为 `"DeepSeek：DeepSeek V4 Flash"`，并配置 `custom_providers`。详见 `workspace/references/tokenware-models.md`。
+
+### VidAU 仍 403
+
+旧会话锁定 `deepseek-v4-flash`：**新建对话** + UI 选 tokenware 全名模型；勿继续旧会话。

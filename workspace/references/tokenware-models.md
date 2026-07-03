@@ -16,27 +16,48 @@
 
 | 错误 ID | 说明 |
 |---------|------|
-| `deepseek-v4-flash` | DeepSeek 官方 slug，tokenware 不识别 |
+| `deepseek-v4-flash` | DeepSeek 官方 slug，tokenware 不认 |
 | `deepseek-chat` | 仅适用于 `api.deepseek.com`，且与 `TOKENWARE_API_KEY` 不匹配 |
 
-## 自查命令
+## VidAU 无法对话时（最常见）
 
-在 profile 根目录（不打印 Key）：
+**现象**：`config.yaml` 已是 `DeepSeek：DeepSeek V4 Flash`，但日志/请求里仍是 `deepseek-v4-flash` → 403。
 
-```powershell
-python scripts/probe-tokenware-models.py
-type cache\tokenware_deepseek_models.json
+**原因**：VidAU **会话创建时**会锁定 UI 里选的模型；改 config 不会自动改旧会话。
+
+**处理（按顺序）**：
+
+1. **新建对话**（不要继续用报 403 的旧会话）
+2. 模型选择器里选 **custom / tokenware**，模型名须为 **`DeepSeek：DeepSeek V4 Flash`**
+3. 不要选列表里的 `deepseek-v4-flash`（那是 catalog 别名，tokenware 不认）
+4. 完全退出并重启 VidAU，再新建对话试「您好」
+
+**全局配置**：`%LOCALAPPDATA%\vidau\config.yaml` 里 `custom_providers` 的 `model` 也须为  
+`DeepSeek：DeepSeek V4 Flash`（已修正则跳过）。
+
+## 路径说明
+
+| 内容 | 路径 |
+|------|------|
+| VidAU 程序 | `D:\Program Files (x86)\vidau\` |
+| social-agent profile | `%LOCALAPPDATA%\vidau\profiles\social-agent\` |
+| profile 的 `.env` / `config.yaml` | 上表 profile 目录下 |
+
+## 自查
+
+确认 profile 的 `config.yaml` 含：
+
+```yaml
+model:
+  provider: custom
+  default: "DeepSeek：DeepSeek V4 Flash"
+  base_url: https://www.tokenware.ai/v1
+  api_key: "${TOKENWARE_API_KEY}"
+custom_providers:
+  - name: tokenware
+    base_url: https://www.tokenware.ai/v1
+    api_key: "${TOKENWARE_API_KEY}"
+    model: "DeepSeek：DeepSeek V4 Flash"
 ```
 
-冒烟测试（需 `.env` 中 `TOKENWARE_API_KEY` 已填）：
-
-```powershell
-python scripts/test-tokenware-chat.py
-```
-
-## VidAU 安装路径说明
-
-- 程序：`D:\Program Files (x86)\vidau\`
-- **profile / .env / config**：`%LOCALAPPDATA%\vidau\profiles\social-agent\`
-
-改模型请编辑 **AppData 下** 的 `config.yaml`，不是 Program Files 目录。
+查看最新失败原因：`profiles\social-agent\logs\agent.log` 搜索 `403` 或 `model=`。
