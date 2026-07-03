@@ -18,7 +18,7 @@
 ```yaml
 model:
   provider: custom
-  default: deepseek-v4-flash
+  default: "DeepSeek：DeepSeek V4 Flash"   # 全角冒号，见 workspace/references/tokenware-models.md
   base_url: https://www.tokenware.ai/v1
   api_key: "${TOKENWARE_API_KEY}"
 ```

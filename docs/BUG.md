@@ -24,7 +24,26 @@
 
 ```powershell
 cd <profile-root>
+python scripts/probe-tokenware-models.py
+python scripts/test-tokenware-chat.py
 npm run overseas:install
 $env:OVERSEAS_ALLOW_AUTOMATION="true"
 npm run tiktok:login
 ```
+
+## 2026-07-03 — tokenware 403：模型 ID 填错
+
+### 现象
+
+VidAU（`D:\Program Files (x86)\vidau`）使用 social-agent profile 时，首条消息即 403：
+
+`Model 'deepseek-v4-flash' not found`（`permission_denied`）
+
+### 根因
+
+tokenware `/v1/models` 返回的 id 为 **`DeepSeek：DeepSeek V4 Flash`**（全角冒号），  
+而 `config.yaml` 写的是官方 slug **`deepseek-v4-flash`**，tokenware 不认。
+
+### 修复
+
+将 `model.default` 改为 `"DeepSeek：DeepSeek V4 Flash"`。详见 `workspace/references/tokenware-models.md`。

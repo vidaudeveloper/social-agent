@@ -8,6 +8,8 @@
     "overseas:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-overseas-tools.ps1",
     "tiktok:login": "node scripts/run-tiktok.mjs login --account default",
     "tiktok:check-login": "node scripts/run-tiktok.mjs check-login --account default",
-    "tiktok:publish": "node scripts/run-tiktok.mjs publish"
+    "tiktok:publish": "node scripts/run-tiktok.mjs publish",
+    "tokenware:probe-models": "python scripts/probe-tokenware-models.py",
+    "tokenware:test-chat": "python scripts/test-tokenware-chat.py"
   }
 }
