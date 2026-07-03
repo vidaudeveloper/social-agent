@@ -23,6 +23,8 @@ env_requires:
 distribution_owned:
   - SOUL.md
   - config.yaml
+  - package.json
+  - scripts/
   - skills/social-media/
   - workspace/references/
   - workspace/templates/

@@ -1,0 +1,13 @@
+{
+  "name": "social-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "社媒运营老兵 Hermes profile — 海外工具安装与 TikTok 登录包装",
+  "type": "module",
+  "scripts": {
+    "overseas:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-overseas-tools.ps1",
+    "tiktok:login": "node scripts/run-tiktok.mjs login --account default",
+    "tiktok:check-login": "node scripts/run-tiktok.mjs check-login --account default",
+    "tiktok:publish": "node scripts/run-tiktok.mjs publish"
+  }
+}

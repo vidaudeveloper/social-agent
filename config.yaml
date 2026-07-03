@@ -2,6 +2,10 @@
 # social-agent profile — 社媒运营老兵 Agent 配置
 # =============================================================================
 # 安装后请复制 .env.EXAMPLE 为 .env 并填写你的 API Key
+#
+# 【Agent 禁止修改】以下字段仅允许用户手工改，Agent 不得写入/切换：
+#   model.provider / model.default / model.base_url / model.api_key
+#   providers / fallback_providers
 # =============================================================================
 
 model:
@@ -26,7 +30,12 @@ agent:
   task_completion_guidance: true
   parallel_tool_call_guidance: true
   environment_probe: true
-  environment_hint: ''
+  environment_hint: |
+    【配置保护】禁止 Agent 修改 config.yaml 的 model/provider/base_url/default/api_key 段；
+    禁止 switch_model、禁止因 API 403 自行换模型。模型异常时停止并提示用户手工检查 .env 与 tokenware 配额。
+    【海外依赖】YouTube/TikTok 发布前必须先执行 npm run overseas:install（安装 social-auto-upload + playwright）。
+    【TikTok 登录】必须用 npm run tiktok:login 或 uv run --directory $SAU_ROOT python ...，禁止裸 python。
+    【海外门禁】login/publish 前须 OVERSEAS_ALLOW_AUTOMATION=true，且禁止 Agent 连跑 login+check。
   coding_context: auto
   verify_on_stop: true
   gateway_timeout_warning: 900
