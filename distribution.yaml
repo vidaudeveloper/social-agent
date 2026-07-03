@@ -1,0 +1,28 @@
+name: social-agent
+version: 1.0.0
+description: "8年社媒运营老兵 Agent —— 选题研判→多平台适配→写稿润色→配图→发布全链路。支持知乎/公众号/小红书/抖音/YouTube/TikTok/LinkedIn/X。"
+hermes_requires: ">=0.12.0"
+author: "testman2025"
+license: "MIT"
+
+env_requires:
+  - name: TOKENWARE_API_KEY
+    description: "tokenware AI API Key (用于模型推理和生图)"
+    required: true
+  - name: OPENAI_API_KEY
+    description: "OpenAI API Key (tokenware 兼容 API, 与上一条相同)"
+    required: false
+    default: "${TOKENWARE_API_KEY}"
+  - name: WECHAT_APP_ID
+    description: "微信公众号 AppID (用于 baoyu-post-to-wechat API)"
+    required: false
+  - name: WECHAT_APP_SECRET
+    description: "微信公众号 AppSecret (用于 baoyu-post-to-wechat API)"
+    required: false
+
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - skills/social-media/
+  - workspace/references/
+  - workspace/templates/

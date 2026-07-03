@@ -1,0 +1,11 @@
+{
+  "background": "#000000",
+  "fontFamily": "Microsoft YaHei",
+  "fontSize": 84,
+  "primaryColor": "#FFFFFF",
+  "outlineColor": "#000000",
+  "outline": 6,
+  "shadow": 4,
+  "highlightColors": ["#FFFF00", "#00E5FF", "#66FF00", "#00A5FF"],
+  "animations": ["scalePop", "slideUp", "pulse"]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "douyin-skills",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Douyin vertical fancy-text video (Edge TTS + ffmpeg ASS). Optional FFCreator on Linux/macOS.",
+  "type": "module",
+  "optionalDependencies": {
+    "ffcreator": "6.8.1"
+  }
+}
