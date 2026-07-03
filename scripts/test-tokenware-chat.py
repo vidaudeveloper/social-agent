@@ -1,15 +1,30 @@
-"""Smoke-test tokenware chat with configured model id."""
+"""Smoke-test tokenware chat using profile config.yaml model.default."""
 from __future__ import annotations
 
 import json
 import os
+import re
+import sys
 import urllib.error
 import urllib.request
 from pathlib import Path
 
+FALLBACK_MODEL = "DeepSeek：DeepSeek V4 Flash"
+
+
+def profile_root() -> Path:
+    return Path(
+        os.environ.get(
+            "VIDAU_PROFILE",
+            r"C:\Users\EDY\AppData\Local\vidau\profiles\social-agent",
+        )
+    )
+
 
 def load_env(path: Path) -> dict[str, str]:
     out: dict[str, str] = {}
+    if not path.is_file():
+        return out
     for line in path.read_text(encoding="utf-8").splitlines():
         s = line.strip()
         if not s or s.startswith("#") or "=" not in s:
@@ -19,17 +34,38 @@ def load_env(path: Path) -> dict[str, str]:
     return out
 
 
-def main() -> None:
-    profile = Path(
-        os.environ.get(
-            "VIDAU_PROFILE",
-            r"C:\Users\EDY\AppData\Local\vidau\profiles\social-agent",
-        )
+def load_model_from_config(path: Path) -> str | None:
+    if not path.is_file():
+        return None
+    text = path.read_text(encoding="utf-8")
+    m = re.search(
+        r'^\s*default:\s*(?:"([^"]+)"|\'([^\']+)\'|(\S+))',
+        text,
+        re.MULTILINE,
     )
+    if not m:
+        return None
+    return next(g for g in m.groups() if g)
+
+
+def resolve_model(profile: Path) -> str:
+    override = os.environ.get("TEST_MODEL", "").strip()
+    if override:
+        return override
+    from_config = load_model_from_config(profile / "config.yaml")
+    return from_config or FALLBACK_MODEL
+
+
+def main() -> int:
+    profile = profile_root()
     env = load_env(profile / ".env")
-    key = env["TOKENWARE_API_KEY"]
+    key = env.get("TOKENWARE_API_KEY", "").strip()
+    if not key:
+        print(json.dumps({"status": "FAIL", "error": "TOKENWARE_API_KEY missing in .env"}))
+        return 1
+
     base = env.get("TOKENWARE_BASE_URL", "https://www.tokenware.ai/v1").rstrip("/")
-    model = os.environ.get("TEST_MODEL", "DeepSeek：DeepSeek V4 Flash")
+    model = resolve_model(profile)
     body = json.dumps(
         {
             "model": model,
@@ -50,11 +86,29 @@ def main() -> None:
     try:
         with urllib.request.urlopen(req, timeout=60) as resp:
             data = json.loads(resp.read().decode("utf-8"))
-        print("OK", model, data["choices"][0]["message"]["content"][:40])
+        reply = data["choices"][0]["message"]["content"]
+        print(
+            json.dumps(
+                {"status": "OK", "model": model, "reply": reply[:80]},
+                ensure_ascii=False,
+            )
+        )
+        return 0
     except urllib.error.HTTPError as exc:
         detail = exc.read().decode("utf-8", errors="replace")
-        print("FAIL", model, exc.code, detail[:200])
+        print(
+            json.dumps(
+                {
+                    "status": "FAIL",
+                    "model": model,
+                    "http": exc.code,
+                    "detail": detail[:300],
+                },
+                ensure_ascii=False,
+            )
+        )
+        return 1
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
