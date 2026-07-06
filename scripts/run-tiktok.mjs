@@ -19,7 +19,7 @@ if (!existsSync(join(sauRoot, 'sau_cli.py'))) {
 }
 
 if (args.length === 0) {
-  console.log(`用法: node scripts/run-tiktok.mjs <login|check-login|publish> [选项]
+  console.log(`用法: node scripts/run-tiktok.mjs <login|check-login|open-drafts|publish> [选项]
 环境: SAU_ROOT=${sauRoot}`);
   process.exit(0);
 }

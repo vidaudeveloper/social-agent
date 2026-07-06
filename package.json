@@ -13,6 +13,7 @@
     "reddit:publish": "node skills/social-media/reddit/scripts/cli.mjs publish",
     "tiktok:login": "node scripts/run-tiktok.mjs login --account default",
     "tiktok:check-login": "node scripts/run-tiktok.mjs check-login --account default",
+    "tiktok:open-drafts": "node scripts/run-tiktok.mjs open-drafts --account default",
     "tiktok:publish": "node scripts/run-tiktok.mjs publish",
     "tiktok:create-video": "node skills/social-media/tiktok/scripts/cli.mjs create-video",
     "tiktok:voices": "node skills/social-media/tiktok/scripts/cli.mjs list-voices",

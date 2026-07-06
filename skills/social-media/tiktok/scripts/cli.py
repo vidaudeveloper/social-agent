@@ -72,10 +72,71 @@ def cookie_file_ready(path: Path) -> bool:
     return bool(names & LOGIN_COOKIE_NAMES)
 
 
-async def human_pause(min_sec: float = 1.5, max_sec: float = 3.5) -> None:
+async def human_pause(min_sec: float = 2.5, max_sec: float = 5.0) -> None:
     import random
 
     await asyncio.sleep(random.uniform(min_sec, max_sec))
+
+
+STUDIO_DRAFTS_URL = "https://www.tiktok.com/tiktokstudio/content?tab=draft&lang=en"
+STUDIO_CONTENT_URL = "https://www.tiktok.com/tiktokstudio/content?lang=en"
+
+
+async def open_studio_drafts_page(page) -> None:
+    """打开 Studio 内容/草稿列表。"""
+    for url in (STUDIO_DRAFTS_URL, STUDIO_CONTENT_URL):
+        try:
+            await page.goto(url, wait_until="domcontentloaded", timeout=120_000)
+            await human_pause(3, 5)
+            break
+        except Exception:
+            continue
+    for tab_name in ("Drafts", "Draft"):
+        tab = page.get_by_role("tab", name=tab_name)
+        if await tab.count():
+            await tab.first.click()
+            await human_pause(2, 4)
+            break
+
+
+async def hold_browser_until_enter(page, context, browser, cookie_path: Path) -> None:
+    print("\n=== 浏览器保持打开 ===", flush=True)
+    print("正在打开 TikTok Studio 草稿/内容页，请自行确认是否有草稿。", flush=True)
+    await open_studio_drafts_page(page)
+    hold_sec = int(os.environ.get("TIKTOK_HOLD_BROWSER_SEC", "0") or "0")
+    if sys.stdin.isatty():
+        print("看完后回到终端按 Enter 再关闭浏览器。\n", flush=True)
+        await asyncio.get_event_loop().run_in_executor(None, input, "按 Enter 关闭浏览器… ")
+    else:
+        seconds = hold_sec if hold_sec > 0 else 180
+        print(f"浏览器将保持打开 {seconds} 秒供查看（可在终端设 TIKTOK_HOLD_BROWSER_SEC 调整）。\n", flush=True)
+        await asyncio.sleep(seconds)
+    await context.storage_state(path=str(cookie_path))
+    await context.close()
+    await browser.close()
+
+
+async def launch_studio_browser(conf, cookie_path: Path):
+    from playwright.async_api import async_playwright
+
+    proxy = resolve_proxy(conf)
+    launch_opts = build_launch_options(conf)
+    playwright = await async_playwright().start()
+    browser = await playwright.chromium.launch(
+        headless=False,
+        channel=launch_opts.get("channel"),
+        args=launch_opts.get("args", []),
+        ignore_default_args=launch_opts.get("ignore_default_args"),
+    )
+    context_kwargs: dict = {
+        "storage_state": str(cookie_path),
+        **PERSISTENT_CONTEXT_OPTIONS,
+    }
+    if proxy:
+        context_kwargs["proxy"] = {"server": proxy}
+    context = await browser.new_context(**context_kwargs)
+    page = await context.new_page()
+    return playwright, browser, context, page
 
 
 def make_tiktok_uploader_class():
@@ -312,26 +373,31 @@ def make_tiktok_uploader_class():
             else:
                 await self.click_publish(page)
 
-            await context.storage_state(path=f"{self.account_file}")
+            cookie_path = Path(self.account_file)
+            await context.storage_state(path=str(cookie_path))
             tiktok_logger.info("  [-] cookie updated")
-            await human_pause(2, 3)
-            await context.close()
-            await browser.close()
+
+            if self.save_draft:
+                await hold_browser_until_enter(page, context, browser, cookie_path)
+            else:
+                await human_pause(2, 3)
+                await context.close()
+                await browser.close()
 
         async def click_save_draft(self, page) -> None:
             await self.dismiss_studio_popups(page)
             for selector in (
                 'button:has-text("Save draft")',
                 'div.button-group button:has-text("Save draft")',
-                'div.button-group button >> nth=1',
             ):
                 btn = self.locator_base.locator(selector)
                 if await btn.count():
                     await btn.first.click()
-                    await human_pause(2, 3)
+                    tiktok_logger.info("  [-] clicked Save draft, waiting for server…")
+                    await human_pause(6, 10)
                     await self.dismiss_studio_popups(page)
-                    await human_pause(2, 3)
-                    tiktok_logger.success("  [-] saved to draft")
+                    await human_pause(3, 5)
+                    tiktok_logger.success("  [-] save draft step finished")
                     return
             raise RuntimeError("未找到 Save draft 按钮，请在浏览器中手动保存草稿")
 
@@ -546,6 +612,28 @@ async def cmd_check(account: str) -> int:
     return 0
 
 
+async def cmd_open_drafts(account: str) -> int:
+    sys.path.insert(0, str(sau_root()))
+    apply_headed_conf()
+    import conf
+
+    cookie = account_file(account)
+    if not cookie_file_ready(cookie):
+        raise RuntimeError(f"TikTok cookie invalid: {cookie}. Run: login --account {account}")
+
+    proxy = resolve_proxy(conf)
+    if proxy:
+        print(f"[i] 使用代理: {proxy}", flush=True)
+
+    playwright, browser, context, page = await launch_studio_browser(conf, cookie)
+    try:
+        await hold_browser_until_enter(page, context, browser, cookie)
+    finally:
+        await playwright.stop()
+    print(json.dumps({"ok": True, "account": account, "page": STUDIO_DRAFTS_URL}, ensure_ascii=False))
+    return 0
+
+
 async def cmd_publish(
     account: str,
     video: str,
@@ -608,6 +696,9 @@ def main() -> int:
     p_check = sub.add_parser("check-login")
     p_check.add_argument("--account", default=os.environ.get("TIKTOK_ACCOUNT_ID", "default"))
 
+    p_drafts = sub.add_parser("open-drafts")
+    p_drafts.add_argument("--account", default=os.environ.get("TIKTOK_ACCOUNT_ID", "default"))
+
     p_pub = sub.add_parser("publish")
     p_pub.add_argument("--video", "-v", required=True)
     p_pub.add_argument("--title", "-t", required=True)
@@ -627,6 +718,8 @@ def main() -> int:
             return asyncio.run(cmd_login(args.account, headed))
         if args.command == "check-login":
             return asyncio.run(cmd_check(args.account))
+        if args.command == "open-drafts":
+            return asyncio.run(cmd_open_drafts(args.account))
         if args.command == "publish":
             return asyncio.run(
                 cmd_publish(args.account, args.video, args.title, args.tags, headed, args.draft)
