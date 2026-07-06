@@ -8,7 +8,7 @@ import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const profileRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const sauRoot = (process.env.SAU_ROOT || './tool/social-auto-upload').replace(/\\/g, '/');
+const sauRoot = resolve(profileRoot, (process.env.SAU_ROOT || 'tool/social-auto-upload').replace(/\\/g, '/'));
 const cliPath = join(profileRoot, 'skills/social-media/tiktok/scripts/cli.py').replace(/\\/g, '/');
 const args = process.argv.slice(2);
 

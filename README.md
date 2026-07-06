@@ -46,9 +46,9 @@ cd social-agent
 | **抖音** | PVA (@panda-video-automation/pva) | ✅ 链路就绪 |
 | **YouTube** | sau (social-auto-upload) | ✅ 链路就绪 |
 | **公众号** | baoyu-post-to-wechat + 微信官方 API | ✅ 链路就绪 |
-| **TikTok** | social-auto-upload tk_uploader | ⚠️ 发布稳定性待优化 |
+| **TikTok** | social-auto-upload tk_uploader | 🔧 调试中 |
 | **Reddit** | reddit-skills (Chrome 扩展桥) | ✅ 须英文界面 |
-| **LinkedIn** | [gxbvc/linkedin-cli](https://github.com/gxbvc/linkedin-cli) | ⚠️ 默认只出稿 |
+| **LinkedIn** | gxbvc/linkedin-cli | ⏸ 暂缓 |
 | **X (Twitter)** | baoyu-post-to-x (Chrome CDP) | ⚠️ 默认只出稿 |
 
 ## 前置依赖
@@ -61,7 +61,7 @@ $env:OVERSEAS_ALLOW_AUTOMATION="true"
 npm run tiktok:login
 ```
 
-需事先 clone [social-auto-upload](https://github.com/dreammis/social-auto-upload)，通过 `SAU_ROOT` 指向其目录（默认 `./tool/social-auto-upload`）。
+`npm run overseas:install` 会自动 clone 到 `tool/social-auto-upload`（可用 `SAU_ROOT` 覆盖）。
 
 ### LinkedIn
 

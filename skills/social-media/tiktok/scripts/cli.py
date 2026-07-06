@@ -12,7 +12,8 @@ from pathlib import Path
 
 
 def repo_root() -> Path:
-    return Path(__file__).resolve().parents[3]
+    # .../skills/social-media/tiktok/scripts/cli.py → profile root
+    return Path(__file__).resolve().parents[4]
 
 
 def sau_root() -> Path:
@@ -45,7 +46,7 @@ async def cmd_check(account: str) -> int:
     path = account_file(account)
     valid = path.is_file() and path.stat().st_size > 10
     print(json.dumps({"ok": True, "loggedIn": valid, "account": account, "cookie": str(path)}, ensure_ascii=False))
-    return 0 if valid else 1
+    return 0
 
 
 async def cmd_publish(account: str, video: str, title: str, tags: str, headed: bool) -> int:

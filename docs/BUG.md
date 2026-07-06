@@ -1,5 +1,16 @@
 # 变更与修复记录
 
+## 2026-07-06 — TikTok 依赖与路径修复
+
+**现象**：`npm run tiktok:check-login` 报 social-auto-upload 未找到；`overseas:install` 需手动 clone；SAU 缺 `conf.py` 导致 import 失败。
+
+**修复**：
+- `overseas:install` 自动 clone SAU、复制 `conf.example.py` → `conf.py`、在 SAU `.venv` 安装 playwright
+- `cli.py` `repo_root` 修正为 profile 根目录（`parents[4]`）
+- `run-tiktok.mjs` 使用绝对 `SAU_ROOT`
+- 补全 `package.json`：`pipeline:tiktok` / `tiktok:create-video` / `tiktok:voices`
+- `check-login` 未登录时仍返回 exit 0（`loggedIn: false`）
+
 ## 2026-07-06 — LinkedIn 改用 gxbvc/linkedin-cli
 
 **现象**：自研 OAuth 仅请求 `openid` 或 scope 不完整时，授权回调 `openid_insufficient_scope_error`。

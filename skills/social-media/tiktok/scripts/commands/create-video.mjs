@@ -23,7 +23,7 @@ export async function cmdCreateVideo(argv) {
 
   for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
-    if (a === '--file' || a === '-f') file = argv[++i] || '';
+    if (a === '--file' || a === '-f' || a === '-File') file = argv[++i] || '';
     else if (a === '--slug' || a === '-s') slug = argv[++i] || '';
     else if (a === '--out' || a === '-o') outDir = argv[++i] || '';
     else if (a === '--voice' || a === '-v') voiceOverride = argv[++i] || '';

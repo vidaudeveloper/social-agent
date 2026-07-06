@@ -6,6 +6,15 @@ description: |
 version: 3.0.0
 metadata:
   source: https://github.com/gxbvc/linkedin-cli
+  status: paused
+---
+
+# LinkedIn Skills（暂缓）
+
+> OAuth 授权易触发 LinkedIn「异常登录」，当前 **暂停自动发布**。文稿仍可生成到 `$HERMES_ROOT/文章/LinkedIn/`。
+
+恢复时见 [references/linkedin-api-setup.md](./references/linkedin-api-setup.md)。
+
 ---
 
 # LinkedIn Skills（gxbvc/linkedin-cli · 个人号）

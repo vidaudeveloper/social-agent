@@ -1,5 +1,5 @@
-# social-agent — 海外平台依赖安装（social-auto-upload + playwright）
-# 用法：在 profile 根目录执行  npm run overseas:install
+# social-agent overseas deps (social-auto-upload + playwright)
+# Usage: npm run overseas:install
 
 $ErrorActionPreference = "Stop"
 
@@ -14,39 +14,55 @@ Write-Host ""
 
 $sauCli = Join-Path $SauRoot "sau_cli.py"
 if (-not (Test-Path $sauCli)) {
-    Write-Host "[错误] social-auto-upload 未找到: $SauRoot" -ForegroundColor Red
-    Write-Host "请先 clone 到该目录，或设置环境变量 SAU_ROOT 指向已有副本。"
-    Write-Host "  git clone https://github.com/dreammis/social-auto-upload.git `"$SauRoot`""
-    exit 1
+    $parent = Split-Path -Parent $SauRoot
+    if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Path $parent -Force | Out-Null }
+    Write-Host "[1/6] clone social-auto-upload ..." -ForegroundColor Yellow
+    git clone https://github.com/dreammis/social-auto-upload.git $SauRoot
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+$confExample = Join-Path $SauRoot "conf.example.py"
+$confFile = Join-Path $SauRoot "conf.py"
+if ((Test-Path $confExample) -and -not (Test-Path $confFile)) {
+    Copy-Item $confExample $confFile
+    Write-Host "[hint] created conf.py from conf.example.py" -ForegroundColor Yellow
 }
 
 if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
-    Write-Host "[错误] 未找到 uv，请先安装: https://docs.astral.sh/uv/" -ForegroundColor Red
+    Write-Host "[error] uv not found. Install: https://docs.astral.sh/uv/" -ForegroundColor Red
     exit 1
 }
 
+$verifyScript = Join-Path $ProfileRoot "scripts\verify-sau-tiktok.py"
+
 Push-Location $SauRoot
 try {
-    Write-Host "[1/4] uv pip install -e . ..." -ForegroundColor Yellow
+    if (-not (Test-Path ".venv")) {
+        Write-Host "[2/6] uv venv ..." -ForegroundColor Yellow
+        uv venv
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    }
+
+    Write-Host "[3/6] uv pip install -e . ..." -ForegroundColor Yellow
     uv pip install -e .
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-    Write-Host "[2/4] uv pip install playwright (TikTok tk_uploader) ..." -ForegroundColor Yellow
+    Write-Host "[4/6] uv pip install playwright ..." -ForegroundColor Yellow
     uv pip install "playwright>=1.40"
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-    Write-Host "[3/4] uv run playwright install chromium ..." -ForegroundColor Yellow
+    Write-Host "[5/6] playwright install chromium ..." -ForegroundColor Yellow
     uv run playwright install chromium
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-    Write-Host "[4/4] 验证 import ..." -ForegroundColor Yellow
-    uv run python -c "import playwright; from uploader.tk_uploader.main_chrome import tiktok_setup; print('ok: playwright + tk_uploader')"
+    Write-Host "[6/6] verify tiktok uploader import ..." -ForegroundColor Yellow
+    uv run python $verifyScript
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
     Write-Host ""
-    Write-Host "[完成] 海外工具已就绪。" -ForegroundColor Green
-    Write-Host "TikTok 登录: npm run tiktok:login"
-    Write-Host "YouTube 登录: 见 skills/social-media/youtube/references/sau-runbook.md"
+    Write-Host "[done] overseas tools ready" -ForegroundColor Green
+    Write-Host "TikTok: npm run tiktok:login"
+    Write-Host "YouTube: skills/social-media/youtube/references/sau-runbook.md"
 }
 finally {
     Pop-Location
