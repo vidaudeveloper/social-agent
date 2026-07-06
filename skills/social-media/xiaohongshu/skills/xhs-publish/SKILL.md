@@ -121,7 +121,14 @@ metadata:
 
 ### Step A.3: 用户确认
 
-通过 `AskUserQuestion` 展示即将发布的内容（标题、正文、图片/视频），获得明确确认后继续。
+通过 `AskUserQuestion` 展示即将发布的内容，**必须包含绝对路径**（见 `workspace/references/publish-confirm-paths.md`）：
+
+- 标题（含字数校验）
+- 正文文件绝对路径
+- 全部配图绝对路径（或 `manifest.json` 路径 + 列表）
+- `HERMES_ROOT` 实际值
+
+获得明确确认后继续。
 
 ### Step A.4: 写入临时文件
 
@@ -162,8 +169,11 @@ python scripts/cli.py fill-publish \
 
 # 步骤 2: 通过 AskUserQuestion 让用户确认浏览器中的预览
 
-# 步骤 3a: 用户确认发布
-python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt --verify
+# 步骤 3a: 用户确认发布（默认发布后会跳创作中心首页验收并停留）
+python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt
+
+# 跳过首页验收（不推荐）
+python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt --no-verify
 
 # 步骤 3b: 用户取消 → 必须先保存草稿！
 python scripts/cli.py save-draft --title-file /tmp/xhs_title.txt
@@ -185,8 +195,11 @@ python scripts/cli.py fill-publish-video \
 
 # 步骤 2: 用户确认
 
-# 步骤 3a: 用户确认发布
-python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt --verify
+# 步骤 3a: 用户确认发布（默认发布后会跳创作中心首页验收并停留）
+python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt
+
+# 跳过首页验收（不推荐）
+python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt --no-verify
 
 # 步骤 3b: 用户取消 → 必须先保存草稿！
 python scripts/cli.py save-draft --title-file /tmp/xhs_title.txt
@@ -271,7 +284,7 @@ python scripts/cli.py next-step \
 
 ```bash
 # 用户在浏览器中确认预览后
-python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt --verify
+python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt
 ```
 
 ## 处理输出
@@ -296,6 +309,11 @@ python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt --verify
 ## 发布验收与失败恢复
 
 详见 `skills/xiaohongshu/references/xhs-cron-runbook.md`。
+
+**默认行为**：`publish` / `click-publish` 在点击发布后自动跳转 `https://creator.xiaohongshu.com/new/home?source=official`，在首页匹配「最新笔记」标题；**浏览器保持打开**。
+
+- 匹配成功 → 输出 `verified: true`，告知用户发布成功
+- 未匹配 → 输出 `next_action: user_decision`，询问用户是否已发布成功、是否需要重新发布
 
 1. **CLI 报错或超时后**：先 `verify-publish --title-file ... --wait-minutes 3`
 2. 验收通过 → 判定成功，**禁止**同标题重发

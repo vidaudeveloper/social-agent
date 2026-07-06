@@ -5,6 +5,9 @@
   "description": "社媒运营老兵 VidAU profile — 海外/Reddit 工具安装与 CLI 包装",
   "type": "module",
   "scripts": {
+    "tool:install": "node scripts/run-tool-install.mjs",
+    "pipeline:xhs": "node scripts/pipeline-xhs.mjs",
+    "xhs:card-render": "node scripts/run-xhs-card.mjs",
     "overseas:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-overseas-tools.ps1",
     "reddit:setup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-reddit-tools.ps1",
     "reddit:check-login": "node skills/social-media/reddit/scripts/cli.mjs login",

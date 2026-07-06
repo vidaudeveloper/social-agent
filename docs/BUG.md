@@ -1,5 +1,20 @@
 # 变更与修复记录
 
+## 2026-07-06 — 管线体验：配图安装、发布确认路径、小红书首页验收
+
+**现象**：
+1. `xhs-card-render` 技能已加载但 `tool/Auto-Redbook-Skills` 未安装，Agent 误降级 tokenware
+2. 发布前确认只给摘要，无文件绝对路径
+3. 小红书发布后停在发布页，不跳创作中心首页
+4. 选题搜索每次结果雷同
+
+**修复**：
+- 新增 `npm run tool:install`、`pipeline:xhs`、`xhs:card-render` 与安装脚本
+- `workspace/references/publish-confirm-paths.md`：Step 4.9 强制绝对路径（含 Win/Mac 示例）
+- `publish`/`click-publish` 默认首页验收（`--no-verify` 可跳过），浏览器停留首页；未匹配时 `user_decision` 询问是否重发
+- `workspace/references/platform-login-quickstart.md` 登录速查
+- `workspace/references/topic-research-diversity.md` 选题多样化规则
+
 ## 2026-07-06 — TikTok login 一闪而过、假 ok
 
 **现象**：`tiktok:login` 秒退且 `ok: true`，但 `check-login` 为 `loggedIn: false`；用户看不到登录页。

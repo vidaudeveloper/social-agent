@@ -129,6 +129,54 @@ def _try_verify_publish(
     return verify_note_published(page, title, wait_minutes=wait_minutes)
 
 
+def _merge_verify_into_publish_result(
+    result: dict,
+    *,
+    title: str,
+    verify_result: dict | None,
+) -> dict:
+    """发布后默认首页验收：成功则告知用户；未命中则询问是否成功/是否重发。"""
+    if verify_result is None:
+        return result
+
+    result["verify"] = verify_result
+    result["keep_browser_open"] = True
+    result["home_url"] = verify_result.get("home_url")
+
+    if verify_result.get("published"):
+        result.update({
+            "success": True,
+            "verified": True,
+            "status": "发布成功：创作中心首页已匹配到笔记标题",
+            "message": "浏览器停留在创作中心首页，请目视确认「最新笔记」",
+        })
+        return result
+
+    result.update({
+        "success": False,
+        "verified": False,
+        "next_action": "user_decision",
+        "status": "首页未自动匹配到刚发布的笔记，请在浏览器首页确认是否发布成功",
+        "summary": (
+            f"标题「{title}」在创作中心首页「最新笔记」未自动匹配。"
+            "请查看浏览器当前页面后告知结果。"
+        ),
+        "options": [
+            "已发布成功，结束（禁止同标题重复发布）",
+            "未发布，重新发布一次",
+            "保存草稿后稍后重试",
+            "放弃本次发布",
+        ],
+    })
+    return result
+
+
+def _should_keep_browser_open(args: argparse.Namespace, verify_result: dict | None) -> bool:
+    if getattr(args, "no_verify", False):
+        return False
+    return verify_result is not None
+
+
 def _handle_publish_failure(
     page,
     title: str,
@@ -696,6 +744,7 @@ def cmd_publish(args: argparse.Namespace) -> None:
         _output({"success": False, "error": str(e)}, exit_code=2)
 
     browser, page = _connect(args)
+    verify_result = None
     try:
         publish_image_content(
             page,
@@ -709,8 +758,7 @@ def cmd_publish(args: argparse.Namespace) -> None:
                 visibility=args.visibility or "",
             ),
         )
-        verify_result = None
-        if args.verify:
+        if not args.no_verify:
             verify_result = _try_verify_publish(
                 page,
                 title,
@@ -722,10 +770,11 @@ def cmd_publish(args: argparse.Namespace) -> None:
             "images": len(image_paths),
             "status": "发布完成",
         }
-        if verify_result is not None:
-            result["verify"] = verify_result
-            if not verify_result.get("published"):
-                result["warning"] = "CLI 发布完成但验收未在平台上找到笔记，请稍后运行 verify-publish"
+        result = _merge_verify_into_publish_result(
+            result,
+            title=title,
+            verify_result=verify_result,
+        )
         _output(result)
     except Exception as e:
         _handle_publish_failure(
@@ -734,10 +783,11 @@ def cmd_publish(args: argparse.Namespace) -> None:
             e,
             no_recover=args.no_recover,
             verify_wait_minutes=args.verify_wait_minutes,
-            skip_verify=args.skip_verify,
+            skip_verify=args.no_verify,
         )
     finally:
-        browser.close()
+        if not _should_keep_browser_open(args, verify_result):
+            browser.close()
 
 
 def cmd_fill_publish(args: argparse.Namespace) -> None:
@@ -826,18 +876,21 @@ def cmd_click_publish(args: argparse.Namespace) -> None:
     title = _read_text_file(args.title_file) if args.title_file else ""
 
     browser, page = _connect_existing(args)
+    verify_result = None
     try:
         click_publish_button(page)
-        verify_result = None
-        if args.verify and title:
+        if not args.no_verify and title:
             verify_result = _try_verify_publish(
                 page,
                 title,
                 wait_minutes=args.verify_wait_minutes,
             )
-        result: dict = {"success": True, "status": "发布完成"}
-        if verify_result is not None:
-            result["verify"] = verify_result
+        result: dict = {"success": True, "status": "发布完成", "title": title or None}
+        result = _merge_verify_into_publish_result(
+            result,
+            title=title,
+            verify_result=verify_result,
+        )
         _output(result)
     except Exception as e:
         if title:
@@ -847,12 +900,13 @@ def cmd_click_publish(args: argparse.Namespace) -> None:
                 e,
                 no_recover=args.no_recover,
                 verify_wait_minutes=args.verify_wait_minutes,
-                skip_verify=args.skip_verify,
+                skip_verify=args.no_verify,
             )
         else:
             _output({"success": False, "error": str(e)}, exit_code=2)
     finally:
-        browser.close()
+        if not _should_keep_browser_open(args, verify_result):
+            browser.close()
 
 
 def cmd_save_draft(args: argparse.Namespace) -> None:
@@ -918,18 +972,24 @@ def cmd_recover_publish(args: argparse.Namespace) -> None:
             retry_publish=not args.no_retry,
         )
         if recover.get("retry_success"):
-            verify_result = _try_verify_publish(
-                page,
-                title,
-                wait_minutes=args.verify_wait_minutes if args.verify else 0,
-                skip=not args.verify,
-            )
-            _output({
+            verify_result = None
+            if not args.no_verify:
+                verify_result = _try_verify_publish(
+                    page,
+                    title,
+                    wait_minutes=args.verify_wait_minutes,
+                )
+            result = {
                 "success": True,
                 "recover": recover,
-                "verify": verify_result,
                 "status": "草稿恢复并重试发布完成",
-            })
+            }
+            result = _merge_verify_into_publish_result(
+                result,
+                title=title,
+                verify_result=verify_result,
+            )
+            _output(result)
             return
 
         _output(_user_decision_payload(
@@ -1298,9 +1358,8 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_argument("--schedule-at")
     sub.add_argument("--original", action="store_true")
     sub.add_argument("--visibility")
-    sub.add_argument("--verify", action="store_true", help="发布后验收（首页/笔记管理）")
-    sub.add_argument("--verify-wait-minutes", type=float, default=3.0)
-    sub.add_argument("--skip-verify", action="store_true", help="失败时不做验收（调试用）")
+    sub.add_argument("--no-verify", action="store_true", help="发布后跳过首页验收（默认会验收并停留首页）")
+    sub.add_argument("--verify-wait-minutes", type=float, default=0.0, help="验收前额外等待分钟数（默认立即检查）")
     sub.add_argument("--no-recover", action="store_true", help="失败时不走草稿恢复")
     sub.add_argument("--strict-images", action="store_true", help="分辨率不合规也拒绝")
     sub.set_defaults(func=cmd_publish)
@@ -1340,9 +1399,8 @@ def build_parser() -> argparse.ArgumentParser:
     # click-publish
     sub = subparsers.add_parser("click-publish", help="点击发布按钮")
     sub.add_argument("--title-file", help="用于失败验收与恢复的标题文件")
-    sub.add_argument("--verify", action="store_true")
-    sub.add_argument("--verify-wait-minutes", type=float, default=3.0)
-    sub.add_argument("--skip-verify", action="store_true")
+    sub.add_argument("--no-verify", action="store_true", help="发布后跳过首页验收（默认会验收并停留首页）")
+    sub.add_argument("--verify-wait-minutes", type=float, default=0.0)
     sub.add_argument("--no-recover", action="store_true")
     sub.set_defaults(func=cmd_click_publish)
 
@@ -1363,8 +1421,8 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_argument("--title-file", required=True)
     sub.add_argument("--title-hint", help="右侧草稿标题片段")
     sub.add_argument("--no-retry", action="store_true", help="只暂存草稿，不重试发布")
-    sub.add_argument("--verify", action="store_true")
-    sub.add_argument("--verify-wait-minutes", type=float, default=0)
+    sub.add_argument("--no-verify", action="store_true")
+    sub.add_argument("--verify-wait-minutes", type=float, default=0.0)
     sub.set_defaults(func=cmd_recover_publish)
 
     # verify-draft

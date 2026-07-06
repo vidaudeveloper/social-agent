@@ -119,20 +119,12 @@ def verify_note_published(
     page: Page,
     title: str,
     *,
-    wait_minutes: float = 3.0,
+    wait_minutes: float = 0.0,
 ) -> dict:
     """验收笔记是否已发布。
 
-    先等待 wait_minutes，再检查首页「最新笔记」与笔记管理「已发布」列表。
-
-    Returns:
-        {
-            published: bool,
-            source: "home_latest" | "note_list" | None,
-            matched_title: str | None,
-            note_time: str | None,
-            waited_minutes: float,
-        }
+    默认立即检查创作中心首页「最新笔记」；未命中时进入笔记管理「已发布」。
+    wait_minutes>0 时先等待再检查；仍为未命中且 wait_minutes==0 时，额外等待 45 秒再查一次首页。
     """
     if wait_minutes > 0:
         logger.info("等待 %.1f 分钟后验收发布结果...", wait_minutes)
@@ -145,47 +137,72 @@ def verify_note_published(
         "note_time": None,
         "waited_minutes": wait_minutes,
         "title_expected": title,
+        "home_url": CREATOR_HOME_URL,
     }
 
-    # 1) 首页最新笔记
+    def _check_home() -> bool:
+        try:
+            page.navigate(CREATOR_HOME_URL)
+            page.wait_for_load(timeout=300)
+            time.sleep(3)
+            page.wait_dom_stable()
+            latest = _extract_home_latest_title(page)
+            logger.info("首页最新笔记标题: %r", latest)
+            if latest and _title_matches(title, latest):
+                result.update({
+                    "published": True,
+                    "source": "home_latest",
+                    "matched_title": latest,
+                })
+                return True
+        except Exception as e:
+            logger.warning("首页验收失败: %s", e)
+        return False
+
+    def _check_note_list() -> bool:
+        try:
+            page.navigate(NOTE_MANAGE_URL)
+            page.wait_for_load(timeout=300)
+            time.sleep(3)
+            page.wait_dom_stable()
+            _click_published_tab(page)
+            page.wait_dom_stable()
+            notes = _extract_note_list_titles(page)
+            logger.info("笔记管理列表前 %d 条: %s", len(notes), notes)
+            for note in notes:
+                note_title = note.get("title", "")
+                if _title_matches(title, note_title):
+                    result.update({
+                        "published": True,
+                        "source": "note_list",
+                        "matched_title": note_title,
+                        "note_time": note.get("time"),
+                    })
+                    return True
+        except Exception as e:
+            logger.warning("笔记管理验收失败: %s", e)
+        return False
+
+    if _check_home():
+        return result
+    if _check_note_list():
+        return result
+
+    if wait_minutes <= 0:
+        logger.info("首页未立即命中，45 秒后重试首页验收...")
+        time.sleep(45)
+        result["retried_after_seconds"] = 45
+        if _check_home():
+            return result
+        if _check_note_list():
+            return result
+
+    # 停留在首页供用户肉眼确认
     try:
         page.navigate(CREATOR_HOME_URL)
         page.wait_for_load(timeout=300)
-        time.sleep(3)
-        page.wait_dom_stable()
-        latest = _extract_home_latest_title(page)
-        logger.info("首页最新笔记标题: %r", latest)
-        if latest and _title_matches(title, latest):
-            result.update({
-                "published": True,
-                "source": "home_latest",
-                "matched_title": latest,
-            })
-            return result
+        time.sleep(2)
     except Exception as e:
-        logger.warning("首页验收失败: %s", e)
-
-    # 2) 笔记管理 → 已发布
-    try:
-        page.navigate(NOTE_MANAGE_URL)
-        page.wait_for_load(timeout=300)
-        time.sleep(3)
-        page.wait_dom_stable()
-        _click_published_tab(page)
-        page.wait_dom_stable()
-        notes = _extract_note_list_titles(page)
-        logger.info("笔记管理列表前 %d 条: %s", len(notes), notes)
-        for note in notes:
-            note_title = note.get("title", "")
-            if _title_matches(title, note_title):
-                result.update({
-                    "published": True,
-                    "source": "note_list",
-                    "matched_title": note_title,
-                    "note_time": note.get("time"),
-                })
-                return result
-    except Exception as e:
-        logger.warning("笔记管理验收失败: %s", e)
+        logger.warning("跳转首页失败: %s", e)
 
     return result

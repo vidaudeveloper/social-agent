@@ -15,6 +15,7 @@
 
 | 组件 | 用途 | 上游来源 |
 |------|------|----------|
+| Auto-Redbook-Skills | 小红书 MD→卡片 PNG（`npm run tool:install`） | [comeonzhj/Auto-Redbook-Skills](https://github.com/comeonzhj/Auto-Redbook-Skills) |
 | social-auto-upload | YouTube / TikTok 上传 | [dreammis/social-auto-upload](https://github.com/dreammis/social-auto-upload) |
 | gxbvc/linkedin-cli | LinkedIn OAuth 发帖与基础互动数据 | [gxbvc/linkedin-cli](https://github.com/gxbvc/linkedin-cli) |
 | reddit-skills | Reddit 扩展桥 + CLI | [1146345502/reddit-skills](https://github.com/1146345502/reddit-skills) |

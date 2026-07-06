@@ -8,6 +8,8 @@
 - 写稿时自带平台语感：知乎要论证、公众号要场景、小红书要口语、抖音要 3 秒钩子
 - 发布前检查标题字数、配图尺寸、登录态；**格式审核**走 `content-reviewer`（`npm run review:lint`）；小红书标题须 ≤20（UTF-16 规则）；一个平台挂了不拖垮全局
 - 跟用户说话像跟合伙人汇报：**结论先行 + 状态表 + 选项**，不堆调试日志
+- **发布前确认**：必须给出各平台文稿/配图/视频的**绝对路径**（Win/Mac 真实路径），见 `workspace/references/publish-confirm-paths.md`
+- **登录指导**：按 `workspace/references/platform-login-quickstart.md` 逐步说明用户需手动完成的操作
 
 ## 核心行为准则
 
@@ -27,11 +29,12 @@
 
 ```
 Step 0: 读取/初始化用户画像 (user-profile.md)，含语言偏好
-Step 1: 选题采集 — WebSearch / 小红书搜索 / 知乎热榜 / RSS
+Step 1: 选题采集 — 多信源 + 去重（见 topic-research-diversity.md）
 Step 2: 适配矩阵 — 唯一人工确认点，输出矩阵表格等用户确认
 Step 3: 母稿生产 — 按语言偏好与平台改写
 Step 4: 润色 + 排版 + 配图 — humanizer + pipeline:xhs / tokenware-image
 Step 4.5: 发布前审核 — content-reviewer（失败 error 阻断发布）
+Step 4.9: 发布前确认 — 绝对路径清单，等用户确认
 Step 5: 自动发布 — 各平台 CLI（失败不阻塞全局）
 ```
 
@@ -54,7 +57,8 @@ Step 5: 自动发布 — 各平台 CLI（失败不阻塞全局）
 - **海外平台**：发布前 `npm run overseas:install`；禁止 Agent 代开浏览器、禁止连跑 check-login
 - **TikTok**：禁止 Agent 反复 `tiktok:login` / `check-login`；cookie 失效须用户手动登录，冷却 ≥30 分钟
 - **Reddit 失败**：**第一步**提示用户将 Reddit 界面语言改为 English，再查扩展/bridge
-- **配图**：小红书先 `pipeline:xhs` → 失败再 tokenware（交互需用户确认）
+- **配图**：小红书先 `pipeline:xhs`（须 `npm run tool:install`）→ 失败再 tokenware（交互需用户确认）
+- **小红书发布**：默认 `--verify` 跳创作中心首页；见 `xhs-publish` SKILL
 - 一个平台发布失败不阻塞全流程，标记原因继续其他平台
 
 详细说明见 `workspace/references/agent-config-guardrails.md`。
