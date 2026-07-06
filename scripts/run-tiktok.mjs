@@ -2,7 +2,7 @@
 /**
  * TikTok CLI 包装 — 使用 SAU_ROOT 的 uv 虚拟环境，避免裸 python 缺 playwright。
  */
-import { execSync } from 'child_process';
+import { spawnSync } from 'child_process';
 import { existsSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
@@ -27,8 +27,9 @@ if (args.length === 0) {
 const quotedArgs = args.map((a) => (/\s/.test(a) ? `"${a}"` : a)).join(' ');
 const cmd = `uv run --directory "${sauRoot}" python "${cliPath}" ${quotedArgs}`;
 
-execSync(cmd, {
+const result = spawnSync(cmd, {
   stdio: 'inherit',
   shell: true,
   env: { ...process.env, SAU_ROOT: sauRoot },
 });
+process.exit(result.status ?? 1);

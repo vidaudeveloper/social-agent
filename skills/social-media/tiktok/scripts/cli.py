@@ -55,6 +55,60 @@ def apply_headed_conf() -> None:
         conf.LOCAL_CHROME_PATH = chrome
 
 
+LOGIN_COOKIE_NAMES = frozenset(
+    {"sessionid", "sessionid_ss", "sid_tt", "uid_tt", "sid_guard", "multi_sids"}
+)
+
+
+def build_launch_kwargs(conf) -> dict:
+    launch_kwargs: dict = {
+        "headless": False,
+        "args": ["--lang=en-US"],
+    }
+    if conf.LOCAL_CHROME_PATH:
+        launch_kwargs["executable_path"] = conf.LOCAL_CHROME_PATH
+    return launch_kwargs
+
+
+async def verify_tiktok_logged_in(page, context) -> bool:
+    """在 TikTok Studio 上传页确认已登录（与发布流程一致）。"""
+    try:
+        await page.goto(
+            "https://www.tiktok.com/tiktokstudio/upload?lang=en",
+            wait_until="domcontentloaded",
+            timeout=90_000,
+        )
+        await page.wait_for_timeout(4000)
+    except Exception:
+        return False
+
+    if "login" in page.url.lower():
+        return False
+
+    iframe = page.locator('iframe[data-tt="Upload_index_iframe"]')
+    upload = page.locator("div.upload-container")
+    select_btn = page.locator('button:has-text("Select video")')
+    if await iframe.count() > 0 or await upload.count() > 0 or await select_btn.count() > 0:
+        return True
+
+    names = {c["name"] for c in await context.cookies()}
+    return bool(names & LOGIN_COOKIE_NAMES)
+
+
+async def verify_tiktok_cookie_file(account_path: Path, conf) -> bool:
+    from playwright.async_api import async_playwright
+    from utils.base_social_media import set_init_script
+
+    async with async_playwright() as playwright:
+        browser = await playwright.chromium.launch(**build_launch_kwargs(conf))
+        context = await browser.new_context(storage_state=str(account_path))
+        context = await set_init_script(context)
+        page = await context.new_page()
+        ok = await verify_tiktok_logged_in(page, context)
+        await browser.close()
+        return ok
+
+
 async def interactive_tiktok_login(account_path: Path) -> bool:
     """有头浏览器登录，终端 Enter 确认后保存 cookie（替代 SAU page.pause）。"""
     sys.path.insert(0, str(sau_root()))
@@ -64,42 +118,47 @@ async def interactive_tiktok_login(account_path: Path) -> bool:
 
     import conf
 
-    launch_kwargs: dict = {
-        "headless": False,
-        "args": ["--lang=en-US"],
-    }
-    if conf.LOCAL_CHROME_PATH:
-        launch_kwargs["executable_path"] = conf.LOCAL_CHROME_PATH
-
     account_path.parent.mkdir(parents=True, exist_ok=True)
 
     print("\n=== TikTok 登录 ===", flush=True)
     print("1. 将打开 Chrome 到 TikTok 登录页", flush=True)
-    print("2. 请在浏览器中手动完成登录（含验证码/2FA）", flush=True)
-    print("3. 确认已登录成功后，回到本终端按 Enter 保存 cookie\n", flush=True)
+    print("2. 在浏览器中完成登录，直到能看到首页或上传页（含验证码/2FA）", flush=True)
+    print("3. 确认已登录后回到终端按 Enter — 脚本会跳转上传页校验", flush=True)
+    print("4. 若校验失败，浏览器保持打开，请继续登录后再次按 Enter\n", flush=True)
 
     async with async_playwright() as playwright:
-        browser = await playwright.chromium.launch(**launch_kwargs)
+        browser = await playwright.chromium.launch(**build_launch_kwargs(conf))
         context = await browser.new_context()
         context = await set_init_script(context)
         page = await context.new_page()
         await page.goto("https://www.tiktok.com/login?lang=en", wait_until="domcontentloaded")
-        await asyncio.get_event_loop().run_in_executor(None, input, "登录完成后按 Enter 保存 cookie… ")
-        await context.storage_state(path=str(account_path))
-        await browser.close()
+
+        while True:
+            await asyncio.get_event_loop().run_in_executor(
+                None, input, "登录完成后按 Enter 校验并保存 cookie… "
+            )
+            if await verify_tiktok_logged_in(page, context):
+                await context.storage_state(path=str(account_path))
+                await browser.close()
+                break
+            print(
+                "\n[!] 未检测到有效登录（上传页不可访问或缺少 session cookie）。\n"
+                "    请在浏览器中完成登录，可手动打开: https://www.tiktok.com/tiktokstudio/upload\n"
+                "    确认能进入上传页后，再按 Enter 重试。\n",
+                flush=True,
+            )
 
     ok = account_path.is_file() and account_path.stat().st_size > 10
     if not ok:
         print(json.dumps({"ok": False, "error": "cookie 未保存或文件过小，请重试登录"}, ensure_ascii=False), file=sys.stderr)
         return False
 
-    from uploader.tk_uploader.main_chrome import cookie_auth
-
-    valid = await cookie_auth(str(account_path))
+    apply_headed_conf()
+    valid = await verify_tiktok_cookie_file(account_path, conf)
     if not valid:
         print(
             json.dumps(
-                {"ok": False, "error": "cookie 已保存但校验未通过，请确认已在浏览器登录成功后再按 Enter"},
+                {"ok": False, "error": "cookie 已保存但上传页校验未通过，请重新 login"},
                 ensure_ascii=False,
             ),
             file=sys.stderr,
@@ -126,9 +185,9 @@ async def cmd_check(account: str) -> int:
     if exists:
         sys.path.insert(0, str(sau_root()))
         apply_headed_conf()
-        from uploader.tk_uploader.main_chrome import cookie_auth
+        import conf
 
-        valid = await cookie_auth(str(path))
+        valid = await verify_tiktok_cookie_file(path, conf)
     print(
         json.dumps(
             {"ok": True, "loggedIn": valid, "account": account, "cookie": str(path)},

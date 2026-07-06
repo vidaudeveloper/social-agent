@@ -8,6 +8,8 @@
 
 **修复**：`cli.py` 改交互式有头 Chrome + 终端 Enter 确认后存 cookie；`overseas:install` 初始化 `conf.py` 为 `HEADLESS=False` 并尽量指向系统 Chrome。
 
+**后续**：Enter 后立即 `storage_state` 仍可能缺 `sessionid`；改为 Enter 后跳转 TikTok Studio 上传页校验，未通过保持浏览器可重试；`check-login` 与发布流程同源校验（上传 iframe/按钮），替代 SAU `cookie_auth` 的 select 误判。
+
 ## 2026-07-06 — TikTok 依赖与路径修复
 
 **现象**：`npm run tiktok:check-login` 报 social-auto-upload 未找到；`overseas:install` 需手动 clone；SAU 缺 `conf.py` 导致 import 失败。
