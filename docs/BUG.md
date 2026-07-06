@@ -18,6 +18,12 @@
 
 **修复**：登录改用 `launch_persistent_context` + 系统 `channel=chrome`、去掉登录阶段 stealth；支持 `TK_PROXY`/`TIKTOK_PROXY`（可复用 `YT_PROXY`）；启动时提示配代理；改开首页而非 /login。
 
+## 2026-07-06 — TikTok 草稿发布与弹窗遮挡
+
+**现象**：`tiktok:publish --draft` 上传后填标题失败，TUXModal 弹窗挡住编辑器。
+
+**修复**：publish 不再 `tiktok_setup` 二次开浏览器；`--draft` 点 Save draft；上传流程自动关闭 Got it/Allow 等弹窗。
+
 ## 2026-07-06 — TikTok 依赖与路径修复
 
 **现象**：`npm run tiktok:check-login` 报 social-auto-upload 未找到；`overseas:install` 需手动 clone；SAU 缺 `conf.py` 导致 import 失败。

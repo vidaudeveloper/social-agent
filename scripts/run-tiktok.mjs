@@ -30,6 +30,6 @@ const cmd = `uv run --directory "${sauRoot}" python "${cliPath}" ${quotedArgs}`;
 const result = spawnSync(cmd, {
   stdio: 'inherit',
   shell: true,
-  env: { ...process.env, SAU_ROOT: sauRoot },
+  env: { ...process.env, SAU_ROOT: sauRoot, PYTHONIOENCODING: 'utf-8' },
 });
 process.exit(result.status ?? 1);

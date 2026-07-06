@@ -9,11 +9,20 @@ version: 1.0.0
 ## 命令
 
 ```powershell
-uv run python skills/tiktok/scripts/cli.py publish `
+npm run tiktok:publish -- `
   --video "$HERMES_ROOT/视频/xxx.mp4" `
-  --title "口播文案 #话题1 #话题2" `
+  --title "口播文案 #fyp" `
+  --draft `
   --account default
 ```
+
+`--draft`：点击 **Save draft** 进 Studio 草稿箱，不直接公开发布（测试推荐）。
+
+## 风控
+
+- **不要** publish 前先 `check-login`（会多开一次浏览器）
+- publish 只开 **一个** Chrome 窗口，上传过程带随机间隔
+- 失败不要立刻重试，间隔 ≥30 分钟
 
 ## 前置
 
