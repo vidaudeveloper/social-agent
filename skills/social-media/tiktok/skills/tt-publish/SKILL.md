@@ -16,7 +16,9 @@ npm run tiktok:publish -- `
   --account default
 ```
 
-`--draft`：点击 **Save draft** 进 Studio 草稿箱，不直接公开发布（测试推荐）。
+`--draft`：点击 **Save draft** 进 Studio 草稿箱；完成后**自动打开草稿页且浏览器保持打开**，终端按 Enter 才关闭。
+
+可选：`$env:TIKTOK_HOLD_BROWSER_SEC = "600"` 才会在 N 秒后自动关（默认不设 = 一直开着）。
 
 ## 风控
 

@@ -100,17 +100,23 @@ async def open_studio_drafts_page(page) -> None:
 
 
 async def hold_browser_until_enter(page, context, browser, cookie_path: Path) -> None:
-    print("\n=== 浏览器保持打开 ===", flush=True)
-    print("正在打开 TikTok Studio 草稿/内容页，请自行确认是否有草稿。", flush=True)
+    print("\n=== 浏览器保持打开（默认不自动关闭）===", flush=True)
+    print("正在打开 TikTok Studio 草稿/内容页。", flush=True)
     await open_studio_drafts_page(page)
     hold_sec = int(os.environ.get("TIKTOK_HOLD_BROWSER_SEC", "0") or "0")
-    if sys.stdin.isatty():
-        print("看完后回到终端按 Enter 再关闭浏览器。\n", flush=True)
+    if hold_sec > 0:
+        print(f"已设 TIKTOK_HOLD_BROWSER_SEC={hold_sec}，到时自动关闭。\n", flush=True)
+        await asyncio.sleep(hold_sec)
+    elif sys.stdin.isatty():
+        print("浏览器将一直保持打开，确认完后在终端按 Enter 关闭。\n", flush=True)
         await asyncio.get_event_loop().run_in_executor(None, input, "按 Enter 关闭浏览器… ")
     else:
-        seconds = hold_sec if hold_sec > 0 else 180
-        print(f"浏览器将保持打开 {seconds} 秒供查看（可在终端设 TIKTOK_HOLD_BROWSER_SEC 调整）。\n", flush=True)
-        await asyncio.sleep(seconds)
+        print(
+            "浏览器将一直保持打开（进程不退出则不关）。"
+            "请在您自己的 PowerShell 运行本命令以便按 Enter 关闭；或 Ctrl+C 结束。\n",
+            flush=True,
+        )
+        await asyncio.Event().wait()
     await context.storage_state(path=str(cookie_path))
     await context.close()
     await browser.close()
