@@ -106,13 +106,19 @@ def make_tiktok_uploader_class():
             self.proxy = proxy
             self.headless = False
 
+        async def change_language(self, page) -> None:
+            """跳过首页语言切换，直接进 Studio（避免多一次导航超时）。"""
+            return
+
         async def dismiss_studio_popups(self, page) -> None:
             """关闭 Studio 上传过程中的引导/权限弹窗（含 automatic content checks）。"""
-            modal_titles = (
-                "automatic content checks",
-                "Turn on automatic content checks",
-                "New editing features",
-                "Continue to post",
+            modal_actions: tuple[tuple[str, tuple[str, ...]], ...] = (
+                ("scheduled posting", ("Allow", "Cancel")),
+                ("Allow your video to be saved", ("Allow", "Cancel")),
+                ("automatic content checks", ("Cancel", "Turn on", "Got it")),
+                ("Turn on automatic content checks", ("Cancel", "Turn on", "Got it")),
+                ("New editing features", ("Got it", "Cancel", "OK")),
+                ("Continue to post", ("Continue", "Cancel", "Got it")),
             )
             for _ in range(8):
                 dismissed = False
@@ -120,11 +126,11 @@ def make_tiktok_uploader_class():
                     "div.TUXModal-overlay[data-transition-status='open'], div.TUXModal-overlay:visible"
                 )
 
-                for title_fragment in modal_titles:
+                for title_fragment, btn_order in modal_actions:
                     target = open_modal.filter(has_text=title_fragment)
                     if not await target.count():
                         continue
-                    for btn_text in ("Cancel", "Got it", "Not now", "Turn on", "OK", "Continue"):
+                    for btn_text in btn_order:
                         btn = target.get_by_role("button", name=btn_text)
                         if await btn.count():
                             try:
@@ -259,12 +265,14 @@ def make_tiktok_uploader_class():
             page = await context.new_page()
 
             await human_pause(2, 4)
-            await self.change_language(page)
-            await human_pause(1, 2)
-            await page.goto("https://www.tiktok.com/tiktokstudio/upload", wait_until="domcontentloaded")
+            await page.goto(
+                "https://www.tiktok.com/tiktokstudio/upload?lang=en",
+                wait_until="domcontentloaded",
+                timeout=120_000,
+            )
             tiktok_logger.info(f"[+] Uploading — {self.title}")
 
-            await page.wait_for_url("https://www.tiktok.com/tiktokstudio/upload", timeout=60_000)
+            await page.wait_for_url("**/tiktokstudio/upload**", timeout=60_000)
             await human_pause(2, 3)
 
             try:
@@ -311,6 +319,7 @@ def make_tiktok_uploader_class():
             await browser.close()
 
         async def click_save_draft(self, page) -> None:
+            await self.dismiss_studio_popups(page)
             for selector in (
                 'button:has-text("Save draft")',
                 'div.button-group button:has-text("Save draft")',
@@ -319,7 +328,9 @@ def make_tiktok_uploader_class():
                 btn = self.locator_base.locator(selector)
                 if await btn.count():
                     await btn.first.click()
-                    await human_pause(3, 5)
+                    await human_pause(2, 3)
+                    await self.dismiss_studio_popups(page)
+                    await human_pause(2, 3)
                     tiktok_logger.success("  [-] saved to draft")
                     return
             raise RuntimeError("未找到 Save draft 按钮，请在浏览器中手动保存草稿")
@@ -545,8 +556,6 @@ async def cmd_publish(
 ) -> int:
     sys.path.insert(0, str(sau_root()))
     apply_headed_conf()
-    from datetime import datetime
-
     import conf
 
     video_path = Path(video).resolve()
@@ -569,7 +578,7 @@ async def cmd_publish(
         title,
         str(video_path),
         tag_list,
-        datetime.now(),
+        0,
         str(cookie),
         save_draft=save_draft,
         proxy=proxy,
