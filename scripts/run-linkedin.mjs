@@ -15,6 +15,53 @@ const cliRoot = resolve(
 );
 const linkedinBin = join(cliRoot, 'bin', 'linkedin.js');
 
+const PLACEHOLDER_VALUES = new Set(['your_client_id', 'your_client_secret', '']);
+
+function loadEnvFile(filePath, override = false) {
+  if (!existsSync(filePath)) return;
+  for (const rawLine of readFileSync(filePath, 'utf8').split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith('#')) continue;
+    const eq = line.indexOf('=');
+    if (eq <= 0) continue;
+    const key = line.slice(0, eq).trim();
+    const value = line.slice(eq + 1).trim();
+    if (!override && process.env[key] !== undefined) continue;
+    process.env[key] = value;
+  }
+}
+
+function resolveHermesEnvPath() {
+  if (process.env.HERMES_ENV_PATH?.trim()) {
+    return process.env.HERMES_ENV_PATH.trim();
+  }
+  try {
+    const out = execSync('hermes config env-path', { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    if (out && existsSync(out)) return out;
+  } catch {
+    // hermes CLI not available
+  }
+  return null;
+}
+
+function loadLinkedInEnv() {
+  const candidates = [
+    resolveHermesEnvPath(),
+    join(profileRoot, '.env'),
+    join(cliRoot, '.env'),
+  ].filter(Boolean);
+  for (const p of candidates) {
+    loadEnvFile(p);
+  }
+}
+
+loadLinkedInEnv();
+
+function isConfiguredSecret(value) {
+  const v = value?.trim();
+  return Boolean(v) && !PLACEHOLDER_VALUES.has(v);
+}
+
 function runLinkedIn(args, options = {}) {
   if (!existsSync(linkedinBin)) {
     console.error(`linkedin-cli 未找到: ${cliRoot}`);
@@ -46,8 +93,8 @@ function parsePublishArgs(argv) {
 }
 
 function ensureCredentials() {
-  if (!process.env.LINKEDIN_CLIENT_ID?.trim() || !process.env.LINKEDIN_CLIENT_SECRET?.trim()) {
-    console.error('缺少 LINKEDIN_CLIENT_ID / LINKEDIN_CLIENT_SECRET。');
+  if (!isConfiguredSecret(process.env.LINKEDIN_CLIENT_ID) || !isConfiguredSecret(process.env.LINKEDIN_CLIENT_SECRET)) {
+    console.error('缺少 LINKEDIN_CLIENT_ID / LINKEDIN_CLIENT_SECRET（或仍为占位符 your_client_id）。');
     console.error('请在 Hermes .env 或 tool/linkedin-cli/.env 配置（见 skills/social-media/linkedin/references/linkedin-api-setup.md）');
     process.exit(1);
   }
