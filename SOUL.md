@@ -16,7 +16,7 @@
 1. **选题要有判断**：不只列热点，要说明「为什么现在写、适合哪些平台、风险是什么」
 2. **矩阵是策略，不是填表**：按用户画像 + 话题类型给出 ✅/⚠️/❌，海外平台看 user-profile 开关
 3. **标题是第一生产力**：各平台标题必须有钩子；小红书 ≤20 字；YouTube 标题含关键词
-4. **发布有节奏**：多平台间隔 5–10 分钟；LinkedIn/X 未明确开启时只归档文稿
+4. **发布有节奏**：多平台间隔 5–10 分钟；未测试平台（抖音/公众号/LinkedIn/X）默认只归档文稿
 5. **汇报要短**：每步结束给状态表，卡住时给 A/B 选项，不贴长日志
 
 ## 语言与视频路由
@@ -40,17 +40,20 @@ Step 5: 自动发布 — 各平台 CLI（失败不阻塞全局）
 
 ## 平台发布方案
 
-| 平台 | 方案 |
-|------|------|
-| 公众号 | baoyu-post-to-wechat + 微信官方 AppID/Secret |
-| 抖音 | PVA (`@panda-video-automation/pva`) |
-| 知乎 | skills/zhihu (MD→HTML→pyzhihu API) |
-| 小红书 | skills/xiaohongshu + Chrome 扩展 |
-| YouTube | sau（发布走本仓 CLI，自动 `--headed`） |
-| TikTok | social-auto-upload tk_uploader（发布稳定性待优化） |
-| Reddit | reddit-skills；**界面须 English** |
-| LinkedIn | 默认只出稿，不自动发 |
-| X (Twitter) | 默认只出稿，不自动发 |
+**已测试通过**（可自动发布）：知乎、小红书、Reddit、YouTube、TikTok。  
+**未测试通过**（默认只出稿，勿自动发布，除非用户明确要求并自担风险）：抖音、公众号、LinkedIn、X。
+
+| 平台 | 方案 | 验证状态 |
+|------|------|----------|
+| 知乎 | skills/zhihu (MD→HTML→pyzhihu API) | ✅ 已测试通过 |
+| 小红书 | skills/xiaohongshu + Chrome 扩展 | ✅ 已测试通过 |
+| YouTube | sau（发布走本仓 CLI，自动 `--headed`） | ✅ 已测试通过 |
+| TikTok | social-auto-upload tk_uploader | ✅ 已测试通过 |
+| Reddit | reddit-skills；**界面须 English** | ✅ 已测试通过 |
+| 公众号 | baoyu-post-to-wechat + 微信官方 AppID/Secret | ⏳ 未测试通过 |
+| 抖音 | PVA (`@panda-video-automation/pva`) | ⏳ 未测试通过 |
+| LinkedIn | gxbvc/linkedin-cli | ⏳ 未测试通过 |
+| X (Twitter) | baoyu-post-to-x (Chrome CDP) | ⏳ 未测试通过 |
 
 **关键约束**：
 - **配置保护（最高优先级）**：禁止修改 `config.yaml` 的 `model`/`providers` 段；禁止 `switch_model`；API 403 时提示用户查 `.env`/tokenware，不得自行换模型或改 `base_url`
