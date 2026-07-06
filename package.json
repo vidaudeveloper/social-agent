@@ -13,6 +13,11 @@
     "reddit:publish": "node skills/social-media/reddit/scripts/cli.mjs publish",
     "tiktok:login": "node scripts/run-tiktok.mjs login --account default",
     "tiktok:check-login": "node scripts/run-tiktok.mjs check-login --account default",
-    "tiktok:publish": "node scripts/run-tiktok.mjs publish"
+    "tiktok:publish": "node scripts/run-tiktok.mjs publish",
+    "linkedin:setup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-linkedin-tools.ps1",
+    "linkedin:login": "node scripts/run-linkedin.mjs login",
+    "linkedin:check-login": "node scripts/run-linkedin.mjs check-login",
+    "linkedin:publish": "node scripts/run-linkedin.mjs publish",
+    "linkedin:stats": "node scripts/run-linkedin.mjs stats"
   }
 }

@@ -16,6 +16,7 @@
 | 组件 | 用途 | 上游来源 |
 |------|------|----------|
 | social-auto-upload | YouTube / TikTok 上传 | [dreammis/social-auto-upload](https://github.com/dreammis/social-auto-upload) |
+| gxbvc/linkedin-cli | LinkedIn OAuth 发帖与基础互动数据 | [gxbvc/linkedin-cli](https://github.com/gxbvc/linkedin-cli) |
 | reddit-skills | Reddit 扩展桥 + CLI | [1146345502/reddit-skills](https://github.com/1146345502/reddit-skills) |
 | PVA | 抖音视频自动化 | [@panda-video-automation/pva](https://www.npmjs.com/package/@panda-video-automation/pva) |
 | pyzhihu-cli | 知乎发布 | 见 `skills/social-media/zhihu/` 文档 |

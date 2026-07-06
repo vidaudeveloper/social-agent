@@ -100,6 +100,7 @@ metadata:
 | 抖音 | npx @panda-video-automation/pva |
 | YouTube | node skills/youtube/scripts/cli.mjs publish |
 | TikTok | uv run python skills/tiktok/scripts/cli.py publish |
+| LinkedIn | `npm run linkedin:publish`（须先 `linkedin:setup` + `linkedin:login`；默认只出稿） |
 
 **规则**：
 - 发布失败不阻塞全流程，标记原因继续其他平台

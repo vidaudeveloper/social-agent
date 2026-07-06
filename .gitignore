@@ -39,6 +39,9 @@ cache/
 user-profile.md
 user-profile.template.md
 
+# External tools (clone via npm run overseas:install / linkedin:setup)
+tool/
+
 # Infrastructure
 hermes-agent/
 .worktrees/

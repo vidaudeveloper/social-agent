@@ -13,11 +13,12 @@
 
 | 步骤 | 行为 |
 |------|------|
-| login | 按 Enter → 打开 OAuth 授权页 → 用户手动登录并授权 → 按 Enter 存令牌 |
-| check-login | 按 Enter → **一次** userinfo |
-| publish | 按 Enter → **一次** Posts API |
+| login | 按 Enter → 打开 OAuth 授权页（localhost:3457）→ 用户手动登录并授权 → 自动 profile --save |
+| check-login | 按 Enter → **一次** auth status + profile |
+| publish | 按 Enter → 上游 `linkedin posts create` |
+| stats | 按 Enter → 列出近期帖子（L1 互动数据） |
 
-不再使用 Cookie 抽取 / Playwright 发帖。配置见 `skills/linkedin/references/linkedin-api-setup.md`。
+不再使用自研 OAuth 脚本 / Cookie 抽取 / Playwright 发帖。配置见 `skills/social-media/linkedin/references/linkedin-api-setup.md`。
 
 ## YouTube（sau / social-auto-upload）
 
@@ -42,5 +43,6 @@
 
 ```powershell
 $env:OVERSEAS_ALLOW_AUTOMATION = "true"
+npm run linkedin:setup
 npm run linkedin:login
 ```

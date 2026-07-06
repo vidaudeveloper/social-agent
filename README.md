@@ -15,7 +15,8 @@
 2. 复制 `.env.EXAMPLE` 为 `.env`，填写 `TOKENWARE_API_KEY`
 3. 海外平台（YouTube/TikTok）在 profile 根目录执行 `npm run overseas:install`
 4. Reddit 需执行 `npm run reddit:setup`（见 `skills/social-media/reddit/SKILL.md`）
-5. 在 VidAU 中选择 **social-agent** profile 开始对话
+5. LinkedIn 需执行 `npm run linkedin:setup`（见 `skills/social-media/linkedin/SKILL.md`）
+6. 在 VidAU 中选择 **social-agent** profile 开始对话
 
 ### 手动克隆（开发）
 
@@ -47,7 +48,7 @@ cd social-agent
 | **公众号** | baoyu-post-to-wechat + 微信官方 API | ✅ 链路就绪 |
 | **TikTok** | social-auto-upload tk_uploader | ⚠️ 发布稳定性待优化 |
 | **Reddit** | reddit-skills (Chrome 扩展桥) | ✅ 须英文界面 |
-| **LinkedIn** | linkedin-cli (官方 OAuth) | ⚠️ 默认只出稿 |
+| **LinkedIn** | [gxbvc/linkedin-cli](https://github.com/gxbvc/linkedin-cli) | ⚠️ 默认只出稿 |
 | **X (Twitter)** | baoyu-post-to-x (Chrome CDP) | ⚠️ 默认只出稿 |
 
 ## 前置依赖
@@ -61,6 +62,16 @@ npm run tiktok:login
 ```
 
 需事先 clone [social-auto-upload](https://github.com/dreammis/social-auto-upload)，通过 `SAU_ROOT` 指向其目录（默认 `./tool/social-auto-upload`）。
+
+### LinkedIn
+
+```powershell
+npm run linkedin:setup
+$env:OVERSEAS_ALLOW_AUTOMATION="true"
+npm run linkedin:login
+```
+
+上游 CLI 默认目录 `tool/linkedin-cli`（`LINKEDIN_CLI_ROOT` 可覆盖）。Redirect URL：`http://localhost:3457/callback`。
 
 ### 高质量视频
 
