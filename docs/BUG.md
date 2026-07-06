@@ -10,6 +10,14 @@
 
 **后续**：Enter 后立即 `storage_state` 仍可能缺 `sessionid`；改为 Enter 后跳转 TikTok Studio 上传页校验，未通过保持浏览器可重试；`check-login` 与发布流程同源校验（上传 iframe/按钮），替代 SAU `cookie_auth` 的 select 误判。
 
+## 2026-07-06 — TikTok 登录页一直加载
+
+**现象**：Chrome 打开 TikTok 后长时间转圈，无法进首页/完成登录。
+
+**根因**：国内网络下 Playwright 不走系统代理；未配 `TK_PROXY` 时 tiktok.com 不可达。另：登录页注入 `stealth.min.js` 可能加重异常。
+
+**修复**：登录改用 `launch_persistent_context` + 系统 `channel=chrome`、去掉登录阶段 stealth；支持 `TK_PROXY`/`TIKTOK_PROXY`（可复用 `YT_PROXY`）；启动时提示配代理；改开首页而非 /login。
+
 ## 2026-07-06 — TikTok 依赖与路径修复
 
 **现象**：`npm run tiktok:check-login` 报 social-auto-upload 未找到；`overseas:install` 需手动 clone；SAU 缺 `conf.py` 导致 import 失败。

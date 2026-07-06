@@ -46,5 +46,8 @@ npm run tiktok:publish -- --video "$HERMES_ROOT/视频/TikTok/xxx/yyy.mp4" --tit
 ## 环境变量
 
 - `SAU_ROOT` — social-auto-upload 路径
+- `TIKTOK_PROXY` / `TK_PROXY` — 代理（国内必配；或在 `conf.py` 设 `TK_PROXY`）
 - `TIKTOK_MAX_DURATION_SEC` — 时长上限（默认 90）
 - `TIKTOK_TTS_VOICE` — 音色预设（如 us-female）
+
+国内访问 TikTok：Playwright 不吃系统代理，页面会一直加载。见 `skills/tt-auth/SKILL.md`。

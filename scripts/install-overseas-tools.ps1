@@ -36,8 +36,9 @@ if (Test-Path $confFile) {
             $confText = $confText -replace 'LOCAL_CHROME_PATH = ""', "LOCAL_CHROME_PATH = `"$chrome`""
         }
     }
-    Set-Content -Path $confFile -Value $confText -NoNewline
-}
+    if ($confText -notmatch 'TK_PROXY') {
+        $confText = $confText -replace '(YT_PROXY = None)', "`$1`nTK_PROXY = None  # TikTok; same port as YT_PROXY if needed"
+    }
 
 if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
     Write-Host "[error] uv not found. Install: https://docs.astral.sh/uv/" -ForegroundColor Red
@@ -73,6 +74,7 @@ try {
     Write-Host ""
     Write-Host "[done] overseas tools ready" -ForegroundColor Green
     Write-Host "TikTok: npm run tiktok:login"
+    Write-Host "[hint] China: set TK_PROXY in tool/social-auto-upload/conf.py (e.g. http://127.0.0.1:7890)" -ForegroundColor Yellow
     Write-Host "YouTube: skills/social-media/youtube/references/sau-runbook.md"
 }
 finally {

@@ -2,24 +2,35 @@
 
 **前置**：`npm run overseas:install`
 
+## 国内必配代理
+
+Playwright **不会**走 Windows 系统代理。若 TikTok 一直「加载中」、进不了首页，先在 `tool/social-auto-upload/conf.py` 配置：
+
+```python
+TK_PROXY = "http://127.0.0.1:7890"  # 改成你的 Clash/V2Ray 本地端口
+```
+
+也可用环境变量：`$env:TIKTOK_PROXY = "http://127.0.0.1:7890"`  
+若已配 `YT_PROXY`，未配 `TK_PROXY` 时会自动复用 `YT_PROXY`。
+
+先用**同一代理**在普通 Chrome 里确认能打开 https://www.tiktok.com ，再跑 login。
+
+## 登录
+
 ```powershell
 $env:OVERSEAS_ALLOW_AUTOMATION = "true"
 npm run tiktok:login
 npm run tiktok:check-login
 ```
 
-## 登录流程
-
-1. 终端执行 `npm run tiktok:login`
-2. 弹出 **系统 Chrome**（非无头），打开 TikTok 登录页
-3. 你在浏览器里 **手动登录**（邮箱/手机/Google 等）
-4. 登录成功后回到终端 **按 Enter** — 脚本会跳转上传页校验；未通过可继续在浏览器登录后重试 Enter
-
-**不要**依赖 Playwright Inspector 的 Resume；旧版 SAU `page.pause()` 容易一闪而过导致假登录成功。
+1. 弹出 **系统 Chrome**（持久配置目录，非无头）
+2. 打开 TikTok **首页**（非强制 /login，减少卡加载）
+3. 在浏览器里手动登录
+4. 回到终端 **按 Enter** → 跳转上传页校验；失败可继续登录后重试 Enter
 
 ## 校验
 
-`check-login` 会加载 cookie 并访问 TikTok Studio 上传页，确认会话仍有效（不仅看文件是否存在）。
+`check-login` 访问 TikTok Studio 上传页，确认会话有效。
 
 ## 禁止
 
