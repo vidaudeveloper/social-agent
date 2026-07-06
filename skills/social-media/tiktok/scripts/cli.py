@@ -107,37 +107,119 @@ def make_tiktok_uploader_class():
             self.headless = False
 
         async def dismiss_studio_popups(self, page) -> None:
-            """关闭 Studio 上传过程中的引导/权限弹窗，避免挡住标题输入。"""
-            selectors = (
-                'button:has-text("Got it")',
-                'button:has-text("Allow")',
-                'button:has-text("Continue")',
-                'button:has-text("Not now")',
-                'button:has-text("OK")',
-                'div.TUXButton-content:has-text("Allow")',
-                'div.TUXButton-content:has-text("Got it")',
-                'div.TUXButton-content:has-text("Continue")',
-                '[data-e2e="modal-close-inner-button"]',
-                'button[aria-label="Close"]',
+            """关闭 Studio 上传过程中的引导/权限弹窗（含 automatic content checks）。"""
+            modal_titles = (
+                "automatic content checks",
+                "Turn on automatic content checks",
+                "New editing features",
+                "Continue to post",
             )
-            for _ in range(6):
+            for _ in range(8):
                 dismissed = False
-                for selector in selectors:
-                    btn = page.locator(selector)
-                    if await btn.count():
+                open_modal = page.locator(
+                    "div.TUXModal-overlay[data-transition-status='open'], div.TUXModal-overlay:visible"
+                )
+
+                for title_fragment in modal_titles:
+                    target = open_modal.filter(has_text=title_fragment)
+                    if not await target.count():
+                        continue
+                    for btn_text in ("Cancel", "Got it", "Not now", "Turn on", "OK", "Continue"):
+                        btn = target.get_by_role("button", name=btn_text)
+                        if await btn.count():
+                            try:
+                                await btn.first.click(timeout=3000)
+                                tiktok_logger.info(
+                                    f"  [-] dismissed modal ({title_fragment!r}) via {btn_text!r}"
+                                )
+                                dismissed = True
+                                await human_pause(1, 2)
+                                break
+                            except Exception:
+                                pass
+                    if dismissed:
+                        break
+                    close = target.locator(
+                        '[data-e2e="modal-close-inner-button"], button[aria-label="Close"]'
+                    )
+                    if await close.count():
                         try:
-                            await btn.first.click(timeout=2500)
+                            await close.first.click(timeout=3000)
                             dismissed = True
                             await human_pause(1, 2)
                         except Exception:
                             pass
+
+                if not dismissed and await open_modal.count():
+                    for selector in (
+                        'button:has-text("Cancel")',
+                        'button:has-text("Got it")',
+                        'button:has-text("Not now")',
+                        'button:has-text("Turn on")',
+                        'button:has-text("Allow")',
+                        'button:has-text("Continue")',
+                        'button:has-text("OK")',
+                        'div.TUXButton-content:has-text("Cancel")',
+                        'div.TUXButton-content:has-text("Got it")',
+                        'div.TUXButton-content:has-text("Turn on")',
+                        '[data-e2e="modal-close-inner-button"]',
+                        'button[aria-label="Close"]',
+                    ):
+                        btn = open_modal.locator(selector)
+                        if await btn.count():
+                            try:
+                                await btn.first.click(timeout=2500)
+                                tiktok_logger.info(f"  [-] dismissed open modal via {selector}")
+                                dismissed = True
+                                await human_pause(1, 2)
+                                break
+                            except Exception:
+                                pass
+
+                if not dismissed:
+                    for selector in (
+                        'button:has-text("Got it")',
+                        'button:has-text("Allow")',
+                        'button:has-text("Continue")',
+                        'button:has-text("Not now")',
+                        'button:has-text("OK")',
+                    ):
+                        btn = page.locator(selector)
+                        if await btn.count():
+                            try:
+                                await btn.first.click(timeout=2000)
+                                dismissed = True
+                                await human_pause(1, 2)
+                            except Exception:
+                                pass
+
                 if not dismissed:
                     break
+                await human_pause(0.5, 1)
+
+        async def wait_for_upload_ready(self, page) -> None:
+            """等视频上传完成并处理期间弹出的 content checks 等模态框。"""
+            for _ in range(20):
+                await self.dismiss_studio_popups(page)
+                open_modal = page.locator("div.TUXModal-overlay[data-transition-status='open']")
+                uploaded = page.locator("text=Uploaded")
+                if await uploaded.count() and not await open_modal.count():
+                    tiktok_logger.info("  [-] video uploaded, modals cleared")
+                    return
+                await human_pause(2, 3)
+            tiktok_logger.info("  [-] upload wait finished (may still have modals)")
 
         async def add_title_tags(self, page):
             await self.dismiss_studio_popups(page)
             editor = self.locator_base.locator("div.public-DraftEditor-content")
-            await editor.click(force=True)
+            for attempt in range(4):
+                try:
+                    await editor.click(timeout=8000)
+                    break
+                except Exception:
+                    await self.dismiss_studio_popups(page)
+                    if attempt == 3:
+                        await editor.click(force=True)
             await page.keyboard.press("End")
             await page.keyboard.press("Control+A")
             await page.keyboard.press("Delete")
@@ -203,7 +285,7 @@ def make_tiktok_uploader_class():
             file_chooser = await fc_info.value
             await file_chooser.set_files(self.file_path)
 
-            await human_pause(3, 5)
+            await self.wait_for_upload_ready(page)
             await self.dismiss_studio_popups(page)
             await self.add_title_tags(page)
             await self.dismiss_studio_popups(page)

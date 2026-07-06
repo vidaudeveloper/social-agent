@@ -22,7 +22,7 @@
 
 **现象**：`tiktok:publish --draft` 上传后填标题失败，TUXModal 弹窗挡住编辑器。
 
-**修复**：publish 不再 `tiktok_setup` 二次开浏览器；`--draft` 点 Save draft；上传流程自动关闭 Got it/Allow 等弹窗。
+**修复**：publish 不再 `tiktok_setup` 二次开浏览器；`--draft` 点 Save draft；自动关闭 Got it/Allow/**Turn on automatic content checks**（优先 Cancel）等 TUXModal。
 
 ## 2026-07-06 — TikTok 依赖与路径修复
 
