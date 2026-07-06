@@ -45,7 +45,7 @@ npm run linkedin:login
 ## 4. 发布
 
 ```powershell
-npm run linkedin:publish -- --file "D:/test/hermes/文章/LinkedIn/xxx.md" --visibility public
+npm run linkedin:publish -- --file "$HERMES_ROOT/文章/LinkedIn/xxx.md" --visibility public
 ```
 
 发布前会再次要求按 Enter 确认。

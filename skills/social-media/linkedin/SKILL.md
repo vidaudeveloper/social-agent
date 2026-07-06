@@ -26,7 +26,7 @@ metadata:
 $env:OVERSEAS_ALLOW_AUTOMATION = "true"
 npm run linkedin:login
 npm run linkedin:check-login
-npm run linkedin:publish -- --file "D:/test/hermes/文章/LinkedIn/post.md"
+npm run linkedin:publish -- --file "$HERMES_ROOT/文章/LinkedIn/post.md"
 ```
 
 ## 公司主页

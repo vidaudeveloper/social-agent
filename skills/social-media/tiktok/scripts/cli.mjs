@@ -18,7 +18,7 @@ Options (create-video):
   --voice, -v <id>    us-male / us-female / en-US-JennyNeural ...
 
 Env:
-  HERMES_ROOT              Default D:/test/hermes
+  HERMES_ROOT              Default ./content
   TIKTOK_MAX_DURATION_SEC  Max video length (default 90)
   TIKTOK_TTS_VOICE         Override voice preset
   TIKTOK_TTS_RATE          e.g. +50%

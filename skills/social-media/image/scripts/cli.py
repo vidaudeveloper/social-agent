@@ -31,7 +31,7 @@ def repo_root() -> Path:
 
 
 def hermes_root() -> Path:
-    return Path(os.environ.get("HERMES_ROOT", "D:/test/hermes"))
+    return Path(os.environ.get("HERMES_ROOT", "./content"))
 
 
 def resolve_env_path() -> Path | None:

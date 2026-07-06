@@ -32,7 +32,7 @@ publish 参数:
   SAU_HEADED=true            login 时有头模式
   YOUTUBE_CHANNEL_ID         频道 ID
   VIDEO_PRIVACY              可见性
-  HERMES_ROOT                内容归档根目录（默认 D:/test/hermes）
+  HERMES_ROOT                内容归档根目录（默认 ./content）
   USER_PROFILE_PATH          用户画像路径
 
 登录态:

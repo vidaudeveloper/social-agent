@@ -6,7 +6,7 @@ import { execSync } from 'child_process';
 import { existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
-const DEFAULT_SAU_ROOT = 'D:/test/tool/social-auto-upload';
+const DEFAULT_SAU_ROOT = './tool/social-auto-upload';
 
 export function sauRoot() {
   return (process.env.SAU_ROOT || DEFAULT_SAU_ROOT).replace(/\\/g, '/');

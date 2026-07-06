@@ -23,9 +23,9 @@ version: 1.0.0
 
 ## 渲染器
 
-- **Windows 默认**：`ffmpeg` + ASS 花字（黑底、关键词高亮、淡入动画）
-- **可选**：`FFCreator`（Linux/macOS，`npm run douyin:install`）
-- 强制：`$env:DOUYIN_RENDERER = "ffmpeg"` 或 `"ffcreator"`
+- **默认且推荐**：`ffmpeg` + ASS 花字（黑底、关键词高亮、淡入动画）
+- **FFCreator**：已不推荐（仅 Linux/macOS 遗留可选）；复杂成片请用 [creative-agent](https://github.com/vidaudeveloper/creative-agent)
+- 强制：`$env:DOUYIN_RENDERER = "ffmpeg"`
 
 ## 依赖
 
@@ -35,6 +35,6 @@ version: 1.0.0
 ## 快速开始
 
 ```powershell
-npm run pipeline:douyin -- -File "D:/test/hermes/文章/抖音/xxx.md"
-npm run douyin:upload -- --video "D:/test/hermes/视频/xxx/yyy.mp4" --title "标题 #话题"
+npm run pipeline:douyin -- -File "$HERMES_ROOT/文章/抖音/xxx.md"
+npm run douyin:upload -- --video "$HERMES_ROOT/视频/xxx/yyy.mp4" --title "标题 #话题"
 ```

@@ -10,7 +10,7 @@ version: 1.0.0
 
 ```powershell
 uv run python skills/tiktok/scripts/cli.py publish `
-  --video "D:/test/hermes/视频/xxx.mp4" `
+  --video "$HERMES_ROOT/视频/xxx.mp4" `
   --title "口播文案 #话题1 #话题2" `
   --account default
 ```

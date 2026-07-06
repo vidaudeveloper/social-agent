@@ -5,12 +5,12 @@ description: |
   当用户说「生图」「配图」「封面图」「出一张图」或流水线 Step 4c 配图时使用。
   唯一生图路径：tokenware.ai gpt-image-2（本技能 CLI）。
 version: 1.0.0
-author: auto-content-pipeline
+author: vidau
 license: MIT
 metadata:
   hermes:
     tags: [image, tokenware, cover, illustration, social-media]
-    related_skills: [auto-content-pipeline]
+    related_skills: [pipeline-orchestrator]
 ---
 
 # tokenware 生图
@@ -56,22 +56,22 @@ uv run python skills/image/scripts/cli.py check-key
 uv run python skills/image/scripts/cli.py generate `
   --platform zhihu `
   --prompt "TK小店选品趋势信息图，现代扁平风，中文标题" `
-  --out "D:/test/hermes/图片/知乎/20260630_cover.png"
+  --out "$HERMES_ROOT/图片/知乎/20260630_cover.png"
 
 # 小红书卡片
 uv run python skills/image/scripts/cli.py generate `
   --platform xiaohongshu `
   --prompt "竖版知识卡片，3条选品技巧，简洁配色" `
-  --out "D:/test/hermes/图片/小红书/card1.jpg"
+  --out "$HERMES_ROOT/图片/小红书/card1.jpg"
 ```
 
-默认模型：`gpt-image-2`。未指定 `--out` 时保存到 `HERMES_ROOT/图片/{平台}/`（默认 `D:/test/hermes`）。
+默认模型：`gpt-image-2`。未指定 `--out` 时保存到 `HERMES_ROOT/图片/{平台}/`（默认 `$HERMES_ROOT`）。
 
 ## Agent 执行规则
 
 1. **只走 tokenware**：调用本技能 CLI 或 `references/api.md` 中的 API。
 2. **提示词**：写清主题、风格、是否含文字；中英混合描述效果更好。
-3. **保存**：URL 有时效，生成后立即下载到 `D:/test/hermes/图片/{平台}/`。
+3. **保存**：URL 有时效，生成后立即下载到 `$HERMES_ROOT/图片/{平台}/`。
 4. **失败一次即汇报**（非小红书主路径）：不要反复换工具。小红书主路径见 xhs-cron-runbook。
 
 ## 配图失败处理
@@ -85,7 +85,7 @@ uv run python skills/image/scripts/cli.py generate `
 ## 参考
 
 - `references/api.md` — API 字段、模型列表、Python 片段
-- 主技能 `auto-content-pipeline` Step 4c
+- 主技能 `pipeline-orchestrator` Step 4c
 
 ## npm 快捷方式
 

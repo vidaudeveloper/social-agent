@@ -10,7 +10,7 @@ metadata:
 
 # Image Skills
 
-配图子技能，供 `auto-content-pipeline` Step 4c 使用。
+配图子技能，供 social-agent 管线 Step 4c 使用。
 
 ## 子技能
 
@@ -23,7 +23,7 @@ metadata:
 
 ```powershell
 npm run image:check-key
-npm run image:generate -- --platform wechat --prompt "公众号封面，科技风" --out "D:/test/hermes/图片/公众号/cover.png"
+npm run image:generate -- --platform wechat --prompt "公众号封面，科技风" --out "$HERMES_ROOT/图片/公众号/cover.png"
 ```
 
 ## Hermes 加载

@@ -7,7 +7,7 @@ version: 2.0.0
 # LinkedIn 发布（Posts API）
 
 ```powershell
-npm run linkedin:publish -- --file "D:/test/hermes/文章/LinkedIn/xxx.md"
+npm run linkedin:publish -- --file "$HERMES_ROOT/文章/LinkedIn/xxx.md"
 npm run linkedin:publish -- --text "Hello" --visibility public
 ```
 

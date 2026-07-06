@@ -4,7 +4,7 @@
 $ErrorActionPreference = "Stop"
 
 $ProfileRoot = Split-Path -Parent $PSScriptRoot
-$DefaultSauRoot = "D:\test\tool\social-auto-upload"
+$DefaultSauRoot = Join-Path $ProfileRoot "tool\social-auto-upload"
 if ($env:SAU_ROOT) { $SauRoot = $env:SAU_ROOT } else { $SauRoot = $DefaultSauRoot }
 
 Write-Host "=== social-agent overseas:install ===" -ForegroundColor Cyan

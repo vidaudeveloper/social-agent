@@ -14,7 +14,7 @@ POST https://www.tokenware.ai/v1/images/generations
 ## CLI（推荐）
 
 ```powershell
-uv run python skills/image/scripts/cli.py generate --platform zhihu --prompt "..." --out "D:/test/hermes/图片/知乎/cover.png"
+uv run python skills/image/scripts/cli.py generate --platform zhihu --prompt "..." --out "$HERMES_ROOT/图片/知乎/cover.png"
 npm run image:check-key
 ```
 
@@ -36,5 +36,5 @@ npm run image:check-key
 
 ## 注意
 
-- URL 有时效，生成后立即下载到 `D:/test/hermes/图片/{平台}/`
+- URL 有时效，生成后立即下载到 `$HERMES_ROOT/图片/{平台}/`
 - timeout ≥ 120 秒

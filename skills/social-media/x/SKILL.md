@@ -30,13 +30,13 @@ node skills/x/scripts/cli.mjs <command>
 ```powershell
 npm run overseas:install
 npm run x:login
-node skills/x/scripts/cli.mjs publish --text "Hello from pipeline!" --image "D:/test/hermes/图片/X/cover.jpg"
-node skills/x/scripts/cli.mjs publish --file "D:/test/hermes/文章/X/post.md"
+node skills/x/scripts/cli.mjs publish --text "Hello from pipeline!" --image "$HERMES_ROOT/图片/X/cover.jpg"
+node skills/x/scripts/cli.mjs publish --file "$HERMES_ROOT/文章/X/post.md"
 ```
 
 ## 与主流水线
 
-`auto-content-pipeline` Step 5 在 `user-profile.md` 中 `X: 启用` 时调用本包。
+social-agent 管线 Step 5 在 `user-profile.md` 中 `X: 启用` 时调用本包。
 
 ## 来源
 

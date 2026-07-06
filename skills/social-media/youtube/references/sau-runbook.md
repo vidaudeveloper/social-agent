@@ -47,7 +47,7 @@ YouTube 出问题
 
 ```powershell
 # 仓库根目录
-cd auto-content-pipeline-skill
+cd social-agent   # profile 根目录，见 https://github.com/vidaudeveloper/social-agent
 
 # A1. 若 tool/ 未安装
 npm run overseas:install
@@ -97,7 +97,9 @@ npm run youtube:patch-sau
 
 ### 根因（非 cookie 未保存）
 
-check **不是读 json 字段**，而是**再开浏览器访问 Studio** 验证。上游默认逻辑有缺陷：
+**发布**：须走本仓 `skills/youtube/scripts/commands/publish.mjs`，已自动追加 `--headed`。裸调 `sau youtube upload-video` 且漏 `--headed` 会在 YouTube Studio 失败。
+
+**check** 不是读 json 字段，而是**再开浏览器访问 Studio** 验证。上游默认逻辑有缺陷：
 
 | 问题 | 说明 |
 |------|------|
@@ -179,7 +181,7 @@ tool/social-auto-upload/cookies/youtube_<account>.json
 # 已 login 一次的前提下，日常只需：
 $env:OVERSEAS_ALLOW_AUTOMATION = "true"
 npm run youtube:publish -- `
-  --video "D:/test/hermes/视频/xxx.mp4" `
+  --video "$HERMES_ROOT/视频/xxx.mp4" `
   --title "标题" `
   --privacy unlisted
 ```

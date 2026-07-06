@@ -3,7 +3,7 @@
 ## 安装 social-auto-upload
 
 ```powershell
-cd auto-content-pipeline-skill
+cd social-agent   # profile 根目录
 npm run overseas:install
 cd tool/social-auto-upload
 copy conf.example.py conf.py

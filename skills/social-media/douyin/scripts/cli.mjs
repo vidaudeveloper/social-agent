@@ -18,7 +18,7 @@ Options (create-video):
   --voice, -v <id>    音色预设或 voice 名（见 list-voices）
 
 Env:
-  HERMES_ROOT         Default D:/test/hermes
+  HERMES_ROOT         Default ./content
   USER_PROFILE_PATH   user-profile.md path
   DOUYIN_TTS_VOICE    覆盖 TTS 音色
   DOUYIN_TTS_RATE     覆盖 TTS 语速（如 +50%）

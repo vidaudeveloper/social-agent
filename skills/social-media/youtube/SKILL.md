@@ -34,6 +34,8 @@ metadata:
 - **禁止**发布失败后立即重试；至少间隔 30 分钟
 - 文件路径必须使用**绝对路径**
 - 发布前须用户确认标题、描述、可见性
+- **发布必须走本仓 CLI**（`node skills/youtube/scripts/cli.mjs publish` 或包装命令），内部已自动追加 `--headed`；**禁止**裸调 `sau youtube upload-video` 且漏 `--headed`（YouTube Studio 会拦截 headless Chrome）
+- **login** 须带 `--headed`（见 `references/sau-runbook.md` 示例）
 
 ## 输入判断
 
@@ -53,7 +55,7 @@ $env:OVERSEAS_ALLOW_AUTOMATION = "true"
 npm run youtube:login
 
 # 2. 日常只 publish（尽量不 check-login）
-npm run youtube:publish -- --video "D:/test/hermes/视频/xxx.mp4" --title "标题" --privacy unlisted
+npm run youtube:publish -- --video "$HERMES_ROOT/视频/xxx.mp4" --title "标题" --privacy unlisted
 ```
 
 ## check 失败时

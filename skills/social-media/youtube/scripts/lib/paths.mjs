@@ -4,13 +4,13 @@ import { fileURLToPath } from 'url';
 /** skills/youtube 根目录 */
 export const skillRoot = join(dirname(fileURLToPath(import.meta.url)), '../..');
 
-/** auto-content-pipeline 仓库根目录 */
+/** social-agent profile 仓库根目录 */
 export const repoRoot = join(skillRoot, '../..');
 
 export const profilePath =
   process.env.USER_PROFILE_PATH || join(repoRoot, 'user-profile.md');
 
-export const hermesRoot = process.env.HERMES_ROOT || 'D:/test/hermes';
+export const hermesRoot = process.env.HERMES_ROOT || './content';
 
 export const defaultBgImage = join(skillRoot, 'assets/default-bg.jpg');
 

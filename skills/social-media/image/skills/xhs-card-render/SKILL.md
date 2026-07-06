@@ -21,7 +21,7 @@ metadata:
 | 主题 | `professional`（商务蓝，专业干练）；见下方 **8 内置主题** |
 | 分页 | `auto-split`（短章节合并 + **按内容双向缩放**填满卡片） |
 | 尺寸 | 1080×1440（3:4） |
-| 工具路径 | `tool/Auto-Redbook-Skills` 或 `D:/test/tool/Auto-Redbook-Skills` |
+| 工具路径 | `tool/Auto-Redbook-Skills`（可通过环境变量覆盖） |
 
 ## Markdown 格式
 
@@ -78,7 +78,7 @@ date: "2026-06-29"
 | `playful-geometric` | 活泼几何 | Memphis 紫粉渐变 | 已 patch 防拆页 |
 | `neo-brutalism` | 新粗野主义 | 粗框强对比红黄 | 已 patch 防拆页 |
 
-预览样例：`D:/test/hermes/图片/小红书/preview-20260629/themes-preview/{主题名}/`
+预览样例：`$HERMES_ROOT/图片/小红书/preview-20260629/themes-preview/{主题名}/`
 
 ## 自定义主题
 
@@ -93,7 +93,7 @@ date: "2026-06-29"
 npm run pipeline:xhs -- -Slug "preview-20260629-tk-gmvmax"
 
 # 或指定 MD 路径
-npm run pipeline:xhs -- -File "D:/test/hermes/文章/小红书/xxx.md" -Theme professional
+npm run pipeline:xhs -- -File "$HERMES_ROOT/文章/小红书/xxx.md" -Theme professional
 ```
 
 输出：`cover.png` + `card_*.png` + `manifest.json`（供 Step 5 发布取图路径）。
@@ -102,8 +102,8 @@ npm run pipeline:xhs -- -File "D:/test/hermes/文章/小红书/xxx.md" -Theme pr
 
 ```powershell
 npm run xhs:card-render -- `
-  -File "D:/test/hermes/文章/小红书/xxx.md" `
-  -Out "D:/test/hermes/图片/小红书/xxx"
+  -File "$HERMES_ROOT/文章/小红书/xxx.md" `
+  -Out "$HERMES_ROOT/图片/小红书/xxx"
 ```
 
 可选参数：`--theme professional`（默认）、`--mode auto-split`（默认）、`--mode separator`（严格按 `---` 一页一节）。

@@ -1,7 +1,7 @@
 ---
 name: dy-create
 description: |
-  抖音竖版视频创作：黑底花字 + Edge TTS + ffmpeg/FFCreator 合成 1080x1920，不发布。
+  抖音竖版视频创作：黑底花字 + Edge TTS + ffmpeg 合成 1080x1920，不发布。FFCreator 已不推荐。
 version: 1.0.0
 ---
 
@@ -21,14 +21,14 @@ version: 1.0.0
 
 - `uv run edge-tts`
 - `ffmpeg`（含 libass）
-- 可选：`skills/douyin/node_modules/ffcreator`（`npm run douyin:install`）
+- ~~FFCreator~~：不推荐；高质量视频见 `workspace/references/creative-agent-routing.md`
 
 ## 命令
 
 ```powershell
 npm run douyin:voices
 npm run pipeline:douyin -- -Slug "{slug}"
-npm run pipeline:douyin -- -File "D:/test/hermes/文章/抖音/xxx.md"
+npm run pipeline:douyin -- -File "$HERMES_ROOT/文章/抖音/xxx.md"
 npm run douyin:create-video -- --voice cn-female -f "D:/path/script.md"
 ```
 

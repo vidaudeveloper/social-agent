@@ -24,7 +24,7 @@ version: 1.0.0
 ## 命令
 
 ```powershell
-npm run pipeline:tiktok -- -File "D:/test/hermes/文章/TikTok/xxx.md"
+npm run pipeline:tiktok -- -File "$HERMES_ROOT/文章/TikTok/xxx.md"
 npm run tiktok:voices
 npm run tiktok:create-video -- --voice us-female -f "D:/path/script.md"
 ```

@@ -27,7 +27,7 @@ version: 2.0.0
 
 ```powershell
 npm run youtube:publish -- `
-  --video "D:/test/hermes/视频/xxx.mp4" `
+  --video "$HERMES_ROOT/视频/xxx.mp4" `
   --title "视频标题" `
   --description "视频描述" `
   --privacy unlisted

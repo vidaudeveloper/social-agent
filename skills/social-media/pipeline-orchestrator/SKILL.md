@@ -25,7 +25,13 @@ metadata:
 
 ## Step 0: 初始化用户画像
 
-读取 `workspace/user-profile.md`。不存在则一次性收集行业/平台/API Key 信息并写入。
+读取 `workspace/user-profile.md`。不存在则一次性收集：
+
+- 行业 / 平台开关 / API Key 是否已配置
+- **内容语言偏好**：`zh-CN` | `en-US` | `bilingual`
+- **发布语言策略**：全平台统一 | 按平台默认（国内中文、海外英文）
+
+写入 `user-profile.md` 后再进入 Step 1。
 
 ## Step 1: 选题采集
 
@@ -52,6 +58,16 @@ metadata:
 
 ## Step 3: 母稿生产
 
+按 **Step 0 语言偏好** 决定母稿与改写语言：
+
+| 内容语言偏好 | 规则 |
+|--------------|------|
+| `zh-CN` | 知乎/公众号/小红书/抖音用中文母稿与改写 |
+| `en-US` | YouTube/TikTok/Reddit/LinkedIn/X 用英文母稿与改写 |
+| `bilingual` | 先中文深度母稿，再并行英文改写海外平台 |
+
+若 `发布语言策略` 为「按平台默认」，在 `zh-CN`/`bilingual` 下仍对海外平台出英文版。
+
 - **≥3 平台**：先写深度母稿 → delegate_task 并行改写各平台版本
 - **1-2 平台**：直接按目标平台风格写
 
@@ -63,7 +79,7 @@ metadata:
 - **YouTube**：英文版深度内容 + TTS
 - **TikTok**：英文口播 ≤90 秒
 
-写入 `D:/test/hermes/文章/{平台}/{日期}_{slug}.md`
+写入 `$HERMES_ROOT/文章/{平台}/{日期}_{slug}.md`
 
 ## Step 4: 润色 + 排版 + 配图
 

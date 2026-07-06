@@ -7,9 +7,9 @@ export function linkedInDataDir() {
   }
   if (process.platform === 'win32') {
     const appData = process.env.APPDATA || join(homedir(), 'AppData', 'Roaming');
-    return join(appData, 'auto-content-pipeline', 'linkedin-api');
+    return join(appData, 'social-agent', 'linkedin-api');
   }
-  return join(homedir(), '.auto-content-pipeline', 'linkedin-api');
+  return join(homedir(), '.social-agent', 'linkedin-api');
 }
 
 export const tokenFilePath = () => join(linkedInDataDir(), 'oauth-token.json');
