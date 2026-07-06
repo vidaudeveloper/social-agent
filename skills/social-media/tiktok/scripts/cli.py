@@ -7,6 +7,7 @@ import argparse
 import asyncio
 import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -99,24 +100,36 @@ async def open_studio_drafts_page(page) -> None:
             break
 
 
-async def hold_browser_until_enter(page, context, browser, cookie_path: Path) -> None:
+async def hold_browser_until_enter(
+    page, context, browser, cookie_path: Path, *, go_drafts: bool = True, go_content: bool = False
+) -> None:
     print("\n=== 浏览器保持打开（默认不自动关闭）===", flush=True)
-    print("正在打开 TikTok Studio 草稿/内容页。", flush=True)
-    await open_studio_drafts_page(page)
+    if go_content:
+        print("正在打开 TikTok Studio 已发布内容页。", flush=True)
+        await page.goto(STUDIO_CONTENT_URL, wait_until="domcontentloaded", timeout=120_000)
+        await human_pause(3, 5)
+    elif go_drafts:
+        print("正在打开 TikTok Studio 草稿页。", flush=True)
+        await open_studio_drafts_page(page)
+    else:
+        print("仍停在上传页，请手动点 Save draft。", flush=True)
     hold_sec = int(os.environ.get("TIKTOK_HOLD_BROWSER_SEC", "0") or "0")
     if hold_sec > 0:
         print(f"已设 TIKTOK_HOLD_BROWSER_SEC={hold_sec}，到时自动关闭。\n", flush=True)
         await asyncio.sleep(hold_sec)
-    elif sys.stdin.isatty():
-        print("浏览器将一直保持打开，确认完后在终端按 Enter 关闭。\n", flush=True)
-        await asyncio.get_event_loop().run_in_executor(None, input, "按 Enter 关闭浏览器… ")
     else:
-        print(
-            "浏览器将一直保持打开（进程不退出则不关）。"
-            "请在您自己的 PowerShell 运行本命令以便按 Enter 关闭；或 Ctrl+C 结束。\n",
-            flush=True,
-        )
-        await asyncio.Event().wait()
+        print("浏览器将一直保持打开。交互终端按 Enter 关闭；否则请 Ctrl+C。\n", flush=True)
+        if sys.stdin.isatty():
+            try:
+                await asyncio.get_event_loop().run_in_executor(
+                    None, input, "按 Enter 关闭浏览器… "
+                )
+            except EOFError:
+                while True:
+                    await asyncio.sleep(3600)
+        else:
+            while True:
+                await asyncio.sleep(3600)
     await context.storage_state(path=str(cookie_path))
     await context.close()
     await browser.close()
@@ -180,6 +193,8 @@ def make_tiktok_uploader_class():
         async def dismiss_studio_popups(self, page) -> None:
             """关闭 Studio 上传过程中的引导/权限弹窗（含 automatic content checks）。"""
             modal_actions: tuple[tuple[str, tuple[str, ...]], ...] = (
+                ("Discard this post", ("Continue editing",)),
+                ("wasn't saved", ("Continue",)),
                 ("scheduled posting", ("Allow", "Cancel")),
                 ("Allow your video to be saved", ("Allow", "Cancel")),
                 ("automatic content checks", ("Cancel", "Turn on", "Got it")),
@@ -378,70 +393,116 @@ def make_tiktok_uploader_class():
                 saved = await self.click_save_draft(page)
                 if not saved:
                     print(
-                        "\n[!] 未自动点到 Save draft，请在浏览器中手动点保存草稿。\n"
-                        "    完成后终端按 Enter 关闭（浏览器会保持打开）。\n",
+                        "\n[!] 未自动点到 Save draft，浏览器停在上传页，请手动点保存。\n",
                         flush=True,
                     )
             else:
-                await self.click_publish(page)
+                posted = await self.click_post_video(page)
+                if not posted:
+                    print("\n[!] 自动 Post 未确认成功，浏览器保持打开供检查。\n", flush=True)
 
             cookie_path = Path(self.account_file)
             await context.storage_state(path=str(cookie_path))
             tiktok_logger.info("  [-] cookie updated")
 
             if self.save_draft:
-                await hold_browser_until_enter(page, context, browser, cookie_path)
+                await hold_browser_until_enter(
+                    page, context, browser, cookie_path, go_drafts=saved
+                )
             else:
-                await human_pause(2, 3)
-                await context.close()
-                await browser.close()
+                await hold_browser_until_enter(
+                    page, context, browser, cookie_path, go_drafts=False, go_content=True
+                )
+
+        async def _save_draft_locator(self, page):
+            pattern = re.compile(r"save\s*(as\s*)?draft", re.I)
+            roots = [self.locator_base, page]
+            for root in roots:
+                btn = root.get_by_role("button", name=pattern)
+                if await btn.count():
+                    return btn.first
+                group = root.locator("div.button-group button")
+                for i in range(await group.count()):
+                    el = group.nth(i)
+                    try:
+                        text = (await el.inner_text(timeout=1500)).strip()
+                    except Exception:
+                        continue
+                    lower = text.lower()
+                    if pattern.search(text) and "discard" not in lower and "post" not in lower:
+                        return el
+                candidates = root.locator('button[type="button"], [role="button"], button')
+                for i in range(await candidates.count()):
+                    el = candidates.nth(i)
+                    try:
+                        text = (await el.inner_text(timeout=1500)).strip()
+                    except Exception:
+                        continue
+                    lower = text.lower()
+                    if pattern.search(text) and "discard" not in lower:
+                        return el
+            return None
 
         async def click_save_draft(self, page) -> bool:
             await self.dismiss_studio_popups(page)
+            await page.evaluate("() => window.scrollTo(0, document.body.scrollHeight)")
             await human_pause(3, 5)
-            button_names = ("Save draft", "Save as draft")
-            selectors = (
-                'button:has-text("Save draft")',
-                'button:has-text("Save as draft")',
-                'div.button-group button:has-text("Save draft")',
-                'div.button-group button:has-text("Save as draft")',
-            )
-            for attempt in range(15):
+            for attempt in range(20):
+                await self.dismiss_studio_popups(page)
+                await page.evaluate("() => window.scrollTo(0, document.body.scrollHeight)")
+                # Save draft 多在 upload iframe 的 div.button-group 第二颗按钮
+                try:
+                    btn = await self._save_draft_locator(page)
+                    if btn is not None:
+                        label = (await btn.inner_text(timeout=3000)).strip()
+                        if "draft" not in label.lower():
+                            raise RuntimeError("not draft button")
+                        await btn.scroll_into_view_if_needed()
+                        await btn.click(timeout=10_000)
+                        tiktok_logger.info(f"  [-] clicked ({label!r}), waiting for server…")
+                        await human_pause(8, 12)
+                        await self.dismiss_studio_popups(page)
+                        await open_studio_drafts_page(page)
+                        if await page.get_by_text("No drafts yet").count() == 0:
+                            tiktok_logger.success("  [-] draft visible in Studio list")
+                            return True
+                        tiktok_logger.info("  [-] clicked Save draft, drafts list still empty, retry…")
+                except Exception as exc:
+                    tiktok_logger.info(f"  [-] save draft attempt {attempt + 1}: {exc}")
+                tiktok_logger.info(f"  [-] waiting for Save draft button ({attempt + 1}/20)…")
+                await human_pause(3, 5)
+            tiktok_logger.error("  [-] Save draft failed — stay on upload page for manual save")
+            return False
+
+        async def click_post_video(self, page) -> bool:
+            await self.dismiss_studio_popups(page)
+            await page.evaluate("() => window.scrollTo(0, document.body.scrollHeight)")
+            await human_pause(3, 5)
+            for attempt in range(10):
                 await self.dismiss_studio_popups(page)
                 for root in (self.locator_base, page):
-                    for name in button_names:
-                        btn = root.get_by_role("button", name=name)
-                        if await btn.count():
+                    post_btn = root.get_by_role("button", name=re.compile(r"^Post$", re.I))
+                    if not await post_btn.count():
+                        post_btn = root.locator('div.button-group button').filter(
+                            has_text=re.compile(r"^Post$", re.I)
+                        )
+                    if await post_btn.count():
+                        try:
+                            await post_btn.first.scroll_into_view_if_needed()
+                            await post_btn.first.click(timeout=15_000)
+                            tiktok_logger.info("  [-] clicked Post, waiting…")
+                            await human_pause(8, 12)
+                            await self.dismiss_studio_popups(page)
                             try:
-                                await btn.first.scroll_into_view_if_needed()
-                                await btn.first.click(timeout=10_000)
-                                tiktok_logger.info("  [-] clicked Save draft, waiting for server…")
-                                await human_pause(6, 10)
-                                await self.dismiss_studio_popups(page)
-                                await human_pause(3, 5)
-                                tiktok_logger.success("  [-] save draft step finished")
+                                await page.wait_for_url("**/tiktokstudio/content**", timeout=60_000)
+                                tiktok_logger.success("  [-] video published (content page)")
                                 return True
                             except Exception:
-                                pass
-                    for selector in selectors:
-                        btn = root.locator(selector)
-                        if await btn.count():
-                            try:
-                                label = (await btn.first.inner_text(timeout=3000)).strip()
-                                if "draft" not in label.lower():
-                                    continue
-                                await btn.first.scroll_into_view_if_needed()
-                                await btn.first.click(timeout=10_000)
-                                tiktok_logger.info(f"  [-] clicked ({label!r}), waiting…")
-                                await human_pause(6, 10)
-                                await self.dismiss_studio_popups(page)
-                                tiktok_logger.success("  [-] save draft step finished")
-                                return True
-                            except Exception:
-                                pass
-                tiktok_logger.info(f"  [-] waiting for Save draft button ({attempt + 1}/15)…")
+                                if "tiktokstudio/content" in page.url:
+                                    return True
+                        except Exception as exc:
+                            tiktok_logger.info(f"  [-] Post attempt {attempt + 1}: {exc}")
                 await human_pause(3, 5)
-            tiktok_logger.error("  [-] Save draft button not found — keep browser for manual save")
             return False
 
     return ProfileTiktokVideo

@@ -16,9 +16,18 @@ npm run tiktok:publish -- `
   --account default
 ```
 
-`--draft`：点击 **Save draft** 进 Studio 草稿箱；完成后**自动打开草稿页且浏览器保持打开**，终端按 Enter 才关闭。
+`--draft`：部分账号/地区 Studio **无 Save draft 按钮**（仅 Post / Discard），此时请去掉 `--draft` 直接发布。
 
-可选：`$env:TIKTOK_HOLD_BROWSER_SEC = "600"` 才会在 N 秒后自动关（默认不设 = 一直开着）。
+直接发布（推荐）：
+
+```powershell
+npm run tiktok:publish -- `
+  --video "$HERMES_ROOT/视频/xxx.mp4" `
+  --title "caption #fyp" `
+  --account default
+```
+
+发布后浏览器会打开 **Content** 页并保持，终端按 Enter 关闭。
 
 ## 风控
 
