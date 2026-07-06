@@ -10,6 +10,13 @@ import os
 import sys
 from pathlib import Path
 
+CHROME_CANDIDATES = [
+    os.environ.get("TIKTOK_CHROME_PATH", "").strip(),
+    os.environ.get("SAU_CHROME_PATH", "").strip(),
+    r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+    r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+]
+
 
 def repo_root() -> Path:
     # .../skills/social-media/tiktok/scripts/cli.py → profile root
@@ -31,26 +38,109 @@ def account_file(account: str) -> Path:
     return base / "cookies" / "tk_uploader" / f"{account}.json"
 
 
-async def cmd_login(account: str, headed: bool) -> int:
-    sys.path.insert(0, str(sau_root()))
-    from uploader.tk_uploader.main_chrome import tiktok_setup
+def resolve_chrome_path() -> str | None:
+    for candidate in CHROME_CANDIDATES:
+        if candidate and Path(candidate).is_file():
+            return candidate
+    return None
 
+
+def apply_headed_conf() -> None:
+    """登录/发布前强制有头 Chrome，避免 SAU 默认 headless 导致看不见登录页。"""
+    import conf
+
+    conf.LOCAL_CHROME_HEADLESS = False
+    chrome = resolve_chrome_path()
+    if chrome:
+        conf.LOCAL_CHROME_PATH = chrome
+
+
+async def interactive_tiktok_login(account_path: Path) -> bool:
+    """有头浏览器登录，终端 Enter 确认后保存 cookie（替代 SAU page.pause）。"""
+    sys.path.insert(0, str(sau_root()))
+    apply_headed_conf()
+    from playwright.async_api import async_playwright
+    from utils.base_social_media import set_init_script
+
+    import conf
+
+    launch_kwargs: dict = {
+        "headless": False,
+        "args": ["--lang=en-US"],
+    }
+    if conf.LOCAL_CHROME_PATH:
+        launch_kwargs["executable_path"] = conf.LOCAL_CHROME_PATH
+
+    account_path.parent.mkdir(parents=True, exist_ok=True)
+
+    print("\n=== TikTok 登录 ===", flush=True)
+    print("1. 将打开 Chrome 到 TikTok 登录页", flush=True)
+    print("2. 请在浏览器中手动完成登录（含验证码/2FA）", flush=True)
+    print("3. 确认已登录成功后，回到本终端按 Enter 保存 cookie\n", flush=True)
+
+    async with async_playwright() as playwright:
+        browser = await playwright.chromium.launch(**launch_kwargs)
+        context = await browser.new_context()
+        context = await set_init_script(context)
+        page = await context.new_page()
+        await page.goto("https://www.tiktok.com/login?lang=en", wait_until="domcontentloaded")
+        await asyncio.get_event_loop().run_in_executor(None, input, "登录完成后按 Enter 保存 cookie… ")
+        await context.storage_state(path=str(account_path))
+        await browser.close()
+
+    ok = account_path.is_file() and account_path.stat().st_size > 10
+    if not ok:
+        print(json.dumps({"ok": False, "error": "cookie 未保存或文件过小，请重试登录"}, ensure_ascii=False), file=sys.stderr)
+        return False
+
+    from uploader.tk_uploader.main_chrome import cookie_auth
+
+    valid = await cookie_auth(str(account_path))
+    if not valid:
+        print(
+            json.dumps(
+                {"ok": False, "error": "cookie 已保存但校验未通过，请确认已在浏览器登录成功后再按 Enter"},
+                ensure_ascii=False,
+            ),
+            file=sys.stderr,
+        )
+    return valid
+
+
+async def cmd_login(account: str, headed: bool) -> int:
     path = account_file(account)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    ok = await tiktok_setup(str(path), handle=True)
-    print(json.dumps({"ok": bool(ok), "account": account, "cookie": str(path)}, ensure_ascii=False))
+    ok = await interactive_tiktok_login(path)
+    print(
+        json.dumps(
+            {"ok": ok, "loggedIn": ok, "account": account, "cookie": str(path)},
+            ensure_ascii=False,
+        )
+    )
     return 0 if ok else 1
 
 
 async def cmd_check(account: str) -> int:
     path = account_file(account)
-    valid = path.is_file() and path.stat().st_size > 10
-    print(json.dumps({"ok": True, "loggedIn": valid, "account": account, "cookie": str(path)}, ensure_ascii=False))
+    exists = path.is_file() and path.stat().st_size > 10
+    valid = False
+    if exists:
+        sys.path.insert(0, str(sau_root()))
+        apply_headed_conf()
+        from uploader.tk_uploader.main_chrome import cookie_auth
+
+        valid = await cookie_auth(str(path))
+    print(
+        json.dumps(
+            {"ok": True, "loggedIn": valid, "account": account, "cookie": str(path)},
+            ensure_ascii=False,
+        )
+    )
     return 0
 
 
 async def cmd_publish(account: str, video: str, title: str, tags: str, headed: bool) -> int:
     sys.path.insert(0, str(sau_root()))
+    apply_headed_conf()
     from datetime import datetime
     from uploader.tk_uploader.main_chrome import TiktokVideo, tiktok_setup
 

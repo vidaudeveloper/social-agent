@@ -27,6 +27,17 @@ if ((Test-Path $confExample) -and -not (Test-Path $confFile)) {
     Copy-Item $confExample $confFile
     Write-Host "[hint] created conf.py from conf.example.py" -ForegroundColor Yellow
 }
+if (Test-Path $confFile) {
+    $confText = Get-Content $confFile -Raw
+    $confText = $confText -replace 'LOCAL_CHROME_HEADLESS = True', 'LOCAL_CHROME_HEADLESS = False'
+    if ($confText -notmatch 'LOCAL_CHROME_PATH = "C:') {
+        $chrome = "C:\Program Files\Google\Chrome\Application\chrome.exe"
+        if (Test-Path $chrome) {
+            $confText = $confText -replace 'LOCAL_CHROME_PATH = ""', "LOCAL_CHROME_PATH = `"$chrome`""
+        }
+    }
+    Set-Content -Path $confFile -Value $confText -NoNewline
+}
 
 if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
     Write-Host "[error] uv not found. Install: https://docs.astral.sh/uv/" -ForegroundColor Red

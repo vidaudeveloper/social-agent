@@ -1,22 +1,27 @@
----
-name: tt-auth
-description: TikTok 海外版登录与 cookie 校验。
-version: 1.0.0
----
-
 # TikTok 认证
 
-**前置**：`npm run overseas:install`（profile 根目录，安装 sau + playwright）
+**前置**：`npm run overseas:install`
 
 ```powershell
-$env:SAU_ROOT = "D:\test\tool\social-auto-upload"
 $env:OVERSEAS_ALLOW_AUTOMATION = "true"
 npm run tiktok:login
 npm run tiktok:check-login
 ```
 
-等价于 `uv run --directory $SAU_ROOT python skills/social-media/tiktok/scripts/cli.py login`。
+## 登录流程
 
-**禁止**裸 `python scripts/cli.py login`（Hermes/Vidau 自带 venv 无 playwright）。
+1. 终端执行 `npm run tiktok:login`
+2. 弹出 **系统 Chrome**（非无头），打开 TikTok 登录页
+3. 你在浏览器里 **手动登录**（邮箱/手机/Google 等）
+4. 登录成功后回到终端 **按 Enter** 保存 cookie
 
-登录时在弹出的 Chrome 窗口完成 tiktok.com 登录。
+**不要**依赖 Playwright Inspector 的 Resume；旧版 SAU `page.pause()` 容易一闪而过导致假登录成功。
+
+## 校验
+
+`check-login` 会加载 cookie 并访问 TikTok Studio 上传页，确认会话仍有效（不仅看文件是否存在）。
+
+## 禁止
+
+- 禁止连跑多次 `tiktok:login`（间隔 ≥30 分钟）
+- 禁止裸 `python cli.py login`（须走 `run-tiktok.mjs` + SAU 的 uv 环境）

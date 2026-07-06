@@ -1,5 +1,13 @@
 # 变更与修复记录
 
+## 2026-07-06 — TikTok login 一闪而过、假 ok
+
+**现象**：`tiktok:login` 秒退且 `ok: true`，但 `check-login` 为 `loggedIn: false`；用户看不到登录页。
+
+**根因**：SAU `conf.py` 默认 `LOCAL_CHROME_HEADLESS=True`；`get_tiktok_cookie` 用 `page.pause()` 依赖 Playwright Inspector，无头/未 Resume 时立即保存空 cookie。
+
+**修复**：`cli.py` 改交互式有头 Chrome + 终端 Enter 确认后存 cookie；`overseas:install` 初始化 `conf.py` 为 `HEADLESS=False` 并尽量指向系统 Chrome。
+
 ## 2026-07-06 — TikTok 依赖与路径修复
 
 **现象**：`npm run tiktok:check-login` 报 social-auto-upload 未找到；`overseas:install` 需手动 clone；SAU 缺 `conf.py` 导致 import 失败。
