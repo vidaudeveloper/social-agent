@@ -375,7 +375,13 @@ def make_tiktok_uploader_class():
             await human_pause(2, 4)
             await self.dismiss_studio_popups(page)
             if self.save_draft:
-                await self.click_save_draft(page)
+                saved = await self.click_save_draft(page)
+                if not saved:
+                    print(
+                        "\n[!] 未自动点到 Save draft，请在浏览器中手动点保存草稿。\n"
+                        "    完成后终端按 Enter 关闭（浏览器会保持打开）。\n",
+                        flush=True,
+                    )
             else:
                 await self.click_publish(page)
 
@@ -390,22 +396,53 @@ def make_tiktok_uploader_class():
                 await context.close()
                 await browser.close()
 
-        async def click_save_draft(self, page) -> None:
+        async def click_save_draft(self, page) -> bool:
             await self.dismiss_studio_popups(page)
-            for selector in (
+            await human_pause(3, 5)
+            button_names = ("Save draft", "Save as draft")
+            selectors = (
                 'button:has-text("Save draft")',
+                'button:has-text("Save as draft")',
                 'div.button-group button:has-text("Save draft")',
-            ):
-                btn = self.locator_base.locator(selector)
-                if await btn.count():
-                    await btn.first.click()
-                    tiktok_logger.info("  [-] clicked Save draft, waiting for server…")
-                    await human_pause(6, 10)
-                    await self.dismiss_studio_popups(page)
-                    await human_pause(3, 5)
-                    tiktok_logger.success("  [-] save draft step finished")
-                    return
-            raise RuntimeError("未找到 Save draft 按钮，请在浏览器中手动保存草稿")
+                'div.button-group button:has-text("Save as draft")',
+            )
+            for attempt in range(15):
+                await self.dismiss_studio_popups(page)
+                for root in (self.locator_base, page):
+                    for name in button_names:
+                        btn = root.get_by_role("button", name=name)
+                        if await btn.count():
+                            try:
+                                await btn.first.scroll_into_view_if_needed()
+                                await btn.first.click(timeout=10_000)
+                                tiktok_logger.info("  [-] clicked Save draft, waiting for server…")
+                                await human_pause(6, 10)
+                                await self.dismiss_studio_popups(page)
+                                await human_pause(3, 5)
+                                tiktok_logger.success("  [-] save draft step finished")
+                                return True
+                            except Exception:
+                                pass
+                    for selector in selectors:
+                        btn = root.locator(selector)
+                        if await btn.count():
+                            try:
+                                label = (await btn.first.inner_text(timeout=3000)).strip()
+                                if "draft" not in label.lower():
+                                    continue
+                                await btn.first.scroll_into_view_if_needed()
+                                await btn.first.click(timeout=10_000)
+                                tiktok_logger.info(f"  [-] clicked ({label!r}), waiting…")
+                                await human_pause(6, 10)
+                                await self.dismiss_studio_popups(page)
+                                tiktok_logger.success("  [-] save draft step finished")
+                                return True
+                            except Exception:
+                                pass
+                tiktok_logger.info(f"  [-] waiting for Save draft button ({attempt + 1}/15)…")
+                await human_pause(3, 5)
+            tiktok_logger.error("  [-] Save draft button not found — keep browser for manual save")
+            return False
 
     return ProfileTiktokVideo
 
