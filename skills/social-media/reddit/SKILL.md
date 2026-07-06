@@ -12,7 +12,22 @@ metadata:
 
 通过 **Reddit Bridge** Chrome 扩展 + 本地 WebSocket 桥，在已登录 Chrome 中操作 Reddit（非 CDP，非官方 API）。
 
-## 发布门禁（必读）
+## 前置条件（必读）
+
+1. 执行 `npm run reddit:setup` 安装上游 `reddit-skills` 与 Chrome 扩展
+2. Chrome 中 **Reddit 界面语言必须为 English**（设置 → Display language）
+3. 桥接地址默认 `ws://localhost:9334`
+
+## 运行失败时的第一排查步骤
+
+1. **先确认** Reddit 网页界面语言是否为 **English**
+2. 若不是 → 提示用户改为 English 后重试，话术示例：
+
+   > Reddit 操作失败。请先确认 Chrome 中 Reddit 界面语言为 English（设置 → Display language）。当前若为中文界面，请改为英文后重试。
+
+3. 已是英文仍失败 → 再查扩展是否启用、bridge 是否运行、是否已登录 Reddit
+
+## 发布门禁
 
 流水线 **禁止测试帖**。`submit-text` / `publish` 发布前自动质量检查：
 
@@ -24,19 +39,15 @@ metadata:
 | 过短内容 | 标题 <15 字；正文 <200 字或 <40 词 |
 
 ```powershell
-# 只检查不发
 npm run reddit:validate -- --subreddit TikTokshop --title-file D:\tmp\title.txt --body-file D:\tmp\body.txt
-
-# 检查通过后发布
 npm run reddit:publish -- --subreddit TikTokshop --title-file ... --body-file ...
 ```
 
-文稿归档：`D:/test/hermes/文章/Reddit/`
+文稿归档：`$HERMES_ROOT/文章/Reddit/`
 
 ## 一次性安装
 
 ```powershell
-npm run tool:install
 npm run reddit:setup
 ```
 
@@ -54,11 +65,3 @@ npm run reddit:publish -- --subreddit TikTokshop --title-file ... --body-file ..
 - 新号先 **评论养 Karma**，勿连发
 - `r/TikTokshop`：24h 最多 3 帖；帖间间隔 ≥24h
 - 无外链、无 DM、少 emoji；干货 + 结尾提问
-
-## 子技能（上游）
-
-| 技能 | 功能 |
-|------|------|
-| reddit-auth | 登录检查 |
-| reddit-publish | 文本/链接/图片帖（经本仓库质量门禁） |
-| reddit-explore | 搜索、浏览 |

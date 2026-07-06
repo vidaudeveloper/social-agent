@@ -3,13 +3,13 @@
  * Reddit CLI 封装 — 调用 tool/reddit-skills/scripts/cli.py
  * 发布类命令经质量门禁（禁止测试帖、短垃圾文、测试版块）
  */
-import { runRedditCli } from '../../../scripts/lib/reddit.mjs';
+import { runRedditCli } from '../../../../scripts/lib/reddit.mjs';
 import {
   collectPublishPayload,
   formatValidationReport,
   shouldValidateCommand,
   validateRedditPublish,
-} from '../../../scripts/lib/reddit-quality.mjs';
+} from '../../../../scripts/lib/reddit-quality.mjs';
 
 const [command, ...rest] = process.argv.slice(2);
 
