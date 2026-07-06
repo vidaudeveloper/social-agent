@@ -1,0 +1,31 @@
+platform: _common
+display_name: 全平台通用
+version: 1
+
+checks:
+  - id: no_test_markers
+    severity: error
+    type: script
+    handler: common.noTestMarkers
+
+  - id: language_match_profile
+    severity: warn
+    type: rubric
+    prompt: 文稿语言应与 user-profile 的「内容语言偏好」「发布语言策略」一致；海外平台默认英文，国内平台默认中文
+
+  - id: core_argument_preserved
+    severity: warn
+    type: rubric
+    prompt: 若提供母稿路径，核对核心论点、关键数据与结论是否在改写后保留
+
+  - id: ai_tone_scan
+    severity: warn
+    type: rubric
+    prompt: 扫描典型 AI 套话（「综上所述」「在当今社会」「值得注意的是」等），建议改写为更自然的表达
+
+forbidden:
+  test_phrases:
+    - integration test
+    - please ignore
+    - pipeline test
+    - social-agent test

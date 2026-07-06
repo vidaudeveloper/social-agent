@@ -26,5 +26,6 @@ distribution_owned:
   - package.json
   - scripts/
   - skills/social-media/
+  - skills/content-reviewer/
   - workspace/references/
   - workspace/templates/

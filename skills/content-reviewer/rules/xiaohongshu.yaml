@@ -1,0 +1,64 @@
+# AUTO-GENERATED from specs/platform-publish-standards.csv
+# 勿手改 — 编辑 CSV 后执行 npm run review:sync-specs
+platform: xiaohongshu
+display_name: 小红书（国内种草）
+version: 1
+source: platform-publish-standards.csv
+
+checks:
+  - id: title_max_length
+    carrier: 图文笔记（主推）
+    primary: true
+    severity: error
+    type: script
+    handler: xhs.titleLength
+    params: { max: 20, unit: utf16_xhs }
+    source_text: "标题≤20 字"
+  - id: body_max_chars
+    carrier: 图文笔记（主推）
+    primary: true
+    severity: error
+    type: script
+    handler: limits.bodyMaxLength
+    params: { max: 1000, unit: char }
+    source_text: "正文上限 1000 字"
+  - id: hashtag_count
+    carrier: 图文笔记（主推）
+    primary: true
+    severity: warn
+    type: script
+    handler: limits.hashtagCount
+    params: { min: 5, max: 15 }
+    source_text: "5–15 个标签，精准词靠前，禁止无关蹭流"
+  - id: image_count_max
+    carrier: 图文笔记（主推）
+    primary: true
+    severity: warn
+    type: script
+    handler: limits.imageCountMax
+    params: { max: 9 }
+    source_text: "单篇最多 9 张"
+  - id: standard_ref_图文笔记
+    carrier: 图文笔记（主推）
+    primary: true
+    severity: info
+    type: rubric
+    prompt: 【图文笔记（主推）】对照发布标准：；画面：3:4 1080×1440（流量最优）；1:1 方形；4:3 横版；时长/数量：单篇最多 9 张图；大小：单图≤20MB；封面：独立竖版封面 1242×1660，大字标题突出利益点，人像居中；字幕：图文无需字幕，视频必须硬字幕；合规：1. 每日发布上限 5 篇2. 禁用广告法极限词（第一、顶级、100% 见效）3. 笔记不可放站外微信、店铺硬导流
+  - id: standard_ref_视频笔记
+    carrier: 视频笔记
+    severity: info
+    type: rubric
+    prompt: 【视频笔记】对照发布标准：；画面：9:16 竖屏 1080P；支持 3:4/16:9 横版；时长/数量：最短 3s，最长 15min；流量最优 15s–2min；大小：4GB；封面：封面同图文 3:4 尺寸，单独设计，不截取视频帧；字幕：全程内嵌清晰硬字幕，浅色底深色字体；合规：好物测评、沉浸式 vlog、教程流量更好
+  - id: hashtags_last_line
+    primary: true
+    severity: error
+    type: script
+    handler: xhs.hashtagsLastLine
+  - id: forbidden_image_ext
+    primary: true
+    severity: error
+    type: script
+    handler: xhs.forbiddenImageExt
+    params: { blocked: [gif, bmp, svg, heic] }
+
+forbidden: {}

@@ -1,0 +1,16 @@
+platform: x
+display_name: X (Twitter)
+version: 1
+
+checks:
+  - id: char_limit
+    severity: warn
+    type: rubric
+    prompt: 非 Premium 账号正文 ≤280 字符；Premium 可更长
+
+  - id: punchy_hook
+    severity: warn
+    type: rubric
+    prompt: 短平快；强钩子；适合信息流阅读
+
+forbidden: {}

@@ -10,6 +10,8 @@ metadata:
 
 # Reddit Skills
 
+> **发布前质量规则**以 [`content-reviewer/rules/reddit.yaml`](../../content-reviewer/rules/reddit.yaml) 为准；等效 CLI：`npm run review:lint -- --platform reddit ...` 或 `npm run reddit:validate`。
+
 通过 **Reddit Bridge** Chrome 扩展 + 本地 WebSocket 桥，在已登录 Chrome 中操作 Reddit（非 CDP，非官方 API）。
 
 ## 前置条件（必读）

@@ -23,6 +23,6 @@
 
 ## VidAU 自有部分
 
-除上述第三方组件外，`SOUL.md`、`config.yaml`、`pipeline-orchestrator`、`workspace/` 及本仓库编排脚本为 VidAU 维护，适用根目录 [LICENSE](./LICENSE)（Copyright VidAU）。
+除上述第三方组件外，`SOUL.md`、`config.yaml`、`pipeline-orchestrator`、`content-reviewer`、`workspace/` 及本仓库编排脚本为 VidAU 维护，适用根目录 [LICENSE](./LICENSE)（Copyright VidAU）。
 
 如有遗漏或归属有误，请通过 GitHub Issues 反馈。

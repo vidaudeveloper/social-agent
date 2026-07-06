@@ -1,0 +1,60 @@
+# AUTO-GENERATED from specs/platform-publish-standards.csv
+# 勿手改 — 编辑 CSV 后执行 npm run review:sync-specs
+platform: linkedin
+display_name: LinkedIn（领英 / B 端职场）
+version: 1
+source: platform-publish-standards.csv
+
+checks:
+  - id: title_max_chars
+    carrier: 图文帖子
+    primary: true
+    severity: error
+    type: script
+    handler: limits.titleMaxLength
+    params: { max: 80, unit: char }
+    source_text: "标题精炼≤80 字符"
+  - id: body_max_chars
+    carrier: 图文帖子
+    primary: true
+    severity: error
+    type: script
+    handler: limits.bodyMaxLength
+    params: { max: 1300, unit: char }
+    source_text: "正文上限 1300 字符"
+  - id: hashtag_count
+    carrier: 图文帖子
+    primary: true
+    severity: warn
+    type: script
+    handler: limits.hashtagCount
+    params: { min: 3, max: 5 }
+    source_text: "3–5 个行业精准标签，拒绝娱乐热门 tag"
+  - id: image_count_max
+    carrier: 图文帖子
+    primary: true
+    severity: warn
+    type: script
+    handler: limits.imageCountMax
+    params: { max: 9 }
+    source_text: "单帖最多 9 张"
+  - id: standard_ref_图文帖子
+    carrier: 图文帖子
+    primary: true
+    severity: info
+    type: rubric
+    prompt: 【图文帖子】对照发布标准：；画面：1.91:1 1200×627（横版最优）；时长/数量：单帖最多 9 张图；大小：单图 10MB；封面：简约商务封面，少花哨文字，专业白底；字幕：商务视频必须清晰字幕，字体正式；合规：1. 禁止纯娱乐、夸张营销话术，侧重干货、行业观点2. 头像 400×400 商务照；公司主页背景 1128×19193. 严禁微商式刷屏硬广，重专业价值输出
+  - id: hashtag_count
+    carrier: 短视频 / 直播回放
+    severity: warn
+    type: script
+    handler: limits.hashtagCount
+    params: { min: 3, max: 5 }
+    source_text: "仅行业垂直标签 3–5 个"
+  - id: standard_ref_短视频__直播回放
+    carrier: 短视频 / 直播回放
+    severity: info
+    type: rubric
+    prompt: 【短视频 / 直播回放】对照发布标准：；画面：16:9 横屏 1080P（B 端首选）；少量 9:16 竖屏；时长/数量：最长 10min，企业分享优选 3–6min；大小：5GB；封面：极简商务封面，只放关键词，无花哨装饰；字幕：字幕规范严谨，无花体艺术字；合规：适合行业案例、企业科普、职场培训
+
+forbidden: {}

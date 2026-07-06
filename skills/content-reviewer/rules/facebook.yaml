@@ -1,0 +1,51 @@
+# AUTO-GENERATED from specs/platform-publish-standards.csv
+# 勿手改 — 编辑 CSV 后执行 npm run review:sync-specs
+platform: facebook
+display_name: Facebook（FB）
+version: 1
+source: platform-publish-standards.csv
+
+checks:
+  - id: hashtag_count
+    carrier: Feed 图文帖
+    primary: true
+    severity: warn
+    type: script
+    handler: limits.hashtagCount
+    params: { min: 5, max: 10 }
+    source_text: "5–10 个标签，放在文案末尾"
+  - id: image_count_max
+    carrier: Feed 图文帖
+    primary: true
+    severity: warn
+    type: script
+    handler: limits.imageCountMax
+    params: { max: 10 }
+    source_text: "单帖最多 10 张"
+  - id: standard_ref_Feed_图文帖
+    carrier: Feed 图文帖
+    primary: true
+    severity: info
+    type: rubric
+    prompt: 【Feed 图文帖】对照发布标准：；画面：1.91:1 1200×630（横版最优）；1:1 方形；时长/数量：单帖最多 10 张图片；大小：单图 30MB；封面：横版封面，核心内容居中，避免两侧裁切；字幕：视频建议内嵌字幕；合规：1. 公共主页封面 851×315px2. 硬广需走 Meta 广告，自然帖禁止大量导流
+  - id: title_max_chars
+    carrier: Feed 视频 / Reels
+    severity: error
+    type: script
+    handler: limits.titleMaxLength
+    params: { max: 125, unit: char }
+    source_text: "标题≤125 字符"
+  - id: hashtag_count
+    carrier: Feed 视频 / Reels
+    severity: warn
+    type: script
+    handler: limits.hashtagCount
+    params: { min: 5, max: 10 }
+    source_text: "5–10 个标签，放在文案末尾"
+  - id: standard_ref_Feed_视频__Reels
+    carrier: Feed 视频 / Reels
+    severity: info
+    type: rubric
+    prompt: 【Feed 视频 / Reels】对照发布标准：；画面：横 16:9 / 竖 9:16 / 方形 1:1；时长/数量：常规视频最长 240min；FB Reels≤90s；大小：10GB；封面：自定义封面，文字不遮挡人物主体；字幕：商业内容强制配字幕，静音播放友好；合规：长视频适合访谈、品牌纪录片；Reels 对标 IG 短内容
+
+forbidden: {}

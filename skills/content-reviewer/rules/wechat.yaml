@@ -1,0 +1,17 @@
+platform: wechat
+display_name: 公众号
+version: 1
+
+checks:
+  - id: title_hook
+    severity: warn
+    type: rubric
+    prompt: 标题有钩子；场景切入；数据故事化；金句收尾
+
+  - id: body_length
+    severity: warn
+    type: rubric
+    prompt: 正文约 2500 字；结构清晰，适合公众号阅读节奏
+
+forbidden:
+  pipe_tables: false

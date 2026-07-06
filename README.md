@@ -37,6 +37,20 @@ cd social-agent
 帮我跑一篇内容，话题：2026下半年TK小店选品趋势
 ```
 
+### 发布前审核（可单独使用）
+
+不跑完整管线时，也可只审核成稿。审核员**参考标准**维护在 CSV，同步为 Markdown 后供 Agent 对照（非 lint 硬编码）：
+
+```powershell
+# 编辑 CSV 后同步手册 + rules 数值规则
+npm run review:sync-specs
+
+# 硬规则检查（数值来自同步后的 rules/*.yaml）
+npm run review:lint -- --platform xiaohongshu --file "D:/content/文章/小红书/20260706_xxx.md"
+```
+
+参考手册：`skills/content-reviewer/references/platform-publish-standards.md`（由 CSV 自动生成）。详见 `skills/content-reviewer/SKILL.md`。
+
 ## 平台支持
 
 | 平台 | 方案 | 状态 |
@@ -90,7 +104,9 @@ social-agent/
 ├── SOUL.md
 ├── config.yaml
 ├── scripts/
-├── skills/social-media/
+├── skills/
+│   ├── social-media/       # 各平台发布、配图、管线编排
+│   └── content-reviewer/   # 发布前审核（独立可调用）
 ├── workspace/references/
 └── user-profile.template.md
 ```

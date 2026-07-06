@@ -1,0 +1,57 @@
+# AUTO-GENERATED from specs/platform-publish-standards.csv
+# 勿手改 — 编辑 CSV 后执行 npm run review:sync-specs
+platform: instagram
+display_name: Instagram（IG）
+version: 1
+source: platform-publish-standards.csv
+
+checks:
+  - id: body_max_chars
+    carrier: Feed 图文 / 视频（常规帖）
+    primary: true
+    severity: error
+    type: script
+    handler: limits.bodyMaxLength
+    params: { max: 2200, unit: char }
+    source_text: "正文上限 2200 字符"
+  - id: hashtag_count
+    carrier: Feed 图文 / 视频（常规帖）
+    primary: true
+    severity: warn
+    type: script
+    handler: limits.hashtagCount
+    params: { min: 8, max: 15 }
+    source_text: "单帖最多 30 个标签；分精准 + 泛流量标签，建议 8–15 个"
+  - id: image_count_max
+    carrier: Feed 图文 / 视频（常规帖）
+    primary: true
+    severity: warn
+    type: script
+    handler: limits.imageCountMax
+    params: { max: 10 }
+    source_text: "单帖最多 10 张"
+  - id: standard_ref_Feed_图文__视频
+    carrier: Feed 图文 / 视频（常规帖）
+    primary: true
+    severity: info
+    type: rubric
+    prompt: 【Feed 图文 / 视频（常规帖）】对照发布标准：；画面：4:5 1080×1350（最优）1:1 1080×1080（方形）1.91:1 1080×566（横版）；时长/数量：单帖最多 10 张轮播Feed 视频最长 60min，流量优选≤60s；大小：4GB；封面：画面居中主体，避免上下 UI 遮挡；无独立封面，取视频首帧；字幕：建议内嵌字幕，静音自动播放场景必备；合规：1. 商业帖不能硬广导流，需平台购物标签2. 轮播图统一比例，不要混横竖
+  - id: standard_ref_Reels_短视频
+    carrier: Reels 短视频
+    severity: info
+    type: rubric
+    prompt: 【Reels 短视频】对照发布标准：；画面：9:16 1080×1920；时长/数量：最长 90s，最优 15–30s；大小：4GB；封面：单独制作竖版封面；字幕：全程硬字幕，字体清晰；合规：对标 TikTok，适合种草、短教程
+  - id: segment_text_max
+    carrier: Stories 限时动态
+    severity: error
+    type: script
+    handler: limits.bodyMaxLength
+    params: { max: 125, unit: char }
+    source_text: "单段文字≤125 字符"
+  - id: standard_ref_Stories_限时动态
+    carrier: Stories 限时动态
+    severity: info
+    type: rubric
+    prompt: 【Stories 限时动态】对照发布标准：；画面：9:16 1080×1920；时长/数量：单段 15s，可拼接多段；大小：4GB；封面：无需独立封面，单帧画面干净；字幕：简易文字字幕即可；合规：24 小时自动下架，适合实时引流
+
+forbidden: {}

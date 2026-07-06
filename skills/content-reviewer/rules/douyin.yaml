@@ -1,0 +1,16 @@
+platform: douyin
+display_name: 抖音
+version: 1
+
+checks:
+  - id: hook_3s
+    severity: warn
+    type: rubric
+    prompt: 前 3 秒有强钩子；口语化短句；适合口播
+
+  - id: script_length
+    severity: warn
+    type: rubric
+    prompt: 口播稿约 600-900 字；避免长句堆砌
+
+forbidden: {}

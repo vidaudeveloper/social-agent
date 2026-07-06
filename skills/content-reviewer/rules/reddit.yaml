@@ -1,0 +1,23 @@
+platform: reddit
+display_name: Reddit
+version: 1
+
+checks:
+  - id: reddit_quality
+    severity: error
+    type: script
+    handler: reddit.validatePublish
+
+  - id: english_ui_reminder
+    severity: info
+    type: rubric
+    prompt: 发布前确认 Chrome 中 Reddit 界面语言为 English（设置 → Display language）
+
+  - id: engagement_tone
+    severity: warn
+    type: rubric
+    prompt: 干货为主、结尾可提问；少 emoji；无外链、无 DM  solicitation
+
+forbidden:
+  hashtags: true
+  test_subreddits: [test, cicd]

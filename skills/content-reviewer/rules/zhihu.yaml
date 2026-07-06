@@ -1,0 +1,67 @@
+# AUTO-GENERATED from specs/platform-publish-standards.csv
+# 勿手改 — 编辑 CSV 后执行 npm run review:sync-specs
+platform: zhihu
+display_name: 知乎（国内知识问答）
+version: 1
+source: platform-publish-standards.csv
+
+checks:
+  - id: title_max_length
+    carrier: 图文回答 / 专栏文章
+    primary: true
+    severity: error
+    type: script
+    handler: limits.titleMaxLength
+    params: { max: 30, unit: char }
+    source_text: "标题≤30 字"
+  - id: column_title_max
+    carrier: 图文回答 / 专栏文章
+    primary: true
+    severity: error
+    type: script
+    handler: limits.titleMaxLength
+    params: { max: 30, unit: char }
+    source_text: "专栏标题≤30 字"
+  - id: hashtag_count
+    carrier: 图文回答 / 专栏文章
+    primary: true
+    severity: warn
+    type: script
+    handler: limits.hashtagCount
+    params: { min: 3, max: 8 }
+    source_text: "3–8 个话题标签，匹配问题领域，禁止娱乐无关 tag"
+  - id: standard_ref_图文回答__专栏文章
+    carrier: 图文回答 / 专栏文章
+    primary: true
+    severity: info
+    type: rubric
+    prompt: 【图文回答 / 专栏文章】对照发布标准：；画面：配图宽度≥1080px，比例不限（推荐 16:9 横版）；时长/数量：单篇配图无上限，建议≤15 张；大小：单图 20MB；封面：文章封面 16:9 1280×720，干货风简约设计；字幕：知识类视频必须完整字幕，方便文字提取；合规：1. 内容侧重逻辑干货、客观论证，拒绝夸张种草2. 广告内容必须标注「商业合作 / 付费推广」3. 不能发硬广软文，需结合问答场景输出价值
+  - id: video_intro_max
+    carrier: 视频回答
+    severity: error
+    type: script
+    handler: limits.bodyMaxLength
+    params: { max: 300, unit: char }
+    source_text: "视频简介≤300 字"
+  - id: standard_ref_视频回答
+    carrier: 视频回答
+    severity: info
+    type: rubric
+    prompt: 【视频回答】对照发布标准：；画面：16:9 横屏 1080P 为主，少量 9:16 竖屏；时长/数量：最长 30min，知识讲解优选 5–15min；大小：5GB；封面：横版干货封面，文字讲清核心知识点；字幕：字幕完整覆盖全部口述内容；合规：适合深度科普、实操教学、行业拆解
+  - id: no_markdown_headers
+    primary: true
+    severity: error
+    type: script
+    handler: zhihu.noMarkdownHeaders
+  - id: no_pipe_tables
+    primary: true
+    severity: error
+    type: script
+    handler: zhihu.noPipeTables
+  - id: no_blockquotes
+    primary: true
+    severity: error
+    type: script
+    handler: zhihu.noBlockquotes
+
+forbidden: {}

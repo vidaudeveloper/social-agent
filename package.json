@@ -22,6 +22,8 @@
     "linkedin:login": "node scripts/run-linkedin.mjs login",
     "linkedin:check-login": "node scripts/run-linkedin.mjs check-login",
     "linkedin:publish": "node scripts/run-linkedin.mjs publish",
-    "linkedin:stats": "node scripts/run-linkedin.mjs stats"
+    "linkedin:stats": "node scripts/run-linkedin.mjs stats",
+    "review:lint": "node skills/content-reviewer/scripts/lint.mjs",
+    "review:sync-specs": "node skills/content-reviewer/scripts/sync-publish-specs.mjs"
   }
 }

@@ -1,0 +1,58 @@
+# AUTO-GENERATED from specs/platform-publish-standards.csv
+# 勿手改 — 编辑 CSV 后执行 npm run review:sync-specs
+platform: tiktok
+display_name: TikTok（海外短视频）
+version: 1
+source: platform-publish-standards.csv
+
+checks:
+  - id: body_max_chars
+    carrier: 短视频（主推）
+    primary: true
+    severity: error
+    type: script
+    handler: limits.bodyMaxLength
+    params: { max: 3000, unit: char }
+    source_text: "正文上限 3000 字符"
+  - id: hashtag_count
+    carrier: 短视频（主推）
+    primary: true
+    severity: warn
+    type: script
+    handler: limits.hashtagCount
+    params: { min: 5, max: 10 }
+    source_text: "5–8 个精准标签，总数≤10；禁止无关热门蹭 tag"
+  - id: standard_ref_短视频
+    carrier: 短视频（主推）
+    primary: true
+    severity: info
+    type: rubric
+    prompt: 【短视频（主推）】对照发布标准：；画面：9:16 1080×1920px仅支持竖屏；时长/数量：最短 5s，最长 10min流量最优：15–60s；大小：4GB；封面：1080×1920，上下 15% 留白不写字；单独做封面图，不截取视频帧；字幕：强制内嵌硬字幕；AI 生成内容必须勾选 AIGC 标识；合规：1. 无版权 BGM 会限流2. 封面文字简洁，不堆砌3. 不能直接放站外链接，仅主页可挂4. 禁止过度医美、瘦身夸大话术
+  - id: body_max_chars
+    carrier: 图文帖
+    severity: error
+    type: script
+    handler: limits.bodyMaxLength
+    params: { max: 3000, unit: char }
+    source_text: "正文上限 3000 字符"
+  - id: hashtag_count
+    carrier: 图文帖
+    severity: warn
+    type: script
+    handler: limits.hashtagCount
+    params: { min: 5, max: 10 }
+    source_text: "5–8 个精准标签，总数≤10；禁止无关热门蹭 tag"
+  - id: image_count_max
+    carrier: 图文帖
+    severity: warn
+    type: script
+    handler: limits.imageCountMax
+    params: { max: 9 }
+    source_text: "单篇最多 9 张"
+  - id: standard_ref_图文帖
+    carrier: 图文帖
+    severity: info
+    type: rubric
+    prompt: 【图文帖】对照发布标准：；画面：1:1 1080×1080；时长/数量：单篇最多 9 张；大小：单图 20MB；封面：同视频封面比例；字幕：无需字幕；合规：图文适合产品静态展示，不做长图文
+
+forbidden: {}

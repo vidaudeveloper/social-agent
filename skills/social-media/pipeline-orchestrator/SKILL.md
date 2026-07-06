@@ -14,6 +14,7 @@ metadata:
       - social-media/zhihu
       - social-media/tiktok
       - social-media/image
+      - content-reviewer
       - humanizer
       - baoyu-infographic
 ---
@@ -87,6 +88,17 @@ metadata:
 2. **排版**：公众号 → baoyu-markdown-to-html；小红书 → 配图 MD 格式
 3. **配图**：小红书先 `pipeline:xhs` 模板卡片 → 失败再 tokenware（交互需确认）
    其他平台 → tokenware-image 封面 1792×1024
+
+## Step 4.5: 发布前审核
+
+对每个待发布平台调用 **`content-reviewer`**（规则见 `skills/content-reviewer/rules/`）：
+
+1. 传入 `platform` + 文稿绝对路径（+ 配图路径 / Reddit `--subreddit`）
+2. 运行 `npm run review:lint -- --platform ... --file ...`
+3. 对 rubric 类检查按 SKILL 完成软审核并写入 `$HERMES_ROOT/审核/{日期}_{slug}.md`
+4. **存在 error → 暂停 Step 5**，返回修复清单；仅 warn → 报告后询问是否继续
+
+本步骤可单独使用，不依赖 Step 4 是否执行 humanizer。
 
 ## Step 5: 发布
 

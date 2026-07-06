@@ -1,0 +1,40 @@
+# AUTO-GENERATED from specs/platform-publish-standards.csv
+# 勿手改 — 编辑 CSV 后执行 npm run review:sync-specs
+platform: youtube
+display_name: YouTube（长视频）
+version: 1
+source: platform-publish-standards.csv
+
+checks:
+  - id: title_max_chars
+    carrier: 主视频
+    primary: true
+    severity: error
+    type: script
+    handler: limits.titleMaxLength
+    params: { max: 100, unit: char }
+    source_text: "标题≤100 字符"
+  - id: description_max_chars
+    carrier: 主视频
+    primary: true
+    severity: error
+    type: script
+    handler: limits.bodyMaxLength
+    params: { max: 5000, unit: char }
+    source_text: "简介 5000 字符"
+  - id: hashtag_count
+    carrier: 主视频
+    primary: true
+    severity: warn
+    type: script
+    handler: limits.hashtagCount
+    params: { min: 5, max: 8 }
+    source_text: "视频内标签 5–8 个；简介可埋关键词"
+  - id: standard_ref_主视频
+    carrier: 主视频
+    primary: true
+    severity: info
+    type: rubric
+    prompt: 【主视频】对照发布标准：；画面：16:9 1920×1080（最低 1280×720）；时长/数量：无硬性上限；短视频 Shorts≤60s常规科普 / 测评 5–20min；大小：128GB；封面：缩略图 1280×720（16:9），≤2MB；重点主体居中，文字不超 3 行；字幕：必须上传 SRT 字幕文件，无字幕影响推荐；合规：1. 频道封面 2560×1440（16:9）2. Shorts 竖屏 9:16，独立封面3. 简介前 3 行放核心信息 + 引导话术4. 版权音乐、影视片段需授权
+
+forbidden: {}
