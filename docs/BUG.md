@@ -1,53 +1,21 @@
-# Bug 修复记录
+# 变更与修复记录
 
-## 2026-07-03 — Hermes 误改模型 + TikTok login 缺 playwright
+## 2026-07-06 — 开源合规与文档统一
 
-### 现象
+- 统一安装仓库为 `vidaudeveloper/social-agent`
+- 新增 `LICENSE`、`NOTICE.md`；清理子 skill 引流与旧仓库地址
+- 路径占位符：`$HERMES_ROOT` / `./content`
 
-1. Vidau 打包 profile 的 `config.yaml` 被从 `deepseek-v4-flash`（tokenware）改成 `deepseek-chat`（api.deepseek.com）
-2. `python scripts/cli.py login` 报错 `No module named 'playwright'`
-3. tokenware 偶发 403 后 Agent 尝试 switch_model，加剧配置混乱
+## 2026-07-03 — tokenware 403：模型 ID
 
-### 根因
+**现象**：首条对话 403，`Model 'deepseek-v4-flash' not found`
 
-- Hermes/Vidau UI 切换模型会持久化写入 profile 的 `config.yaml`
-- TikTok `tk_uploader` 依赖 `playwright`，但 sau 的 `pyproject.toml` 只声明了 `patchright`；裸 `python` 用的是 vidau-agent venv，未安装 sau 依赖
-- profile 缺少 `npm run overseas:install` 入口，Agent 直接裸跑命令
+**根因**：tokenware 模型 ID 为 `DeepSeek：DeepSeek V4 Flash`（全角冒号），非官方 slug。
 
-### 修复
+**修复**：`config.yaml` 使用正确模型名；详见 `workspace/references/tokenware-models.md`。旧会话可能锁定错误模型，需新建对话。
 
-- 恢复 `config.yaml` 标准 model 配置；在 `agent.environment_hint` / `SOUL.md` / `workspace/references/agent-config-guardrails.md` 禁止 Agent 改 model
-- 新增 `scripts/install-overseas-tools.ps1`、`package.json`（`overseas:install`、`tiktok:login`）
-- 新增 `scripts/run-tiktok.mjs` 通过 `uv run --directory $SAU_ROOT` 调用 TikTok CLI
+## 2026-07-03 — 海外工具与配置保护
 
-### 验证
+**现象**：TikTok login 缺 playwright；Agent 误改 `config.yaml` model 段。
 
-```powershell
-cd <profile-root>
-python scripts/probe-tokenware-models.py
-python scripts/test-tokenware-chat.py
-npm run overseas:install
-$env:OVERSEAS_ALLOW_AUTOMATION="true"
-npm run tiktok:login
-```
-
-## 2026-07-03 — tokenware 403：模型 ID 填错
-
-### 现象
-
-VidAU（`D:\Program Files (x86)\vidau`）使用 social-agent profile 时，首条消息即 403：
-
-`Model 'deepseek-v4-flash' not found`（`permission_denied`）
-
-### 根因
-
-tokenware `/v1/models` 返回的 id 为 **`DeepSeek：DeepSeek V4 Flash`**（全角冒号），  
-而 `config.yaml` 写的是官方 slug **`deepseek-v4-flash`**，tokenware 不认。
-
-### 修复
-
-将 `model.default` 改为 `"DeepSeek：DeepSeek V4 Flash"`，并配置 `custom_providers`。详见 `workspace/references/tokenware-models.md`。
-
-### VidAU 仍 403
-
-旧会话锁定 `deepseek-v4-flash`：**新建对话** + UI 选 tokenware 全名模型；勿继续旧会话。
+**修复**：新增 `npm run overseas:install`、`scripts/run-tiktok.mjs`；`SOUL.md` 与 `agent-config-guardrails.md` 禁止 Agent 改 model。

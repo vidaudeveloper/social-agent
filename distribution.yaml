@@ -2,7 +2,7 @@ name: social-agent
 version: 1.0.0
 description: "8年社媒运营老兵 Agent —— 选题研判→多平台适配→写稿润色→配图→发布全链路。支持知乎/公众号/小红书/抖音/YouTube/TikTok/LinkedIn/X。"
 hermes_requires: ">=0.12.0"
-author: "testman2025"
+author: "vidau"
 license: "MIT"
 
 env_requires:

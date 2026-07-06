@@ -11,7 +11,8 @@ metadata:
         - python3
         - uv
     emoji: "\U0001F4D5"
-    homepage: https://github.com/xpzouying/skills/xiaohongshu
+    homepage: https://github.com/vidaudeveloper/social-agent/tree/master/skills/social-media/xiaohongshu
+    source: https://github.com/xpzouying/skills/xiaohongshu
     os:
       - darwin
       - linux
