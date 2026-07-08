@@ -28,7 +28,12 @@
 
 **变更**：`skills/content-reviewer/` 与 `skills/reviewer/` 合并为 `skills/review/`；Hermes skill ID 改为 `review`；`npm run review:lint` / `review:sync-specs` 路径更新。
 
-## 2026-07-08 — 抖音 PVA Playwright 安装卡住 / 装到 C 盘
+## 2026-07-08 — Remotion 配音脚本 edge-tts 长文本失败
+
+**现象**：`node scripts/generate-remotion-voiceover.mjs` 使用 `--text` 传入整段中文旁白时，Windows 下 edge-tts 报 `unrecognized arguments`。
+
+**修复**：改为先写入 `public/narration.txt`，再用 `-f` 文件参数调用 edge-tts。
+
 
 **现象**：
 - `npx playwright install chromium` 从 `cdn.playwright.dev` 下载约 **300MB**（Chrome 183MB + Headless Shell 114MB + FFmpeg），进度常在 **40%–60%** 假死数分钟至数小时。
