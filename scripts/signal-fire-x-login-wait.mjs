@@ -12,7 +12,11 @@ import { requireOverseasConsent } from './lib/overseas-guard.mjs';
 
 requireOverseasConsent('x', 'login');
 
-const account = process.env.SIGNAL_FIRE_ACCOUNT_ID || process.env.X_ACCOUNT_ID || 'default';
+const keepOpen =
+  process.argv.includes('--keep-open') ||
+  process.env.SIGNAL_FIRE_KEEP_BROWSER_OPEN === 'true' ||
+  !process.argv.includes('--close');
+
 
 const root = resolve(signalFireRoot());
 const importFrom = (rel) => import(pathToFileURL(join(root, rel)).href);
@@ -59,5 +63,9 @@ try {
   const paths = getSessionPaths('x', account);
   console.log(`✅ X 登录成功，profile 已保存: ${paths.userDataDir}`);
 } finally {
-  await close();
+  if (keepOpen) {
+    console.log('浏览器保持打开，请自行审阅或关闭。');
+  } else {
+    await close();
+  }
 }
