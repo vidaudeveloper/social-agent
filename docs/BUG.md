@@ -22,6 +22,18 @@
 
 **变更**：`skills/content-reviewer/` 与 `skills/reviewer/` 合并为 `skills/review/`；Hermes skill ID 改为 `review`；`npm run review:lint` / `review:sync-specs` 路径更新。
 
+## 2026-07-08 — 抖音 PVA Playwright 安装卡住 / 装到 C 盘
+
+**现象**：`npx playwright install chromium` 从 `cdn.playwright.dev` 下载约 300MB，在 60% 附近长时间无进展；Agent 沙箱默认装到 `C:\Users\...\Temp\cursor-sandbox-cache\...\playwright\`。
+
+**原因**：海外 CDN 在国内慢/易断；未设 `PLAYWRIGHT_BROWSERS_PATH`；npmmirror 暂无 Playwright 1.58 的 `145.0.7632.6` 包（404）。
+
+**修复**：
+- 新增 `npm run douyin:setup`（`scripts/install-douyin-playwright.ps1`）：`playwright@1.61.1` + `cdn.npmmirror.com` + 默认 `D:\test\tool\playwright-browsers`
+- `run-douyin.mjs` 自动注入 `PLAYWRIGHT_BROWSERS_PATH` 并检查浏览器是否已安装
+
+**验证**：`douyin:upload` 上传测试视频成功（约 1.1 分钟，已点发布按钮）。
+
 ## 2026-07-08 — 放弃 signal-fire X，正式采用 baoyu-post-to-x
 
 **结论**：signal-fire X 登录无法稳定成功（PoC 失败）；**X 平台唯一方案**为 `baoyu-post-to-x`。

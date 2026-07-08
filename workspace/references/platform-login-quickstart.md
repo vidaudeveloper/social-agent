@@ -57,9 +57,10 @@ npm run zhihu:check-login
 
 ## 抖音
 
-1. 安装 `@panda-video-automation/pva`、`ffmpeg`
-2. Chrome 打开创作者平台并**手动登录**
-3. `npm run douyin:upload -- --video <mp4绝对路径> --title "标题"`
+1. `npm run douyin:setup` — Playwright 装到 `D:\test\tool\playwright-browsers`（国内镜像，约 1 分钟）
+2. 安装 `ffmpeg`（视频创作 `pipeline:douyin`）
+3. `npm run douyin:login` — 首次登录创作者中心
+4. `npm run douyin:upload -- --video <mp4绝对路径> --title "标题"`
 
 ---
 

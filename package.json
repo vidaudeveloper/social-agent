@@ -42,6 +42,9 @@
     "youtube:pipeline": "node skills/publish/youtube/scripts/cli.mjs pipeline",
     "pipeline:douyin": "node skills/publish/douyin/scripts/cli.mjs create-video",
     "douyin:voices": "node skills/publish/douyin/scripts/cli.mjs list-voices",
+    "douyin:setup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-douyin-playwright.ps1",
+    "douyin:login": "node scripts/run-douyin.mjs login",
+    "douyin:upload": "node scripts/run-douyin.mjs upload",
     "review:lint": "node skills/review/scripts/lint.mjs",
     "review:sync-specs": "node skills/review/scripts/sync-publish-specs.mjs"
   }
