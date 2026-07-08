@@ -7,7 +7,7 @@ import { existsSync, readFileSync } from 'fs';
 import { spawn } from 'child_process';
 import { homedir } from 'os';
 import { join } from 'path';
-import { runBaoyuScript, ensureBaoyuXInstalled } from '../../../../scripts/lib/baoyu-x.mjs';
+import { runBaoyuScript, ensureBaoyuXInstalled, verifyXSession } from '../../../../scripts/lib/baoyu-x.mjs';
 import {
   mayLaunchBrowser,
   printManualLoginSteps,
@@ -30,6 +30,7 @@ const DEFAULT_CHROME =
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 
 const DEFAULT_PROFILE = defaultBaoyuProfile();
+const X_DEBUG_PORT = process.env.X_BROWSER_DEBUG_PORT || '9223';
 
 function parseArgs(argv) {
   const opts = { images: [], submit: false };
@@ -58,9 +59,39 @@ function openChrome(url) {
     console.error('未找到 Chrome，请设置 X_BROWSER_CHROME_PATH');
     process.exit(1);
   }
-  const args = [`--user-data-dir=${DEFAULT_PROFILE}`, url];
+  const args = [
+    `--user-data-dir=${DEFAULT_PROFILE}`,
+    `--remote-debugging-port=${X_DEBUG_PORT}`,
+    '--no-first-run',
+    url,
+  ];
   const child = spawn(chrome, args, { detached: true, stdio: 'ignore' });
   child.unref();
+}
+
+function parseSessionVerifyOutput(result) {
+  const text = `${result.stdout || ''}${result.stderr || ''}`.trim();
+  try {
+    const line = text.split('\n').find((l) => l.startsWith('{')) || text;
+    return JSON.parse(line);
+  } catch {
+    return { ok: false, error: text || 'verify failed' };
+  }
+}
+
+async function confirmSessionSaved(profileDir) {
+  console.log('\n正在确认 cookie 已写入 Chrome profile（请保持浏览器窗口打开）…');
+  const result = verifyXSession(profileDir, X_DEBUG_PORT);
+  const parsed = parseSessionVerifyOutput(result);
+  if (parsed.ok) {
+    console.log(`✅ 登录 cookie 已保存（auth_token + ct0）`);
+    console.log(`   Profile: ${profileDir}`);
+    console.log('   下次 publish 将复用此 profile，无需重复登录。');
+    return true;
+  }
+  console.warn(`⚠️  暂未检测到 cookie：${parsed.error ?? 'unknown'}`);
+  console.warn('   请保持 Chrome 打开 10–20 秒后执行: npm run x:check-login');
+  return false;
 }
 
 async function cmdLogin() {
@@ -77,30 +108,34 @@ async function cmdLogin() {
   }
   console.log('\n登录完成后按 Enter...');
   await new Promise((r) => process.stdin.once('data', r));
-  console.log('✅ 请在 publish 时于浏览器确认发帖');
+  await confirmSessionSaved(DEFAULT_PROFILE);
+  console.log('\n浏览器保持打开。后续填稿/发布会尽量复用同一 Chrome 会话。');
+  console.log('（若确需脚本关闭浏览器：$env:X_CLOSE_BROWSER="true"）');
 }
 
 async function cmdCheckLogin() {
   requireOverseasConsent('x', 'check-login');
-  const check = runBaoyuScript('check-paste-permissions.ts', [], {
+  const preflight = runBaoyuScript('check-paste-permissions.ts', [], {
     silent: true,
     allowFail: true,
   });
-  const out = `${check.stdout || ''}${check.stderr || ''}`;
-  const loggedInHint = out.includes('Chrome') && !out.includes('Cannot run bun');
+  const session = verifyXSession(DEFAULT_PROFILE, X_DEBUG_PORT);
+  const sessionInfo = parseSessionVerifyOutput(session);
   console.log(
     JSON.stringify(
       {
-        ok: check.status === 0,
-        envReady: check.status === 0,
-        loggedIn: 'unknown — 请执行 x:login 或在 publish 时于浏览器确认',
-        profileDir: DEFAULT_PROFILE,
+        ok: preflight.status === 0,
+        envReady: preflight.status === 0,
+        loggedIn: sessionInfo.ok === true,
+        session: sessionInfo.ok
+          ? { cookies: sessionInfo.cookies, profileDir: DEFAULT_PROFILE }
+          : { profileDir: DEFAULT_PROFILE, hint: sessionInfo.error },
       },
       null,
       2,
     ),
   );
-  process.exit(loggedInHint && check.status === 0 ? 0 : 1);
+  process.exit(preflight.status === 0 && sessionInfo.ok ? 0 : 1);
 }
 
 function readContent(file) {
@@ -155,6 +190,7 @@ async function cmdPublish(argv) {
 
   console.log('[x-skills] 常规帖模式 (baoyu x-browser.ts)');
   console.log('提示: 默认仅填稿预览，需手动点 Post；加 --submit 可自动发布');
+  console.log('提示: 操作完成后 Chrome 保持打开（复用会话，避免反复登录）');
   runBaoyuScript('x-browser.ts', args);
 }
 
@@ -173,8 +209,8 @@ const handlers = {
 if (!handlers[command]) {
   console.log(`X (Twitter) CLI — 基于 baoyu-post-to-x
 
-  login              打开 Chrome 登录 X
-  check-login        环境与会话检查
+  login              打开 Chrome 登录 X（cookie 写入 profile，保持浏览器打开）
+  check-login        环境与登录 cookie 检查（auth_token + ct0）
   preflight          运行 baoyu 环境自检
   publish --text "…" 发常规帖（文本/图片）
   publish --file x.md 发 X Article（需 Premium）

@@ -5,7 +5,8 @@
  */
 import { spawnSync } from 'child_process';
 import { existsSync } from 'fs';
-import { join } from 'path';
+import { dirname, join, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
 const DEFAULT_BAOYU_ROOT = './tool/baoyu-skills';
 const SKILL_SCRIPTS = 'skills/baoyu-post-to-x/scripts';
@@ -72,4 +73,20 @@ export function runBaoyuScript(scriptName, args = [], { silent = false, allowFai
     stdout: result.stdout ?? '',
     stderr: result.stderr ?? '',
   };
+}
+
+/** 验证 auth_token + ct0 是否已写入 Chrome profile（需浏览器仍打开且带 debug port） */
+export function verifyXSession(profileDir, debugPort) {
+  const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
+  const scriptPath = join(repoRoot, 'scripts/baoyu-verify-x-session.ts');
+  const args = [scriptPath, profileDir];
+  if (debugPort != null) args.push(String(debugPort));
+
+  const [runner, ...runnerPrefix] = bunCommandParts();
+  return spawnSync(runner, [...runnerPrefix, ...args], {
+    stdio: 'pipe',
+    encoding: 'utf8',
+    shell: runner === 'npx',
+    env: { ...process.env, BAOYU_SKILLS_ROOT: baoyuRoot() },
+  });
 }

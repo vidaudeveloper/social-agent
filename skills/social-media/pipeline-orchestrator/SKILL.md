@@ -119,9 +119,9 @@ metadata:
 
 按 user-profile 平台开关逐一发布。发布前对照 `workspace/references/platform-login-quickstart.md` 检查各平台登录态。
 
-**已测试通过**（可自动发布）：知乎、小红书、Reddit、YouTube、TikTok。  
+**已测试通过**（可自动发布）：知乎、小红书、Reddit、YouTube、TikTok、**X（baoyu，默认填稿/可 --submit）**。  
 **未测试通过**（默认只归档文稿到 `$HERMES_ROOT/文章/{平台}/`，不执行 publish CLI，除非用户明确要求）：
-抖音、公众号、LinkedIn、X。
+抖音、公众号、LinkedIn。
 
 | 平台 | 命令 | 验证状态 |
 |------|------|----------|
@@ -133,7 +133,7 @@ metadata:
 | 公众号 | baoyu-post-to-wechat API → 草稿箱 | ⏳ 未测试 |
 | 抖音 | npx @panda-video-automation/pva | ⏳ 未测试 |
 | LinkedIn | `npm run linkedin:publish` | ⏳ 未测试 |
-| X | `node skills/x/scripts/cli.mjs publish` | ⏳ 未测试 |
+| X | `node skills/x/scripts/cli.mjs publish` | ✅ |
 
 **规则**：
 - 发布失败不阻塞全流程，标记原因继续其他平台

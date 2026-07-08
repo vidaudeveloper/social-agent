@@ -31,9 +31,6 @@
     "x:check-login": "node scripts/run-x.mjs check-login",
     "x:preflight": "node scripts/run-x.mjs preflight",
     "x:publish": "node scripts/run-x.mjs publish",
-    "signal-fire:x-login": "node scripts/signal-fire-x-login-wait.mjs",
-    "signal-fire:x-draft": "node scripts/signal-fire-x-draft.mjs",
-    "signal-fire:x-publish": "node scripts/signal-fire-x-publish.mjs",
     "review:lint": "node skills/content-reviewer/scripts/lint.mjs",
     "review:sync-specs": "node skills/content-reviewer/scripts/sync-publish-specs.mjs"
   }

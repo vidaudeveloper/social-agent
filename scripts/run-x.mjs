@@ -19,6 +19,11 @@ if (!existsSync(cliPath)) {
 const env = { ...process.env };
 const cmd = args[0];
 
+// 默认操作后保持 Chrome 打开，避免频繁启停触发风控
+if (env.X_CLOSE_BROWSER == null) {
+  env.X_CLOSE_BROWSER = 'false';
+}
+
 // login：只打开一次登录页，不轮询刷新
 if (cmd === 'login') {
   env.OVERSEAS_USER_REQUESTED_BROWSER = 'true';

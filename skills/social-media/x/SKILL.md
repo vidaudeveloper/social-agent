@@ -10,7 +10,12 @@ metadata:
 
 # X (Twitter) Skills
 
-通过 **baoyu-post-to-x**（Chrome CDP）向 X 填稿发布。默认填稿后由用户确认再点 Post（与 baoyu 安全策略一致）。
+通过 **baoyu-post-to-x**（Chrome CDP）向 X 填稿发布。默认填稿后由用户确认再点 Post。
+
+**会话策略**（重要）：
+- Cookie 保存在 `%APPDATA%\baoyu-skills\chrome-profile`（Windows）
+- 登录一次后长期有效；`check-login` 验证 `auth_token` + `ct0`
+- **操作完成后保持 Chrome 打开**（默认 `X_CLOSE_BROWSER=false`），复用 debug 会话，避免频繁启停触发风控
 
 ## 技能边界
 

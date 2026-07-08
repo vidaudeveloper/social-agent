@@ -53,7 +53,7 @@ Step 5: 自动发布 — 各平台 CLI（失败不阻塞全局）
 | 公众号 | baoyu-post-to-wechat + 微信官方 AppID/Secret | ⏳ 未测试通过 |
 | 抖音 | PVA (`@panda-video-automation/pva`) | ⏳ 未测试通过 |
 | LinkedIn | gxbvc/linkedin-cli | ⏳ 未测试通过 |
-| X (Twitter) | baoyu-post-to-x (Chrome CDP) | ⏳ 未测试通过 |
+| X (Twitter) | baoyu-post-to-x (Chrome CDP) | ✅ 已测试通过 |
 
 **关键约束**：
 - **配置保护（最高优先级）**：禁止修改 `config.yaml` 的 `model`/`providers` 段；禁止 `switch_model`；API 403 时提示用户查 `.env`/tokenware，不得自行换模型或改 `base_url`

@@ -4,7 +4,7 @@
 
 **原则**：能走 API 的配密钥；要浏览器的，都是**你本人在 Chrome 里登录**，脚本不代填密码。
 
-**端到端验证状态**（2026-07-06）：✅ 知乎、小红书、Reddit、YouTube、TikTok；⏳ 抖音、公众号、LinkedIn、X 尚未测试通过。
+**端到端验证状态**（2026-07-08）：✅ 知乎、小红书、Reddit、YouTube、TikTok、X；⏳ 抖音、公众号、LinkedIn 尚未测试通过。
 
 ---
 
@@ -20,7 +20,7 @@
 | **公众号** | ⏳ | `.env` 配 `WECHAT_APP_ID` / `WECHAT_APP_SECRET` | **无浏览器登录**；API 进草稿箱，你在公众平台后台发布 | — |
 | **抖音** | ⏳ | PVA + ffmpeg | Chrome **手动登录**抖音创作者中心，保持登录态 | 上传时浏览器内确认 |
 | **LinkedIn** | ⏳ | `linkedin:setup` + `.env` OAuth | 授权页 **手动登录授权** → 终端 **Enter** | `npm run linkedin:check-login` |
-| **X** | ⏳ | baoyu-post-to-x | Chrome **手动登 X**；默认只出稿 | `node skills/x/scripts/cli.mjs check-login` |
+| **X** | ✅ | `npm run x:setup` | Chrome **手动登 X** → Enter → cookie 存 profile；**勿关浏览器** | `npm run x:check-login` |
 
 ---
 
@@ -100,9 +100,22 @@ npm run linkedin:setup
 
 ---
 
-## X (Twitter)（未测试通过）
+## X (Twitter)
 
-默认只出稿。`node skills/x/scripts/cli.mjs login` → Chrome 登录 X → 用户明确要求时再尝试发布。
+```powershell
+npm run x:setup
+$env:OVERSEAS_ALLOW_AUTOMATION="true"
+npm run x:login
+npm run x:check-login
+```
+
+1. Chrome 打开 X 登录页（**只开一次**）
+2. 浏览器内手动登录（含 2FA）→ 终端 **Enter**
+3. 脚本验证 `auth_token` + `ct0` 写入 `%APPDATA%\baoyu-skills\chrome-profile`
+4. **操作完成后不要关闭 Chrome**——后续填稿/发布会复用同一会话
+5. 默认 `publish` 只填稿不点 Post；加 `--submit` 可自动发布
+
+Cookie 保存在独立 Chrome profile，**一次登录长期有效**，勿与 baoyu 以外的 X 自动化工具混用 profile。
 
 ---
 

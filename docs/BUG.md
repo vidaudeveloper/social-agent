@@ -1,5 +1,18 @@
 # 变更与修复记录
 
+## 2026-07-08 — 放弃 signal-fire X，正式采用 baoyu-post-to-x
+
+**结论**：signal-fire X 登录无法稳定成功（PoC 失败）；**X 平台唯一方案**为 `baoyu-post-to-x`。
+
+**策略调整**：
+- 移除 `signal-fire:x-login` / `x-draft` / `x-publish` npm 脚本及相关 wrapper
+- 默认 **操作后不关闭 Chrome**（`X_CLOSE_BROWSER=false`），减少频繁启停被风控识别
+- `x:login` 打开 Chrome 时启用 `remote-debugging-port`，登录后验证 `auth_token` + `ct0` 写入 profile
+- `x:check-login` 改为真实 cookie 检测，避免用户反复登录
+- `x:setup` 自动 patch 上游 `x-browser.ts` / `x-video.ts` 保持浏览器打开
+
+**Profile 路径**：`%APPDATA%\baoyu-skills\chrome-profile`（与 signal-fire `~/.signal-fire` 互不共享）
+
 ## 2026-07-08 — baoyu-post-to-x 接入与 X 填稿试跑通过
 
 **现象**：
