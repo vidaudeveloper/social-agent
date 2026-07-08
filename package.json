@@ -26,6 +26,8 @@
     "linkedin:check-login": "node scripts/run-linkedin.mjs check-login",
     "linkedin:publish": "node scripts/run-linkedin.mjs publish",
     "linkedin:stats": "node scripts/run-linkedin.mjs stats",
+    "signal-fire:x-login": "node scripts/signal-fire-x-login-wait.mjs",
+    "signal-fire:x-draft": "node scripts/signal-fire-x-draft.mjs",
     "review:lint": "node skills/content-reviewer/scripts/lint.mjs",
     "review:sync-specs": "node skills/content-reviewer/scripts/sync-publish-specs.mjs"
   }

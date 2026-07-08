@@ -1,5 +1,13 @@
 # 变更与修复记录
 
+## 2026-07-08 — signal-fire X 登录脚本反复刷新登录页
+
+**现象**：`signal-fire:x-login` 打开 X 登录页后，每 3 秒轮询 `isLoggedIn()`，页面被反复跳转到首页/登录流，用户无法完成手动登录。
+
+**原因**：上游 `isLoggedIn(page)` 内部每次都会 `page.goto(x.com/home)`；轮询调用等于持续刷新。
+
+**修复**：`scripts/signal-fire-x-login-wait.mjs` 改为只打开登录页一次 → 用户手动登录 → 终端 **Enter 确认** → 再调用一次 `isLoggedIn` 验证并保存 profile。禁止轮询。
+
 ## 2026-07-06 — 平台验证状态更正
 
 **更正**：文档原先将抖音、公众号等标为「链路就绪」不准确。
