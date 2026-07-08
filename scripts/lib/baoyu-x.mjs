@@ -11,7 +11,15 @@ const DEFAULT_BAOYU_ROOT = './tool/baoyu-skills';
 const SKILL_SCRIPTS = 'skills/baoyu-post-to-x/scripts';
 
 export function baoyuRoot() {
-  return (process.env.BAOYU_SKILLS_ROOT || DEFAULT_BAOYU_ROOT).replace(/\\/g, '/');
+  const configured = (process.env.BAOYU_SKILLS_ROOT || '').replace(/\\/g, '/');
+  if (configured) return configured;
+
+  const primary = DEFAULT_BAOYU_ROOT.replace(/\\/g, '/');
+  const vendor = './tool/baoyu-skills-vendor'.replace(/\\/g, '/');
+  const primaryMarker = join(primary, SKILL_SCRIPTS, 'x-browser.ts');
+  const vendorMarker = join(vendor, SKILL_SCRIPTS, 'x-browser.ts');
+  if (!existsSync(primaryMarker) && existsSync(vendorMarker)) return vendor;
+  return primary;
 }
 
 export function baoyuXScriptsDir() {

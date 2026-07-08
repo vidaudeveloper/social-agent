@@ -1,4 +1,4 @@
-# baoyu-post-to-x 依赖（JimLiu/baoyu-skills）
+# baoyu-post-to-x dependency (JimLiu/baoyu-skills)
 # Usage: npm run x:setup
 
 $ErrorActionPreference = "Stop"
@@ -9,9 +9,7 @@ if ($env:BAOYU_SKILLS_ROOT) { $BaoyuRoot = $env:BAOYU_SKILLS_ROOT } else { $Baoy
 
 $RepoUrlHttps = "https://github.com/JimLiu/baoyu-skills.git"
 $RepoUrlSsh = "git@github.com:JimLiu/baoyu-skills.git"
-$Marker = Join-Path $BaoyuRoot "skills\baoyu-post-to-x\scripts\x-browser.ts"
 $VendorRoot = Join-Path (Split-Path -Parent $BaoyuRoot) "baoyu-skills-vendor"
-$VendorMarker = Join-Path $VendorRoot "skills\baoyu-post-to-x\scripts\x-browser.ts"
 
 function Test-BaoyuMarker([string]$Root) {
     return Test-Path (Join-Path $Root "skills\baoyu-post-to-x\scripts\x-browser.ts")
@@ -23,7 +21,7 @@ function Clone-BaoyuSkills([string]$TargetRoot) {
     Write-Host "  clone -> $TargetRoot" -ForegroundColor DarkGray
     git clone --depth 1 $RepoUrlHttps $TargetRoot
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "  HTTPS 失败，改用 SSH ..." -ForegroundColor Yellow
+        Write-Host "  HTTPS failed, trying SSH ..." -ForegroundColor Yellow
         git clone --depth 1 $RepoUrlSsh $TargetRoot
     }
     return $LASTEXITCODE
@@ -36,10 +34,9 @@ Write-Host ""
 
 if (-not (Test-BaoyuMarker $BaoyuRoot)) {
     if (Test-Path $BaoyuRoot) {
-        Write-Host "[1/2] 检测到不完整目录 $BaoyuRoot，改用 vendor 路径" -ForegroundColor Yellow
+        Write-Host "[1/2] Incomplete clone detected, using vendor path" -ForegroundColor Yellow
         $BaoyuRoot = $VendorRoot
         $env:BAOYU_SKILLS_ROOT = $BaoyuRoot
-        $Marker = Join-Path $BaoyuRoot "skills\baoyu-post-to-x\scripts\x-browser.ts"
     }
     if (-not (Test-BaoyuMarker $BaoyuRoot)) {
         Write-Host "[1/2] clone baoyu-skills ..." -ForegroundColor Yellow
@@ -54,9 +51,10 @@ Write-Host "[2/2] verify bun (via npx if needed) ..." -ForegroundColor Yellow
 npx -y bun --version | Out-Null
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+$ProfileDir = Join-Path $env:APPDATA "baoyu-skills\chrome-profile"
 Write-Host ""
 Write-Host "[done] baoyu-post-to-x ready" -ForegroundColor Green
 Write-Host "BAOYU_SKILLS_ROOT: $BaoyuRoot"
 Write-Host "Login:  npm run x:login"
-Write-Host "Draft:  npm run x:publish -- --text `"Hello test`""
-Write-Host "Profile: $env:APPDATA\baoyu-skills\chrome-profile"
+Write-Host 'Draft:  npm run x:publish -- --text "Hello test"'
+Write-Host "Profile: $ProfileDir"
