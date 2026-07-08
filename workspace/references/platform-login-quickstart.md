@@ -4,7 +4,9 @@
 
 **原则**：能走 API 的配密钥；要浏览器的，都是**你本人在 Chrome 里登录**，脚本不代填密码。
 
-**端到端验证状态**（2026-07-08）：✅ 知乎、小红书、Reddit、YouTube、TikTok、X；⏳ 抖音、公众号、LinkedIn 尚未测试通过。
+**平台验证状态（唯一来源）**：[`platform-status.md`](platform-status.md)
+
+**依赖按需安装**：[`dependency-policy.md`](dependency-policy.md)
 
 ---
 
@@ -26,8 +28,8 @@
 
 ## 小红书
 
-1. Chrome → `chrome://extensions/` → 开发者模式 → 加载 `skills/social-media/xiaohongshu/extension/`
-2. `cd skills/social-media/xiaohongshu` → `uv sync`
+1. Chrome → `chrome://extensions/` → 开发者模式 → 加载 `skills/publish/xiaohongshu/extension/`
+2. `cd skills/publish/xiaohongshu` → `uv sync`
 3. `python scripts/cli.py check-login`
 4. 未登录：**小红书 App 扫二维码**（或短信验证码，手机号须你确认）
 5. 发布：Chrome 保持打开且已登录；发布后默认跳转创作中心首页验收
@@ -68,7 +70,7 @@ npm run overseas:install
 $env:OVERSEAS_ALLOW_AUTOMATION = "true"
 ```
 
-**YouTube**：`node skills/youtube/scripts/cli.mjs login` → 浏览器登录 → Enter  
+**YouTube**：`node skills/publish/youtube/scripts/cli.mjs login` → 浏览器登录 → Enter  
 **TikTok**：`npm run tiktok:login` → 浏览器登录 → Enter（国内先配 `TK_PROXY`）
 
 禁止 Agent 连跑 login/check-login；cookie 失效须你手动重登，间隔 ≥30 分钟。

@@ -39,8 +39,10 @@ agent:
     【配置保护】禁止 Agent 修改 config.yaml 的 model/provider/base_url/default/api_key 段；
     禁止 switch_model、禁止因 API 403 自行换模型。模型异常时停止并提示用户查 workspace/references/tokenware-models.md。
     【tokenware 模型 ID】default 必须是 "DeepSeek：DeepSeek V4 Flash"（全角冒号），禁止写 deepseek-v4-flash。
-    【海外依赖】YouTube/TikTok 发布前必须先执行 npm run overseas:install（安装 social-auto-upload + playwright）。
-    【TikTok 登录】必须用 npm run tiktok:login 或 uv run --directory $SAU_ROOT python ...，禁止裸 python。
+    【依赖策略】缺依赖时只报缺 + 提示 npm run *:install，停止；禁止找替代方案。见 workspace/references/dependency-policy.md。
+    【deps:check】发布/配图前可运行 npm run deps:check -- --platform ...
+    【海外依赖】YouTube/TikTok 按需 npm run overseas:install；X 按需 npm run x:setup。
+    【TikTok 登录】必须用 npm run tiktok:login，禁止裸 python。
     【海外门禁】login/publish 前须 OVERSEAS_ALLOW_AUTOMATION=true，且禁止 Agent 连跑 login+check。
   coding_context: auto
   verify_on_stop: true

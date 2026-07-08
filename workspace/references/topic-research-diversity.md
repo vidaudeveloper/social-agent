@@ -45,4 +45,4 @@
 
 ## 相关
 
-- `skills/social-media/pipeline-orchestrator/SKILL.md` Step 1
+- `skills/create/pipeline-orchestrator/SKILL.md` Step 1

@@ -18,7 +18,7 @@
 | publish | 按 Enter → 上游 `linkedin posts create` |
 | stats | 按 Enter → 列出近期帖子（L1 互动数据） |
 
-不再使用自研 OAuth 脚本 / Cookie 抽取 / Playwright 发帖。配置见 `skills/social-media/linkedin/references/linkedin-api-setup.md`。
+不再使用自研 OAuth 脚本 / Cookie 抽取 / Playwright 发帖。配置见 `skills/publish/linkedin/references/linkedin-api-setup.md`。
 
 ## YouTube（sau / social-auto-upload）
 

@@ -1,5 +1,23 @@
 # 变更与修复记录
 
+## 2026-07-08 — skills 五层平铺重构（v2）
+
+**变更**：将 `skills/social-media/` 拆分为 `explore/`、`create/`、`review/`、`publish/`、`analytics/` 五层平铺结构；`distribution.yaml` 改为单行 `skills/`；不创建 `social-publish/`。
+
+**新增**：
+- `workspace/references/platform-status.md`（平台三态唯一真相源）
+- `workspace/references/dependency-policy.md`（按需安装 hint-only）
+- `scripts/lib/ensure-deps.mjs`、`scripts/deps-check.mjs`（`npm run deps:check`）
+- `scripts/lib/zhihu-html.mjs`
+- 各层 `README.md` 与 `skills/README.md` 总索引
+
+**路径迁移示例**：
+- `skills/social-media/pipeline-orchestrator` → `skills/create/pipeline-orchestrator`
+- `skills/social-media/xiaohongshu` → `skills/publish/xiaohongshu`
+- `skills/youtube` 短路径 → `skills/publish/youtube`
+
+**X 平台状态更正**：链路 √（baoyu-post-to-x）；⚠️ 部分账号被平台限发。signal-fire 已废弃。
+
 ## 2026-07-08 — 放弃 signal-fire X，正式采用 baoyu-post-to-x
 
 **结论**：signal-fire X 登录无法稳定成功（PoC 失败）；**X 平台唯一方案**为 `baoyu-post-to-x`。
@@ -16,7 +34,7 @@
 ## 2026-07-08 — baoyu-post-to-x 接入与 X 填稿试跑通过
 
 **现象**：
-1. `scripts/lib/baoyu-x.mjs` 缺失，`skills/social-media/x/scripts/cli.mjs` import 路径错误
+1. `scripts/lib/baoyu-x.mjs` 缺失，`skills/publish/x/scripts/cli.mjs` import 路径错误
 2. `tool/baoyu-skills` 残留不完整 clone（仅 `.git/objects/pack/tmp_pack_*`），`x:setup` 无法继续
 3. GitHub HTTPS clone 在本机超时
 
@@ -102,7 +120,7 @@
 
 **现象**：自研 OAuth 仅请求 `openid` 或 scope 不完整时，授权回调 `openid_insufficient_scope_error`。
 
-**修复**：废弃 `skills/social-media/linkedin/scripts/` 自研 CLI，接入上游 [gxbvc/linkedin-cli](https://github.com/gxbvc/linkedin-cli)；新增 `npm run linkedin:setup` / `run-linkedin.mjs`。Redirect URL 改为 `http://localhost:3457/callback`。
+**修复**：废弃 `skills/publish/linkedin/scripts/` 自研 CLI（已删除废弃 README），接入上游 [gxbvc/linkedin-cli](https://github.com/gxbvc/linkedin-cli)；新增 `npm run linkedin:setup` / `run-linkedin.mjs`。Redirect URL 改为 `http://localhost:3457/callback`。
 
 ## 2026-07-06 — 开源合规与文档统一
 

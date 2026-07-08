@@ -8,6 +8,7 @@ import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { requireOverseasConsent } from './lib/overseas-guard.mjs';
 import { waitForUserConfirm } from './lib/user-confirm.mjs';
+import { ensureDeps } from './lib/ensure-deps.mjs';
 
 const profileRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const cliRoot = resolve(
@@ -95,7 +96,7 @@ function parsePublishArgs(argv) {
 function ensureCredentials() {
   if (!isConfiguredSecret(process.env.LINKEDIN_CLIENT_ID) || !isConfiguredSecret(process.env.LINKEDIN_CLIENT_SECRET)) {
     console.error('缺少 LINKEDIN_CLIENT_ID / LINKEDIN_CLIENT_SECRET（或仍为占位符 your_client_id）。');
-    console.error('请在 Hermes .env 或 tool/linkedin-cli/.env 配置（见 skills/social-media/linkedin/references/linkedin-api-setup.md）');
+    console.error('请在 Hermes .env 或 tool/linkedin-cli/.env 配置（见 skills/publish/linkedin/references/linkedin-api-setup.md）');
     process.exit(1);
   }
 }
@@ -169,17 +170,21 @@ if (!command) {
 
   须 OVERSEAS_ALLOW_AUTOMATION=true
   安装: npm run linkedin:setup
-  文档: skills/social-media/linkedin/references/linkedin-api-setup.md`);
+  文档: skills/publish/linkedin/references/linkedin-api-setup.md`);
   process.exit(0);
 }
 
 if (command === 'login') {
+  ensureDeps(['linkedin']);
   await cmdLogin();
 } else if (command === 'check-login') {
+  ensureDeps(['linkedin']);
   await cmdCheckLogin();
 } else if (command === 'publish') {
+  ensureDeps(['linkedin']);
   await cmdPublish(rest);
 } else if (command === 'stats') {
+  ensureDeps(['linkedin']);
   await cmdStats(rest);
 } else {
   console.error('未知命令:', command);

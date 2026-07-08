@@ -6,6 +6,7 @@ import { existsSync } from 'fs';
 import { join, resolve } from 'path';
 import { spawnSync } from 'child_process';
 import { hermesRoot, profileRoot, redbookRoot } from './lib/hermes-paths.mjs';
+import { ensureDeps } from './lib/ensure-deps.mjs';
 
 function usage() {
   console.error(`用法: node scripts/run-xhs-card.mjs -File <md绝对路径> [-Out <输出目录>] [-Theme professional] [-Mode auto-split]
@@ -46,6 +47,8 @@ function parseArgs(argv) {
   }
   return opts;
 }
+
+ensureDeps(['xhs-card']);
 
 const opts = parseArgs(process.argv.slice(2));
 if (!opts.file) usage();

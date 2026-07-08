@@ -62,5 +62,5 @@ HERMES_ROOT: /Users/you/projects/social-agent/content
 
 ## 相关
 
-- 管线编排：`skills/social-media/pipeline-orchestrator/SKILL.md` Step 4.9
-- 小红书发布：`skills/social-media/xiaohongshu/skills/xhs-publish/SKILL.md`
+- 管线编排：`skills/create/pipeline-orchestrator/SKILL.md` Step 4.9
+- 小红书发布：`skills/publish/xiaohongshu/skills/xhs-publish/SKILL.md`

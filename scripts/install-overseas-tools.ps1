@@ -75,7 +75,7 @@ try {
     Write-Host "[done] overseas tools ready" -ForegroundColor Green
     Write-Host "TikTok: npm run tiktok:login"
     Write-Host "[hint] China: set TK_PROXY in tool/social-auto-upload/conf.py (e.g. http://127.0.0.1:7890)" -ForegroundColor Yellow
-    Write-Host "YouTube: skills/social-media/youtube/references/sau-runbook.md"
+    Write-Host "YouTube: skills/publish/youtube/references/sau-runbook.md"
 }
 finally {
     Pop-Location
