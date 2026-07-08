@@ -1,5 +1,5 @@
 ---
-name: content-reviewer
+name: review
 description: "发布前内容审核 — 用户说「审核这篇稿」「发布前检查」「content review」时激活。对照平台发布参考标准做软审核，可单独使用，也可在管线 Step 4.5 调用。"
 version: 1.0.0
 author: social-agent
@@ -11,7 +11,7 @@ metadata:
       - create/pipeline-orchestrator
 ---
 
-# 发布前内容审核（content-reviewer）
+# 发布前内容审核（review）
 
 **触发条件**：「审核」「发布前检查」「content review」「帮我过一遍格式」「检查这篇小红书稿」
 **不要用于**：登录态检查 / 配图生成 / 实际发布 / 选题研判

@@ -18,7 +18,7 @@ metadata:
       - publish/linkedin
       - publish/x
       - explore/xiaohongshu
-      - content-reviewer
+      - review
       - humanizer
 ---
 

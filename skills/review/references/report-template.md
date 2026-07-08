@@ -1,6 +1,6 @@
 # 审核报告模板
 
-> 由 `content-reviewer` 生成，保存至 `$HERMES_ROOT/审核/{日期}_{slug}.md`
+> 由 `review` 生成，保存至 `$HERMES_ROOT/审核/{日期}_{slug}.md`
 
 ---
 
@@ -38,4 +38,4 @@
 
 ---
 
-*本报告由 content-reviewer 自动生成。存在 error 时不应进入发布步骤。*
+*本报告由 review 自动生成。存在 error 时不应进入发布步骤。*

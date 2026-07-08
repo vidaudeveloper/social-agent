@@ -43,7 +43,7 @@ npm run review:sync-specs
 npm run review:lint -- --platform xiaohongshu --file "D:/content/文章/小红书/20260706_xxx.md"
 ```
 
-详见 `skills/content-reviewer/SKILL.md`。
+详见 `skills/review/SKILL.md`。
 
 ## 平台支持
 
@@ -100,10 +100,9 @@ social-agent/
 │   ├── README.md           # explore / create / review / publish / analytics
 │   ├── explore/
 │   ├── create/
-│   ├── review/
+│   ├── review/             # 发布前审核（SKILL + rules + lint）
 │   ├── publish/
-│   ├── analytics/
-│   └── content-reviewer/
+│   └── analytics/
 ├── workspace/references/
 └── user-profile.template.md
 ```

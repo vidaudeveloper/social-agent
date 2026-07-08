@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * content-reviewer 硬规则 lint CLI
+ * review 硬规则 lint CLI
  * stdout: JSON { ok, platform, display_name, findings, rubrics }
  */
 import { existsSync, readFileSync } from 'fs';
@@ -74,7 +74,7 @@ function parseArgs(argv) {
 }
 
 function printHelp() {
-  console.log(`content-reviewer lint
+  console.log(`review lint
 
 用法:
   npm run review:lint -- --platform <id> --file <path> [选项]

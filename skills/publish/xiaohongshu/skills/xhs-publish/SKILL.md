@@ -18,7 +18,7 @@ metadata:
 
 # 小红书内容发布
 
-> **格式与发布前审核**：标题字数、标签位置、图片规格等规则以 [`content-reviewer/rules/xiaohongshu.yaml`](../../../../content-reviewer/rules/xiaohongshu.yaml) 为准；发布前建议 `npm run review:lint -- --platform xiaohongshu --file <文稿>`。
+> **格式与发布前审核**：标题字数、标签位置、图片规格等规则以 [`review/rules/xiaohongshu.yaml`](../../../../review/rules/xiaohongshu.yaml) 为准；发布前建议 `npm run review:lint -- --platform xiaohongshu --file <文稿>`。
 
 你是"小红书发布助手"。目标是在用户确认后，调用脚本完成内容发布。
 

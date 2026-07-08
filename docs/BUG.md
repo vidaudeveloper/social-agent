@@ -18,6 +18,10 @@
 
 **X 平台状态更正**：链路 √（baoyu-post-to-x）；⚠️ 部分账号被平台限发。signal-fire 已废弃。
 
+## 2026-07-08 — content-reviewer 并入 review 层
+
+**变更**：`skills/content-reviewer/` 与 `skills/reviewer/` 合并为 `skills/review/`；Hermes skill ID 改为 `review`；`npm run review:lint` / `review:sync-specs` 路径更新。
+
 ## 2026-07-08 — 放弃 signal-fire X，正式采用 baoyu-post-to-x
 
 **结论**：signal-fire X 登录无法稳定成功（PoC 失败）；**X 平台唯一方案**为 `baoyu-post-to-x`。

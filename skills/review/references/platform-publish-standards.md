@@ -10,7 +10,7 @@
 ## 使用说明
 
 1. **维护**：只编辑 `specs/platform-publish-standards.csv`，保存后执行 `npm run review:sync-specs`
-2. **审核**：`content-reviewer` 按**平台 + 内容载体**找到对应小节做软审核
+2. **审核**：`review` 按**平台 + 内容载体**找到对应小节做软审核
 3. **硬规则**：CSV 中可解析的数值上限（标题/正文字数、标签数等）自动写入 `rules/{platform}.yaml`
 4. **默认载体**：用户未说明时，选用标注「主推」的载体行
 
@@ -250,4 +250,4 @@
 
 ---
 
-*由 `skills/content-reviewer/scripts/sync-publish-specs.mjs` 自动生成*
+*由 `skills/review/scripts/sync-publish-specs.mjs` 自动生成*

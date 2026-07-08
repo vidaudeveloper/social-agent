@@ -23,8 +23,8 @@
 | 抖音 | PVA + dy-create | × | 代码在仓，未 E2E 验证 |
 | LinkedIn | gxbvc/linkedin-cli | × | OAuth 已接，未 E2E 验证 |
 | 公众号 | baoyu-post-to-wechat（文档） | × | 无本仓 publish skill / install 脚本 |
-| Instagram | content-reviewer 规则 | × | 仅审核规格，无发布 |
-| Facebook | content-reviewer 规则 | × | 仅审核规格，无发布 |
+| Instagram | review 规则 | × | 仅审核规格，无发布 |
+| Facebook | review 规则 | × | 仅审核规格，无发布 |
 
 ## 默认发布策略
 

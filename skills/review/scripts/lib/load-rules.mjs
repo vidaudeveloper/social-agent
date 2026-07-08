@@ -27,7 +27,7 @@ const PLATFORM_ALIASES = {
 };
 
 /**
- * Minimal YAML parser for content-reviewer rule files (no external deps).
+ * Minimal YAML parser for review rule files (no external deps).
  * @param {string} text
  */
 export function parseRuleYaml(text) {
