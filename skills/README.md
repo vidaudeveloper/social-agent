@@ -12,7 +12,7 @@ explore → create → review → publish → analytics
 | 目录 | 中文 | 职责 |
 |------|------|------|
 | [`explore/`](explore/) | 探索 | 选题、调研、feed、竞品 |
-| [`create/`](create/) | 创作 | 写稿、配图、视频、管线编排 |
+| [`create/video/`](create/video/) | 创作 | TTS 口播 / Remotion / creative-agent 路由 |
 | [`review/`](review/) | 审核 | 发布前格式/合规检查（`review:lint`） |
 | [`publish/`](publish/) | 发布 | 各平台 login + publish CLI |
 | [`analytics/`](analytics/) | 数据分析 | 发布后统计与复盘 |
@@ -22,7 +22,7 @@ explore → create → review → publish → analytics
 | 层 | 前缀示例 |
 |----|----------|
 | explore | `explore/xiaohongshu` |
-| create | `create/pipeline-orchestrator`、`create/xhs-card-render` |
+| create | `create/pipeline-orchestrator`、`create/tts-narration`、`create/remotion` |
 | review | `review` |
 | publish | `publish/xiaohongshu`、`publish/youtube` |
 | analytics | `analytics/linkedin` |

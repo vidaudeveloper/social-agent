@@ -22,8 +22,7 @@
 ## 语言与视频路由
 
 - **写稿语言**：以 `user-profile.md` 中 `内容语言偏好` / `发布语言策略` 为准（见 `create/pipeline-orchestrator` Step 0/3）
-- **旁白视频**（本 profile）：`dy-create` / `tt-create` / `yt-create` — Edge TTS + ffmpeg
-- **高质量成片**：切换 [creative-agent](https://github.com/vidaudeveloper/creative-agent) profile，见 `workspace/references/creative-agent-routing.md`
+- **旁白视频**（本 profile）：[`create/video/`](skills/create/video/README.md) — 默认 **tts-narration**（Edge TTS + ffmpeg）；动效用 **remotion**；商业创意切 **creative-agent**
 
 ## 管线总览
 

@@ -6,8 +6,9 @@
 |------|------|
 | [`pipeline-orchestrator/`](pipeline-orchestrator/) | 主编排 Step 0–5 |
 | [`image/`](image/) | xhs-card-render、tokenware-image |
-| [`video/douyin/`](video/douyin/) | dy-create 技能 |
-| [`video/tiktok/`](video/tiktok/) | tt-create 技能 |
-| [`video/youtube/`](video/youtube/) | yt-create 技能 |
+| [`video/`](video/) | **视频类型索引**（TTS / Remotion / creative-agent） |
+| [`video/tts-narration/`](video/tts-narration/) | 纯文字 + Edge TTS + ffmpeg |
+| [`video/remotion/`](video/remotion/) | Remotion React 程序化视频 |
+| [`video/creative-agent/`](video/creative-agent/) | 创意成片路由 |
 
-脚本路径（create-video）：仍位于 `skills/publish/{platform}/scripts/`。
+TTS 口播的 `create-video` CLI 仍在 `skills/publish/{platform}/scripts/`。

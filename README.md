@@ -69,9 +69,17 @@ npm run deps:check -- --platform xhs-card,youtube,x
 
 登录步骤见 `workspace/references/platform-login-quickstart.md`。
 
-### 高质量视频
+### 视频成片（三种类型）
 
-趋势短片、产品成片等请使用 [creative-agent](https://github.com/vidaudeveloper/creative-agent) profile。
+详见 [`skills/create/video/README.md`](skills/create/video/README.md)：
+
+| 类型 | 技能 | 说明 |
+|------|------|------|
+| TTS 口播 | `create/tts-narration` | 默认；`pipeline:douyin` / `pipeline:tiktok` |
+| Remotion | `create/remotion` | React 动效；`npm run remotion:check` 验证技能 |
+| 创意商业片 | `create/creative-agent` | 切换 [creative-agent](https://github.com/vidaudeveloper/creative-agent) profile |
+
+### 高质量视频（legacy 说明）
 
 ### 内容归档目录
 

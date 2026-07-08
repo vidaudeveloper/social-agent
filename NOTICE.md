@@ -9,7 +9,7 @@
 | 小红书自动化 | `skills/publish/xiaohongshu/` | [xpzouying/skills/xiaohongshu](https://github.com/xpzouying/skills/xiaohongshu) | MIT |
 | Reddit | `skills/publish/reddit/` | [1146345502/reddit-skills](https://github.com/1146345502/reddit-skills) | 见上游仓库 |
 | X (Twitter) | `skills/publish/x/` | [JimLiu/baoyu-skills](https://github.com/JimLiu/baoyu-skills/tree/main/skills/baoyu-post-to-x) | 见上游仓库 |
-| 小红书卡片渲染 | `skills/create/image/skills/xhs-card-render/` | [comeonzhj/Auto-Redbook-Skills](https://github.com/comeonzhj/Auto-Redbook-Skills) | 见上游仓库 |
+| Remotion Agent Skills | `skills/create/video/remotion/rules/` | [remotion-dev/skills](https://github.com/remotion-dev/skills) | 见上游仓库 |
 
 ## 外部依赖（按需安装）
 

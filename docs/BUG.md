@@ -18,7 +18,13 @@
 
 **X 平台状态更正**：链路 √（baoyu-post-to-x）；⚠️ 部分账号被平台限发。signal-fire 已废弃。
 
-## 2026-07-08 — content-reviewer 并入 review 层
+## 2026-07-08 — create/video 按类型重组 + Remotion skill
+
+**变更**：`skills/create/video/` 由按平台划分改为按成片类型：`tts-narration/`、`remotion/`、`creative-agent/`。
+
+**新增**：vendored [remotion-dev/skills](https://github.com/remotion-dev/skills)（约 120KB 规则）于 `skills/create/video/remotion/`；`npm run remotion:check` 完整性检查。
+
+**路径迁移**：`video/{douyin,tiktok,youtube}/*-create` → `video/tts-narration/{douyin,tiktok,youtube}/`。
 
 **变更**：`skills/content-reviewer/` 与 `skills/reviewer/` 合并为 `skills/review/`；Hermes skill ID 改为 `review`；`npm run review:lint` / `review:sync-specs` 路径更新。
 

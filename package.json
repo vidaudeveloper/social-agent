@@ -46,6 +46,7 @@
     "douyin:login": "node scripts/run-douyin.mjs login",
     "douyin:upload": "node scripts/run-douyin.mjs upload",
     "review:lint": "node skills/review/scripts/lint.mjs",
-    "review:sync-specs": "node skills/review/scripts/sync-publish-specs.mjs"
+    "review:sync-specs": "node skills/review/scripts/sync-publish-specs.mjs",
+    "remotion:check": "node scripts/remotion-skill-check.mjs"
   }
 }

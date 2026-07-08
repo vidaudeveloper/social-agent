@@ -8,7 +8,7 @@ YouTube 自动化技能包，**仅 sau（social-auto-upload）单路径**。
 |------|------|
 | [yt-auth](skills/yt-auth/SKILL.md) | sau 登录 / check |
 | [yt-publish](skills/yt-publish/SKILL.md) | sau 上传发布 |
-| [yt-create](skills/yt-create/SKILL.md) | TTS + 视频合成 |
+| [yt-create](../../create/video/tts-narration/youtube/SKILL.md) | TTS + 视频合成 |
 | [yt-pipeline](skills/yt-pipeline/SKILL.md) | 全流程 |
 
 ## 安装

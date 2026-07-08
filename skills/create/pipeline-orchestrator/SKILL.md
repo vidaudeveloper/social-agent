@@ -8,6 +8,9 @@ metadata:
   hermes:
     tags: [pipeline, content-pipeline, create, orchestrator]
     related_skills:
+      - create/video/tts-narration
+      - create/video/remotion
+      - create/video/creative-agent
       - create/image
       - publish/xiaohongshu
       - publish/youtube
@@ -58,11 +61,15 @@ metadata:
 
 按 Step 0 语言偏好决定母稿与改写语言。写入 `$HERMES_ROOT/文章/{平台}/{日期}_{slug}.md`
 
-## Step 4: 润色 + 排版 + 配图
+## Step 4: 润色 + 排版 + 配图 + 视频（可选）
 
 1. **humanizer** 去 AI 味
 2. 小红书先 `npm run pipeline:xhs` → 失败再 tokenware（须用户确认）
 3. 其他平台 → tokenware-image 封面
+4. **视频类型**（用户需要成片时，见 [`create/video/README.md`](../video/README.md)）：
+   - **TTS 口播**（默认）：`create/tts-narration` → `pipeline:douyin` / `pipeline:tiktok` / youtube `create-video`
+   - **Remotion 动效**：`create/remotion` → 独立项目渲染至 `$HERMES_ROOT/视频/remotion/{slug}/`
+   - **创意商业片**：切换 `creative-agent` profile（`create/creative-agent`）
 
 ## Step 4.5: 发布前审核
 

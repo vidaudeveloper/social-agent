@@ -2,9 +2,20 @@
 
 本 profile（social-agent）与 [creative-agent](https://github.com/vidaudeveloper/creative-agent) 分工如下。
 
+视频类型总览：[`skills/create/video/README.md`](../skills/create/video/README.md)
+
+## 三种成片方式
+
+| 类型 | 技能 | 场景 |
+|------|------|------|
+| **TTS 口播** | `create/tts-narration` | 纯文字 + Edge TTS + ffmpeg（默认） |
+| **Remotion** | `create/remotion` | React 动效、多场景、品牌模板 |
+| **创意商业片** | `create/creative-agent` → creative-agent profile | 趋势片、产品 URL、MCP |
+
 ## 何时用 social-agent（本 profile）
 
-- **纯文字 + 旁白** 口播视频：`dy-create` / `tt-create` / `yt-create`（Edge TTS + ffmpeg）
+- **TTS 口播**：`pipeline:douyin` / `pipeline:tiktok` / youtube `create-video`
+- **Remotion**：在 `$HERMES_ROOT/视频/remotion/{slug}/` 建项目并渲染
 - 社媒全文管线：选题 → 写稿 → 配图 → 多平台发布
 
 ## 何时切换到 creative-agent profile
