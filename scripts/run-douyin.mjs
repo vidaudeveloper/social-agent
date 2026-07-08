@@ -5,15 +5,41 @@
  */
 import { spawnSync } from 'child_process';
 import { existsSync } from 'fs';
+import { dirname, join, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
-const DEFAULT_PLAYWRIGHT_BROWSERS = 'D:/test/tool/playwright-browsers';
+const profileRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+
+export function defaultPlaywrightBrowsersPath() {
+  if (process.env.PLAYWRIGHT_BROWSERS_PATH) {
+    return process.env.PLAYWRIGHT_BROWSERS_PATH;
+  }
+  if (process.env.PLAYWRIGHT_BROWSERS_ROOT) {
+    return process.env.PLAYWRIGHT_BROWSERS_ROOT;
+  }
+  return join(profileRoot, 'tool/playwright-browsers');
+}
+
+function playwrightHeadlessMarker(browsersPath) {
+  const base = join(browsersPath, 'chromium_headless_shell-1228');
+  const candidates =
+    process.platform === 'win32'
+      ? [join(base, 'chrome-headless-shell-win64/chrome-headless-shell.exe')]
+      : process.platform === 'darwin'
+        ? [
+            join(base, 'chrome-headless-shell-mac-arm64/chrome-headless-shell'),
+            join(base, 'chrome-headless-shell-mac-x64/chrome-headless-shell'),
+          ]
+        : [join(base, 'chrome-headless-shell-linux64/chrome-headless-shell')];
+  return candidates.find((p) => existsSync(p));
+}
 
 function playwrightEnv() {
-  const browsersPath = process.env.PLAYWRIGHT_BROWSERS_PATH || DEFAULT_PLAYWRIGHT_BROWSERS;
-  const headlessShell = `${browsersPath.replace(/\\/g, '/')}/chromium_headless_shell-1228/chrome-headless-shell-win64/chrome-headless-shell.exe`;
-  if (!existsSync(headlessShell)) {
+  const browsersPath = defaultPlaywrightBrowsersPath();
+  if (!playwrightHeadlessMarker(browsersPath)) {
     console.error(`Playwright 浏览器未安装: ${browsersPath}`);
     console.error('请先执行: npm run douyin:setup');
+    console.error('Agent 见: workspace/references/playwright-install-runbook.md');
     process.exit(2);
   }
   return {
@@ -22,6 +48,7 @@ function playwrightEnv() {
     PVA_HEADLESS: process.env.PVA_HEADLESS ?? 'false',
   };
 }
+
 const args = process.argv.slice(2);
 const cmd = args[0];
 
@@ -36,8 +63,8 @@ function quoteArg(arg) {
 }
 
 function runPva(pvaArgs) {
-  const cmd = ['npx', '-y', '@panda-video-automation/pva', ...pvaArgs].map(quoteArg).join(' ');
-  const result = spawnSync(cmd, {
+  const shellCmd = ['npx', '-y', '@panda-video-automation/pva', ...pvaArgs].map(quoteArg).join(' ');
+  const result = spawnSync(shellCmd, {
     stdio: 'inherit',
     shell: true,
     env: playwrightEnv(),
@@ -51,10 +78,12 @@ if (!cmd || cmd === '--help' || cmd === '-h') {
   login                     打开 Chrome 登录抖音创作者中心
   upload --video <mp4>      上传视频（--title / --desc / --tags / --cover）
 
-npm: douyin:login | douyin:upload
+npm: douyin:setup | douyin:login | douyin:upload
+
+Playwright 路径: ${defaultPlaywrightBrowsersPath()}
 
 示例:
-  npm run douyin:upload -- --video "D:/path/video.mp4" --title "标题 #话题"`);
+  npm run douyin:upload -- --video "D:/path/video.mp4" --title "标题"`);
   process.exit(0);
 }
 

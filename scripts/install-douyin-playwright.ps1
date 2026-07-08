@@ -3,10 +3,19 @@
 
 $ErrorActionPreference = "Stop"
 
-$BrowsersPath = if ($env:PLAYWRIGHT_BROWSERS_PATH) { $env:PLAYWRIGHT_BROWSERS_PATH } else { "D:\test\tool\playwright-browsers" }
+$ProfileRoot = Split-Path -Parent $PSScriptRoot
+$DefaultBrowsers = Join-Path $ProfileRoot "tool\playwright-browsers"
+if ($env:PLAYWRIGHT_BROWSERS_PATH) {
+    $BrowsersPath = $env:PLAYWRIGHT_BROWSERS_PATH
+} elseif ($env:PLAYWRIGHT_BROWSERS_ROOT) {
+    $BrowsersPath = $env:PLAYWRIGHT_BROWSERS_ROOT
+} else {
+    $BrowsersPath = $DefaultBrowsers
+}
 $DownloadHost = if ($env:PLAYWRIGHT_DOWNLOAD_HOST) { $env:PLAYWRIGHT_DOWNLOAD_HOST } else { "https://cdn.npmmirror.com/binaries/playwright" }
 
 Write-Host "=== douyin:setup (Playwright for PVA) ===" -ForegroundColor Cyan
+Write-Host "Profile: $ProfileRoot"
 Write-Host "PLAYWRIGHT_BROWSERS_PATH: $BrowsersPath"
 Write-Host "PLAYWRIGHT_DOWNLOAD_HOST: $DownloadHost"
 Write-Host ""

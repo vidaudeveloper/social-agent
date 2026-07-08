@@ -12,8 +12,9 @@
 | Reddit | `tool/reddit-skills/scripts/cli.py` | `npm run reddit:setup` | 2–5 min |
 | LinkedIn | `tool/linkedin-cli/dist/cli.js` | `npm run linkedin:setup` | 3–6 min |
 | 知乎 CLI | 系统 PATH 有 `zhihu` | `uv tool install pyzhihu-cli` | ~1 min |
+| 抖音（PVA） | `tool/playwright-browsers/chromium_headless_shell-1228/` | `npm run douyin:setup` | 1–3 min（国内镜像） |
 
-检查命令：`npm run deps:check -- --platform xhs-card,youtube,tiktok,x,reddit,linkedin,zhihu`
+检查命令：`npm run deps:check -- --platform xhs-card,youtube,tiktok,x,reddit,linkedin,zhihu,douyin`
 
 ## Playwright 使用范围
 
@@ -21,10 +22,19 @@
 |------|----------|
 | 小红书 MD→模板 PNG 卡片 | `npm run tool:install`（Auto-Redbook） |
 | YouTube / TikTok 浏览器自动化 | `npm run overseas:install`（SAU） |
+| **抖音发布（PVA）** | `npm run douyin:setup` → 浏览器在 **`tool/playwright-browsers`** |
+
+**抖音 / PVA 特别规则（Agent 必读）**：
+
+1. **禁止**裸 `npx playwright install` — 国内易卡死，且默认装到 C 盘 `%LOCALAPPDATA%` 或 Cursor 沙箱缓存。
+2. **必须** `npm run douyin:setup`：国内镜像 + 浏览器与项目同目录 `tool/playwright-browsers`。
+3. 安装失败 / 进度卡住 → 见 [`playwright-install-runbook.md`](playwright-install-runbook.md)。
+
+YouTube/TikTok（SAU）的 Chromium 仍随 `overseas:install` 装在 SAU venv，路径与抖音 PVA **不共用**。
 
 **不用 Playwright**：小红书发布（CDP + Chrome 扩展）、X（baoyu CDP）、Reddit（扩展桥）、LinkedIn（API）、知乎（HTTP API）。
 
-Chromium 浏览器包通常安装在 `%LOCALAPPDATA%\ms-playwright\`，多项目可共享。
+其他 Playwright 用途（小红书卡片、SAU）的浏览器包可能在 `%LOCALAPPDATA%\ms-playwright\`（Windows）或 `~/Library/Caches/ms-playwright`（macOS），与抖音 PVA 的 `tool/playwright-browsers` 分开管理。
 
 ## 小红书配图优先级
 
@@ -52,3 +62,4 @@ Chromium 浏览器包通常安装在 `%LOCALAPPDATA%\ms-playwright\`，多项目
 
 - 平台状态：[`platform-status.md`](platform-status.md)
 - 登录速查：[`platform-login-quickstart.md`](platform-login-quickstart.md)
+- **Playwright 安装（抖音 PVA / 国内镜像 / Win+Mac）**：[`playwright-install-runbook.md`](playwright-install-runbook.md)

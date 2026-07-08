@@ -30,13 +30,27 @@
 
 ## 2026-07-08 — 抖音 PVA Playwright 安装卡住 / 装到 C 盘
 
-**现象**：`npx playwright install chromium` 从 `cdn.playwright.dev` 下载约 300MB，在 60% 附近长时间无进展；Agent 沙箱默认装到 `C:\Users\...\Temp\cursor-sandbox-cache\...\playwright\`。
+**现象**：
+- `npx playwright install chromium` 从 `cdn.playwright.dev` 下载约 **300MB**（Chrome 183MB + Headless Shell 114MB + FFmpeg），进度常在 **40%–60%** 假死数分钟至数小时。
+- Agent 在 Cursor 沙箱执行时，浏览器落到 `C:\Users\...\AppData\Local\Temp\cursor-sandbox-cache\...\playwright\`（**C 盘临时目录**），与项目脱节。
+- 用户手动设 D 盘路径但走海外 CDN，同样在 60% 卡住。
 
-**原因**：海外 CDN 在国内慢/易断；未设 `PLAYWRIGHT_BROWSERS_PATH`；npmmirror 暂无 Playwright 1.58 的 `145.0.7632.6` 包（404）。
+**根因**：
+1. 国内访问 `cdn.playwright.dev` 慢/不稳定。
+2. 未设 `PLAYWRIGHT_BROWSERS_PATH`，Playwright 默认 `%LOCALAPPDATA%\ms-playwright`（Windows）或系统缓存（macOS）。
+3. npmmirror **没有** Playwright 1.58 所需的 `145.0.7632.6`（404）；PVA 实际需 **1.61.x / chromium v1228 / 149.0.7827.55**（镜像有该版本）。
 
-**修复**：
-- 新增 `npm run douyin:setup`（`scripts/install-douyin-playwright.ps1`）：`playwright@1.61.1` + `cdn.npmmirror.com` + 默认 `D:\test\tool\playwright-browsers`
-- `run-douyin.mjs` 自动注入 `PLAYWRIGHT_BROWSERS_PATH` 并检查浏览器是否已安装
+**解决过程（Agent 应复用）**：
+1. 结束卡住的 `node` / `playwright install` 进程。
+2. 设置 `PLAYWRIGHT_DOWNLOAD_HOST=https://cdn.npmmirror.com/binaries/playwright`。
+3. 设置 `PLAYWRIGHT_BROWSERS_PATH={profile}/tool/playwright-browsers`（**与项目 `tool/` 同级，禁止默认 C 盘**）。
+4. 执行 `npx playwright@1.61.1 install chromium`（或 `npm run douyin:setup`）。
+5. 国内镜像约 **1 分钟** 装完；`run-douyin.mjs` 注入路径后 `douyin:upload` 通过。
+
+**代码/文档**：
+- `npm run douyin:setup`（Win: `install-douyin-playwright.ps1`，Mac: `install-douyin-playwright.sh`）
+- Agent 专文：[`workspace/references/playwright-install-runbook.md`](../workspace/references/playwright-install-runbook.md)
+- `run-douyin.mjs` 自动注入 `PLAYWRIGHT_BROWSERS_PATH` 并检查 headless shell marker
 
 **验证**：`douyin:upload` 上传测试视频成功（约 1.1 分钟，已点发布按钮）。
 

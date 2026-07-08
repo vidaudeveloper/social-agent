@@ -47,6 +47,19 @@ npm run tiktok:login
 
 **禁止**裸 `python scripts/cli.py login`（Vidau/Hermes 自带 venv 无 playwright）。
 
+## 抖音发布（PVA / Playwright）
+
+执行 `douyin:login` / `douyin:upload` **之前**必须先：
+
+```powershell
+npm run douyin:setup
+```
+
+**禁止**裸 `npx playwright install chromium`（国内易卡死、默认装 C 盘）。
+
+- 浏览器必须落在 **`{profile}/tool/playwright-browsers`**，与项目 `tool/` 同级
+- 安装失败 / 进度卡住：必读 [`playwright-install-runbook.md`](playwright-install-runbook.md)（国内镜像 + Win/Mac 分平台命令）
+
 ## 恢复被改坏的 config
 
 将 `config.yaml` 的 `model` 段恢复为上表标准值，重启 Agent 会话。

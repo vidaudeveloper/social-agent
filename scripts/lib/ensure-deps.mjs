@@ -79,6 +79,24 @@ export const DEP_CHECKS = {
     },
     fix: 'uv tool install pyzhihu-cli',
   },
+  douyin: {
+    label: '抖音 (PVA Playwright)',
+    check: () => {
+      const base = join(profileRoot, 'tool/playwright-browsers/chromium_headless_shell-1228');
+      if (!existsSync(base)) return false;
+      if (process.platform === 'win32') {
+        return existsSync(join(base, 'chrome-headless-shell-win64/chrome-headless-shell.exe'));
+      }
+      if (process.platform === 'darwin') {
+        return (
+          existsSync(join(base, 'chrome-headless-shell-mac-arm64/chrome-headless-shell')) ||
+          existsSync(join(base, 'chrome-headless-shell-mac-x64/chrome-headless-shell'))
+        );
+      }
+      return existsSync(join(base, 'chrome-headless-shell-linux64/chrome-headless-shell'));
+    },
+    fix: 'npm run douyin:setup  # 见 workspace/references/playwright-install-runbook.md',
+  },
 };
 
 /**
