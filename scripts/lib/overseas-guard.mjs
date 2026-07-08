@@ -17,3 +17,13 @@ export function requireOverseasConsent(platform, action) {
     process.exit(1);
   }
 }
+
+/** Agent 默认不自动开浏览器；用户显式 npm run x:login 时由脚本设 OVERSEAS_USER_REQUESTED_BROWSER=true */
+export function mayLaunchBrowser(_platform) {
+  return process.env.OVERSEAS_USER_REQUESTED_BROWSER === 'true';
+}
+
+export function printManualLoginSteps(platform, url) {
+  console.log(`请手动打开 Chrome 并访问: ${url}`);
+  console.log(`平台: ${platform} — 登录完成后回到终端按 Enter。`);
+}

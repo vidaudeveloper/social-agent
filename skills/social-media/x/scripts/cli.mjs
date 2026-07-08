@@ -7,12 +7,12 @@ import { existsSync, readFileSync } from 'fs';
 import { spawn } from 'child_process';
 import { homedir } from 'os';
 import { join } from 'path';
-import { runBaoyuScript, ensureBaoyuXInstalled } from '../../../scripts/lib/baoyu-x.mjs';
+import { runBaoyuScript, ensureBaoyuXInstalled } from '../../../../scripts/lib/baoyu-x.mjs';
 import {
   mayLaunchBrowser,
   printManualLoginSteps,
   requireOverseasConsent,
-} from '../../../scripts/lib/overseas-guard.mjs';
+} from '../../../../scripts/lib/overseas-guard.mjs';
 
 function defaultBaoyuProfile() {
   if (process.env.X_BROWSER_PROFILE_DIR) {

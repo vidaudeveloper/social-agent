@@ -1,5 +1,22 @@
 # 变更与修复记录
 
+## 2026-07-08 — baoyu-post-to-x 接入与 X 填稿试跑通过
+
+**现象**：
+1. `scripts/lib/baoyu-x.mjs` 缺失，`skills/social-media/x/scripts/cli.mjs` import 路径错误
+2. `tool/baoyu-skills` 残留不完整 clone（仅 `.git/objects/pack/tmp_pack_*`），`x:setup` 无法继续
+3. GitHub HTTPS clone 在本机超时
+
+**修复**：
+- 新增 `baoyu-x.mjs`、`run-x.mjs`、`install-baoyu-x-tools.ps1`；`overseas-guard.mjs` 补 `mayLaunchBrowser` / `printManualLoginSteps`
+- `x:login` 只打开一次 `x.com/i/flow/login`，不轮询刷新
+- 安装脚本 HTTPS 失败自动改 SSH；检测到不完整目录时 fallback 到 `tool/baoyu-skills-vendor`
+- 修正 `cli.mjs` 中 `overseas-guard` 的 import 路径（`../../../../scripts/...`）
+
+**验证**（2026-07-08 11:38 北京时间）：
+- `npm run x:preflight` ✅
+- `npm run x:publish -- --text "baoyu 填稿测试 1138"` ✅（已登录态下打开 compose、填稿，未点 Post）
+
 ## 2026-07-08 — signal-fire X 登录脚本反复刷新登录页
 
 **现象**：`signal-fire:x-login` 打开 X 登录页后，每 3 秒轮询 `isLoggedIn()`，页面被反复跳转到首页/登录流，用户无法完成手动登录。
