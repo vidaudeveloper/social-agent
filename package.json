@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "deps:check": "node scripts/deps-check.mjs",
+    "tool:cleanup-legacy": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/cleanup-legacy-tools.ps1",
     "tool:install": "node scripts/run-tool-install.mjs",
     "pipeline:xhs": "node scripts/pipeline-xhs.mjs",
     "xhs:card-render": "node scripts/run-xhs-card.mjs",

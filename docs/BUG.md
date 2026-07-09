@@ -1,5 +1,29 @@
 # 变更与修复记录
 
+## 2026-07-09 — 清理本地 demo / 废弃工具脚本
+
+**删除（勿进远程仓库）**：
+- `scripts/generate-remotion-voiceover.mjs` / `generate-remotion-voiceover-en.mjs` — 写死 `tiktok-ip-lycheeip` 旁白，属本地 Remotion 试跑脚本，应放在 `content/视频/remotion/{slug}/` 项目内。
+- `.gitignore` 增加 `scripts/generate-remotion-voiceover*.mjs` 防误提交。
+
+**本地 `tool/` 清理**（`tool/` 本身 gitignore，需本机执行）：
+```powershell
+npm run tool:cleanup-legacy
+```
+移除 `tool/playwright-browsers`（PVA）、`tool/signal-fire`（已废弃 X PoC），并卸载全局 `@panda-video-automation/pva`。
+
+**说明**：放弃 signal-fire 时只删了 npm 脚本与 wrapper；`tool/signal-fire` 是 PoC 时 clone 的目录，因 `tool/` 不入库不会自动消失。
+
+## 2026-07-09 — Remotion 旁白接入 ElevenLabs（脚本已迁出仓库）
+
+**改动**：`scripts/generate-remotion-voiceover.mjs` 优先走 ElevenLabs（分段 TTS + 段间静音）；无 `ELEVENLABS_API_KEY` 时回退 edge-tts。`.env.EXAMPLE` 增加相关占位项。
+
+**用法**：根目录 `.env` 写入 `ELEVENLABS_API_KEY=...` 后执行 `node scripts/generate-remotion-voiceover.mjs`。
+
+**试听配置（2026-07-09）**：voice `WkcRFJo38X9XEP8kGExm`；API 语速上限 1.2，目标 1.5 时用 ffmpeg `atempo` 补齐；成片约 56.6s / 1920×1080。
+
+**英文对比版（不覆盖中文）**：独立目录 `content/视频/remotion/tiktok-ip-lycheeip-en/`，脚本 `scripts/generate-remotion-voiceover-en.mjs`，成片 `out/tiktok-ip-lycheeip-en.mp4`（约 56.4s）。
+
 ## 2026-07-09 — Remotion 横屏知识片：配音 AI 感 / 竖屏硬广
 
 **需求**：横屏、知识分享软植入、配音更自然。

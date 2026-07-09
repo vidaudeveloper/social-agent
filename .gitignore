@@ -43,6 +43,9 @@ user-profile.template.md
 # External tools (clone via npm run overseas:install / linkedin:setup)
 tool/
 
+# Local Remotion demo helpers (keep scripts inside content/.../remotion/{slug}/ only)
+scripts/generate-remotion-voiceover*.mjs
+
 # Infrastructure
 hermes-agent/
 .worktrees/

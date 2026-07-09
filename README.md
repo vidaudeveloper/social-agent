@@ -89,7 +89,7 @@ npm run deps:check -- --platform xhs-card,youtube,x
 **推荐流程**：
 
 1. 在 `$HERMES_ROOT/视频/remotion/{slug}/` 建独立 Remotion 项目（脚手架：`npx create-video@latest --yes --blank --no-tailwind {slug}`）
-2. 按参考文案分段旁白 → `edge-tts` 生成配音 → 输出 `voiceover-meta.json` / `captions.vtt`
+2. 按参考文案分段旁白 → 在 **Remotion 项目目录内** 用 `edge-tts` / ElevenLabs 生成配音 → 输出 `voiceover-meta.json` / `captions.vtt`（勿在 profile `scripts/` 放写死文案的 demo 脚本）
 3. 用 `Series` + `Sequence` 编写多场景 Composition；动画基于 `useCurrentFrame()` + `interpolate()`（禁用 CSS transition）
 4. 预览：`npx remotion studio`；渲染：`npx remotion render [id] out/video.mp4`
 5. 成片回到 `publish/*` 发布
