@@ -71,19 +71,51 @@ npm run deps:check -- --platform xhs-card,youtube,x
 
 ### 视频成片（三种类型）
 
-详见 [`skills/create/video/README.md`](skills/create/video/README.md)：
+详见 [`skills/create/video/README.md`](skills/create/video/README.md)。
 
 | 类型 | 技能 | 说明 |
 |------|------|------|
 | TTS 口播 | `create/tts-narration` | 默认；`pipeline:douyin` / `pipeline:tiktok` |
-| Remotion | `create/remotion` | React 动效；`npm run remotion:check` 验证技能 |
+| Remotion | `create/remotion` | React 程序化动效、多场景、品牌模板 |
 | 创意商业片 | `create/creative-agent` | 切换 [creative-agent](https://github.com/vidaudeveloper/creative-agent) profile |
 
-### 高质量视频（legacy 说明）
+#### Remotion 使用说明
+
+**适用**：培训片、产品宣传片、带转场/字幕动画/图表的竖版或横版视频。  
+**不适用**：纯口播黑底花字（请用 `tts-narration`）。
+
+**技能路径**：[`skills/create/video/remotion/SKILL.md`](skills/create/video/remotion/SKILL.md)（含 30+ 条 `rules/` 子规则，源自 [remotion-dev/skills](https://github.com/remotion-dev/skills)）。
+
+**推荐流程**：
+
+1. 在 `$HERMES_ROOT/视频/remotion/{slug}/` 建独立 Remotion 项目（脚手架：`npx create-video@latest --yes --blank --no-tailwind {slug}`）
+2. 按参考文案分段旁白 → `edge-tts` 生成配音 → 输出 `voiceover-meta.json` / `captions.vtt`
+3. 用 `Series` + `Sequence` 编写多场景 Composition；动画基于 `useCurrentFrame()` + `interpolate()`（禁用 CSS transition）
+4. 预览：`npx remotion studio`；渲染：`npx remotion render [id] out/video.mp4`
+5. 成片回到 `publish/*` 发布
+
+**环境**：Node ≥ 18、`ffmpeg`、`uv run edge-tts`。Windows 渲染建议复制项目到 ASCII 路径（如 `D:\tmp\{slug}`）再 `npm install` + `npm run render`，避免中文路径导致 Headless Chrome 失败。
+
+**检查技能完整性**：
+
+```powershell
+npm run remotion:check
+```
+
+**本地示例项目**（仅开发机保留，**不提交仓库**）：
+
+| 目录 | 说明 |
+|------|------|
+| `content/视频/remotion/tiktok-ip-lycheeip/` | 产品宣传片（配音+字幕+官网截图） |
+| `content/视频/remotion/tiktok-shop-training/` | 培训手册成片（10 场景，配音+字幕） |
+
+各示例目录下有 `README.md`，含 `voiceover` / `render` 命令。渲染产物（`out/*.mp4`、配音缓存等）见 `.gitignore`，勿 push 到远程。
 
 ### 内容归档目录
 
 文稿、图片、视频默认写入 `$HERMES_ROOT`（未设置时默认为 profile 下的 `./content`）。
+
+> **`content/` 为本地工作区，含测试成片与素材，已加入 `.gitignore`，请勿提交到仓库。**
 
 ### 参考文档
 

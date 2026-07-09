@@ -35,7 +35,8 @@ document_cache/
 browser_screenshots/
 cache/
 
-# User-specific content
+# User-specific content & local test artifacts — NEVER commit
+content/
 user-profile.md
 user-profile.template.md
 
