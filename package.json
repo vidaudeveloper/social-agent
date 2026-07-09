@@ -45,6 +45,9 @@
     "douyin:setup": "node scripts/run-douyin-setup.mjs",
     "douyin:login": "node scripts/run-douyin.mjs login",
     "douyin:upload": "node scripts/run-douyin.mjs upload",
+    "douyin:sau-login": "node scripts/run-sau-douyin.mjs login",
+    "douyin:sau-check": "node scripts/run-sau-douyin.mjs check",
+    "douyin:sau-upload": "node scripts/run-sau-douyin.mjs upload",
     "review:lint": "node skills/review/scripts/lint.mjs",
     "review:sync-specs": "node skills/review/scripts/sync-publish-specs.mjs",
     "remotion:check": "node scripts/remotion-skill-check.mjs"

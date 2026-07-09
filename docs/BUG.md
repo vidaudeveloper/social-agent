@@ -1,5 +1,21 @@
 # 变更与修复记录
 
+## 2026-07-09 — 抖音发布改用 SAU（系统 Chrome，避免 PVA 内存/OOM）
+
+**现象**：
+- PVA 多次 `login` 堆积 Playwright Chromium → OOM / 崩溃；session 在 npm 包目录，与 `npx` 路径不一致。
+- SAU `patchright install chromium` 需 **chromium-1208**，国内 npmmirror **404**（无 `145.0.7632.6`）。
+
+**修复**：
+- 新增 `npm run douyin:sau-login` / `douyin:sau-check` / `douyin:sau-upload`（`scripts/run-sau-douyin.mjs`）。
+- SAU 抖音 uploader 改为 **系统 Chrome**（`conf.LOCAL_CHROME_PATH` + `_launch_chromium`），无需再下 patchright 浏览器包。
+- 修复上游 `_wait_for_douyin_login` 未定义 `original_url` / `saw_2fa` 导致登录立即失败。
+- `overseas:install`：有系统 Chrome 时跳过 patchright 下载；Playwright 安装默认 npmmirror + `tool/sau-playwright-browsers`。
+
+**验证**（2026-07-09）：
+- Cookie：`tool/social-auto-upload/cookies/douyin_default.json`
+- 上传测试视频 `SAU发布测试0907`，终端 `视频发布成功`，约 77s，exit 0。
+
 ## 2026-07-08 — skills 五层平铺重构（v2）
 
 **变更**：将 `skills/social-media/` 拆分为 `explore/`、`create/`、`review/`、`publish/`、`analytics/` 五层平铺结构；`distribution.yaml` 改为单行 `skills/`；不创建 `social-publish/`。

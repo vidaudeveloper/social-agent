@@ -57,12 +57,24 @@ npm run zhihu:check-login
 
 ## 抖音
 
-1. `npm run douyin:setup` — Playwright 装到 **`{profile}/tool/playwright-browsers`**（国内镜像，Win/Mac 均支持；勿装 C 盘默认路径）
-2. 安装 `ffmpeg`（视频创作 `pipeline:douyin`）
-3. `npm run douyin:login` — 首次登录创作者中心
-4. `npm run douyin:upload -- --video <mp4绝对路径> --title "标题"`
+1. **推荐 SAU 发布**（系统 Chrome，cookie 在项目内，省内存）：
+   ```powershell
+   npm run douyin:sau-login    # 扫码一次
+   npm run douyin:sau-check
+   npm run douyin:sau-upload -- --video <mp4绝对路径> --title "标题"
+   ```
+   Cookie：`tool/social-auto-upload/cookies/douyin_default.json`
 
-安装卡住见 [`playwright-install-runbook.md`](playwright-install-runbook.md)。
+2. 备选 PVA（需 `npm run douyin:setup`，独立 Playwright 浏览器）：
+   ```powershell
+   npm run douyin:setup
+   npm run douyin:login
+   npm run douyin:upload -- --video <mp4绝对路径> --title "标题"
+   ```
+
+3. 视频创作：`npm run pipeline:douyin`（ffmpeg，不需 Playwright）
+
+安装卡住见 [`playwright-install-runbook.md`](playwright-install-runbook.md)（仅 PVA 路径）。
 
 ---
 

@@ -14,8 +14,8 @@ version: 1.0.0
 |------|------|
 | 安装 Playwright（PVA） | `npm run douyin:setup` |
 | 创作视频 | `npm run pipeline:douyin` / `node skills/publish/douyin/scripts/cli.mjs create-video` |
-| 登录 | `npm run douyin:login` |
-| 发布 | `npm run douyin:upload`（PVA） |
+| 登录 | `npm run douyin:sau-login`（**推荐 SAU**）或 `npm run douyin:login`（PVA） |
+| 发布 | `npm run douyin:sau-upload`（**推荐 SAU**）或 `npm run douyin:upload`（PVA） |
 
 ## Playwright（发布前置）
 
