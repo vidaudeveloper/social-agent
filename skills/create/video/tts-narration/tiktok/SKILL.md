@@ -19,7 +19,7 @@ version: 1.0.0
 | 默认音色 | cn-male | **us-male** |
 | 时长 | 不限 | **≤90 秒**（自动裁切） |
 | 稿件目录 | `文章/抖音/` | `文章/TikTok/` |
-| 发布 | PVA `douyin:upload` | `tiktok:publish` |
+| 发布 | `douyin:upload`（SAU） | `tiktok:publish` |
 
 ## 命令
 

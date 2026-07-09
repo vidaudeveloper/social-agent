@@ -47,18 +47,16 @@ npm run tiktok:login
 
 **禁止**裸 `python scripts/cli.py login`（Vidau/Hermes 自带 venv 无 playwright）。
 
-## 抖音发布（PVA / Playwright）
-
-执行 `douyin:login` / `douyin:upload` **之前**必须先：
+## 抖音发布（SAU + 系统 Chrome）
 
 ```powershell
-npm run douyin:setup
+npm run overseas:install
+npm run douyin:login    # 仅一次
+npm run douyin:upload -- --video "..." --title "..."
 ```
 
-**禁止**裸 `npx playwright install chromium`（国内易卡死、默认装 C 盘）。
-
-- 浏览器必须落在 **`{profile}/tool/playwright-browsers`**，与项目 `tool/` 同级
-- 安装失败 / 进度卡住：必读 [`playwright-install-runbook.md`](playwright-install-runbook.md)（国内镜像 + Win/Mac 分平台命令）
+- **禁止** `douyin:setup`、PVA、`npx pva`、同任务多次 `douyin:login`
+- `douyin:check` 默认只读 cookie 文件；需浏览器复核时用 `npm run douyin:check -- --online`
 
 ## 恢复被改坏的 config
 

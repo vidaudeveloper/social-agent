@@ -61,7 +61,7 @@ npm run deps:check -- --platform xhs-card,youtube,x
 | 能力 | 命令 |
 |------|------|
 | 小红书卡片 | `npm run tool:install` |
-| YouTube / TikTok | `npm run overseas:install` |
+| YouTube / TikTok / 抖音 | `npm run overseas:install` |
 | X | `npm run x:setup` |
 | Reddit | `npm run reddit:setup` |
 | LinkedIn | `npm run linkedin:setup` |

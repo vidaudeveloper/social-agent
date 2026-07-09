@@ -16,10 +16,9 @@
 | 组件 | 用途 | 上游来源 |
 |------|------|----------|
 | Auto-Redbook-Skills | 小红书 MD→卡片 PNG | [comeonzhj/Auto-Redbook-Skills](https://github.com/comeonzhj/Auto-Redbook-Skills) |
-| social-auto-upload | YouTube / TikTok 上传 | [dreammis/social-auto-upload](https://github.com/dreammis/social-auto-upload) |
+| social-auto-upload | YouTube / TikTok / **抖音** 上传 | [dreammis/social-auto-upload](https://github.com/dreammis/social-auto-upload) |
 | gxbvc/linkedin-cli | LinkedIn OAuth 发帖 | [gxbvc/linkedin-cli](https://github.com/gxbvc/linkedin-cli) |
 | reddit-skills | Reddit 扩展桥 | [1146345502/reddit-skills](https://github.com/1146345502/reddit-skills) |
-| PVA | 抖音视频自动化 | [@panda-video-automation/pva](https://www.npmjs.com/package/@panda-video-automation/pva) |
 | pyzhihu-cli | 知乎发布 | 见 `skills/publish/zhihu/` |
 
 ## VidAU 自有部分

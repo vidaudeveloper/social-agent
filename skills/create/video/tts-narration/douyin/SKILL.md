@@ -45,4 +45,4 @@ npm run douyin:create-video -- --voice cn-female -f "D:/path/script.md"
 
 在 `user-profile.md` 的 `## 抖音配置` 设置 `TTS 音色: cn-female`，或命令行 `--voice` 临时覆盖。
 
-创作完成后，用 PVA `npm run douyin:upload` 发布。
+创作完成后，用 `npm run douyin:upload` 发布（SAU + 系统 Chrome）。

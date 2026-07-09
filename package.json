@@ -42,12 +42,9 @@
     "youtube:pipeline": "node skills/publish/youtube/scripts/cli.mjs pipeline",
     "pipeline:douyin": "node skills/publish/douyin/scripts/cli.mjs create-video",
     "douyin:voices": "node skills/publish/douyin/scripts/cli.mjs list-voices",
-    "douyin:setup": "node scripts/run-douyin-setup.mjs",
     "douyin:login": "node scripts/run-douyin.mjs login",
+    "douyin:check": "node scripts/run-douyin.mjs check",
     "douyin:upload": "node scripts/run-douyin.mjs upload",
-    "douyin:sau-login": "node scripts/run-sau-douyin.mjs login",
-    "douyin:sau-check": "node scripts/run-sau-douyin.mjs check",
-    "douyin:sau-upload": "node scripts/run-sau-douyin.mjs upload",
     "review:lint": "node skills/review/scripts/lint.mjs",
     "review:sync-specs": "node skills/review/scripts/sync-publish-specs.mjs",
     "remotion:check": "node scripts/remotion-skill-check.mjs"

@@ -1,56 +1,33 @@
 #!/usr/bin/env node
 /**
- * 抖音 PVA CLI 包装 — login / upload
- * 上游: @panda-video-automation/pva
+ * 抖音 SAU CLI — login / check / upload
+ * 上游: tool/social-auto-upload（系统 Chrome，cookie 在项目 cookies/ 目录）
  */
 import { spawnSync } from 'child_process';
 import { existsSync } from 'fs';
-import { dirname, join, resolve } from 'path';
+import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const profileRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-
-export function defaultPlaywrightBrowsersPath() {
-  if (process.env.PLAYWRIGHT_BROWSERS_PATH) {
-    return process.env.PLAYWRIGHT_BROWSERS_PATH;
-  }
-  if (process.env.PLAYWRIGHT_BROWSERS_ROOT) {
-    return process.env.PLAYWRIGHT_BROWSERS_ROOT;
-  }
-  return join(profileRoot, 'tool/playwright-browsers');
-}
-
-function playwrightHeadlessMarker(browsersPath) {
-  const base = join(browsersPath, 'chromium_headless_shell-1228');
-  const candidates =
-    process.platform === 'win32'
-      ? [join(base, 'chrome-headless-shell-win64/chrome-headless-shell.exe')]
-      : process.platform === 'darwin'
-        ? [
-            join(base, 'chrome-headless-shell-mac-arm64/chrome-headless-shell'),
-            join(base, 'chrome-headless-shell-mac-x64/chrome-headless-shell'),
-          ]
-        : [join(base, 'chrome-headless-shell-linux64/chrome-headless-shell')];
-  return candidates.find((p) => existsSync(p));
-}
-
-function playwrightEnv() {
-  const browsersPath = defaultPlaywrightBrowsersPath();
-  if (!playwrightHeadlessMarker(browsersPath)) {
-    console.error(`Playwright 浏览器未安装: ${browsersPath}`);
-    console.error('请先执行: npm run douyin:setup');
-    console.error('Agent 见: workspace/references/playwright-install-runbook.md');
-    process.exit(2);
-  }
-  return {
-    ...process.env,
-    PLAYWRIGHT_BROWSERS_PATH: browsersPath,
-    PVA_HEADLESS: process.env.PVA_HEADLESS ?? 'false',
-  };
-}
+const sauRoot = resolve(profileRoot, (process.env.SAU_ROOT || 'tool/social-auto-upload').replace(/\\/g, '/'));
+const account = process.env.DOUYIN_ACCOUNT || process.env.SAU_ACCOUNT || 'default';
 
 const args = process.argv.slice(2);
-const cmd = args[0];
+
+function sauEnv() {
+  const chrome =
+    process.env.SAU_CHROME_PATH ||
+    process.env.LOCAL_CHROME_PATH ||
+    (process.platform === 'win32'
+      ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+      : '');
+  return {
+    ...process.env,
+    SAU_ROOT: sauRoot,
+    PYTHONIOENCODING: 'utf-8',
+    ...(chrome && existsSync(chrome) ? { SAU_CHROME_PATH: chrome } : {}),
+  };
+}
 
 function quoteArg(arg) {
   const s = String(arg);
@@ -62,44 +39,73 @@ function quoteArg(arg) {
   return s;
 }
 
-function runPva(pvaArgs) {
-  const shellCmd = ['npx', '-y', '@panda-video-automation/pva', ...pvaArgs].map(quoteArg).join(' ');
-  const result = spawnSync(shellCmd, {
+function runSau(sauArgs) {
+  const cmd = ['uv', 'run', 'sau', 'douyin', ...sauArgs].map(quoteArg).join(' ');
+  const result = spawnSync(cmd, {
+    cwd: sauRoot,
     stdio: 'inherit',
     shell: true,
-    env: playwrightEnv(),
+    env: sauEnv(),
   });
   process.exit(result.status ?? 1);
 }
 
-if (!cmd || cmd === '--help' || cmd === '-h') {
-  console.log(`抖音 PVA CLI
+if (!args.length || args[0] === '--help' || args[0] === '-h') {
+  console.log(`抖音 SAU CLI
 
-  login                     打开 Chrome 登录抖音创作者中心
-  upload --video <mp4>      上传视频（--title / --desc / --tags / --cover）
+  login                     扫码登录（仅一次，勿重复执行）
+  check                     只读 cookie 文件校验（不打开浏览器）
+  check --online            浏览器验证 cookie（可选）
+  upload --video <mp4>      上传视频（--title 必填）
 
-npm: douyin:setup | douyin:login | douyin:upload
+npm: douyin:login | douyin:check | douyin:upload
 
-Playwright 路径: ${defaultPlaywrightBrowsersPath()}
+前置: npm run overseas:install（SAU + 系统 Chrome）
+Cookie: tool/social-auto-upload/cookies/douyin_<account>.json
 
 示例:
+  npm run douyin:login
+  npm run douyin:check
   npm run douyin:upload -- --video "D:/path/video.mp4" --title "标题"`);
   process.exit(0);
 }
 
+const cmd = args[0];
+
 if (cmd === 'login') {
-  console.log('[douyin] PVA 登录 — 请在浏览器中完成抖音创作者中心登录');
-  runPva(['douyin', 'login']);
+  console.log('[douyin] 扫码登录 — 请在弹出的 Chrome 窗口完成登录，勿重复执行 login');
+  runSau(['login', '--account', account, '--headed']);
+}
+
+if (cmd === 'check') {
+  const online = args.includes('--online');
+  const sauArgs = ['check', '--account', account];
+  if (online) sauArgs.push('--online', '--headed');
+  runSau(sauArgs);
 }
 
 if (cmd === 'upload') {
   const rest = args.slice(1);
-  if (!rest.some((a, i) => a === '--video' && rest[i + 1])) {
+  const videoIdx = rest.findIndex((a) => a === '--video' || a === '--file');
+  const titleIdx = rest.findIndex((a) => a === '--title');
+  if (videoIdx < 0 || !rest[videoIdx + 1]) {
     console.error('缺少 --video <mp4绝对路径>');
     process.exit(1);
   }
-  console.log('[douyin] PVA 上传 — 浏览器保持打开，请在页面确认后发布');
-  runPva(['douyin', 'upload', ...rest]);
+  if (titleIdx < 0 || !rest[titleIdx + 1]) {
+    console.error('缺少 --title "标题"');
+    process.exit(1);
+  }
+  const mapped = [];
+  for (let i = 0; i < rest.length; i++) {
+    if (rest[i] === '--video') {
+      mapped.push('--file', rest[++i]);
+    } else {
+      mapped.push(rest[i]);
+    }
+  }
+  console.log('[douyin] 上传 — 仅开一个 Chrome；出现验证码时请手动完成');
+  runSau(['upload-video', '--account', account, '--headed', ...mapped]);
 }
 
 console.error(`未知命令: ${cmd}`);

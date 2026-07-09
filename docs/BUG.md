@@ -1,5 +1,47 @@
 # 变更与修复记录
 
+## 2026-07-09 — Remotion 横屏知识片：配音 AI 感 / 竖屏硬广
+
+**需求**：横屏、知识分享软植入、配音更自然。
+
+**改动**：
+- 画幅改为 1920×1080；场景改为教程信息架构，去掉「立即体验/注册即享」话术。
+- 品牌条改为「跨境网络笔记」栏目感；产品仅在经验段轻提 LycheeIP。
+- TTS：`XiaoxiaoNeural` + rate `-8%` + pitch `-2Hz`；分段合成并插入 0.35s 静音（`scripts/generate-remotion-voiceover.mjs`）。
+- Windows 下 `edge-tts --rate -8%` 会被吞参数，改为 `--rate=-8%` 写法。
+
+**验证**：成片 `out/tiktok-ip-lycheeip.mp4` 1920×1080 · ~74.5s · 6.4MB。
+
+## 2026-07-09 — Remotion 渲染缺 `@remotion/media`
+
+**现象**：复制项目到 `D:\tmp` 后 `npm run still/render` 报错 `Can't resolve '@remotion/media'`（`package.json` 已声明但 `node_modules` 未装全）。
+
+**修复**：在渲染目录执行 `npm install @remotion/media@^4.0.286 --save`，并同步回源项目 `package-lock.json`。
+
+**验证**：`TikTokIpPromo` 渲染成功，`out/tiktok-ip-lycheeip.mp4` 约 49s / 5.5MB。
+
+## 2026-07-09 — 移除抖音 PVA，统一 SAU 发布链路
+
+**现象**：
+- PVA 多次 `login` 堆积 Playwright Chromium → OOM；upload 前 `cookie_auth` 再开浏览器 → 同任务 2～3 个 Chrome。
+- 视频未传完就填标题，发布页表单填写失败。
+
+**修复**：
+- 删除 PVA 全套（`douyin:setup`、`run-sau-douyin.mjs`、`install-douyin-playwright.*`）；`run-douyin.mjs` 仅包装 SAU。
+- `cookie_file_ready()` 只读 JSON 校验；`douyin:check` 默认不开浏览器（`--online` 可选）。
+- `upload` 单 browser context：`validate_base_args` 不再调 `cookie_auth`；`goto` 后 `_assert_upload_page_logged_in`；**先** `_wait_for_video_upload_complete` **再**填标题。
+- `douyin_setup(handle=False)` cookie 有效则零浏览器；`ensure-deps` 抖音 marker 改为 `sau_cli.py`。
+
+**命令**：
+```powershell
+npm run overseas:install
+npm run douyin:login    # 仅一次
+npm run douyin:check    # 只读 cookie
+npm run douyin:upload -- --video "..." --title "..."
+```
+
+---
+
 ## 2026-07-09 — 抖音发布改用 SAU（系统 Chrome，避免 PVA 内存/OOM）
 
 **现象**：

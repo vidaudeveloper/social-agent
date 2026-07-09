@@ -20,7 +20,7 @@
 | **TikTok** | ✅ | `overseas:install` + `TK_PROXY`（国内） | 有头 login → **浏览器登 TikTok** → 终端 **Enter** | `npm run tiktok:check-login` |
 | **Reddit** | ✅ | `npm run reddit:setup` + 装扩展 | Chrome 登 Reddit；**界面必须 English** | `npm run reddit:check-login` |
 | **公众号** | ⏳ | `.env` 配 `WECHAT_APP_ID` / `WECHAT_APP_SECRET` | **无浏览器登录**；API 进草稿箱，你在公众平台后台发布 | — |
-| **抖音** | ⏳ | PVA + ffmpeg | Chrome **手动登录**抖音创作者中心，保持登录态 | 上传时浏览器内确认 |
+| **抖音** | ⏳ | `overseas:install` + ffmpeg + 系统 Chrome | `douyin:login` 扫码一次 | `npm run douyin:check` |
 | **LinkedIn** | ⏳ | `linkedin:setup` + `.env` OAuth | 授权页 **手动登录授权** → 终端 **Enter** | `npm run linkedin:check-login` |
 | **X** | ✅ | `npm run x:setup` | Chrome **手动登 X** → Enter → cookie 存 profile；**勿关浏览器** | `npm run x:check-login` |
 
@@ -57,24 +57,17 @@ npm run zhihu:check-login
 
 ## 抖音
 
-1. **推荐 SAU 发布**（系统 Chrome，cookie 在项目内，省内存）：
-   ```powershell
-   npm run douyin:sau-login    # 扫码一次
-   npm run douyin:sau-check
-   npm run douyin:sau-upload -- --video <mp4绝对路径> --title "标题"
-   ```
-   Cookie：`tool/social-auto-upload/cookies/douyin_default.json`
+```powershell
+npm run overseas:install
+npm run pipeline:douyin -- --file <口播md路径>   # 可选，出片
+npm run douyin:login          # 扫码一次，勿重复执行
+npm run douyin:check          # 只读 cookie，不开浏览器
+npm run douyin:upload -- --video <mp4绝对路径> --title "标题"
+```
 
-2. 备选 PVA（需 `npm run douyin:setup`，独立 Playwright 浏览器）：
-   ```powershell
-   npm run douyin:setup
-   npm run douyin:login
-   npm run douyin:upload -- --video <mp4绝对路径> --title "标题"
-   ```
-
-3. 视频创作：`npm run pipeline:douyin`（ffmpeg，不需 Playwright）
-
-安装卡住见 [`playwright-install-runbook.md`](playwright-install-runbook.md)（仅 PVA 路径）。
+- Cookie：`tool/social-auto-upload/cookies/douyin_default.json`
+- 上传只开 **一个** Chrome；出现验证码时手动完成，勿关浏览器
+- **禁止**多次 `douyin:login`、禁止 PVA / `douyin:setup`
 
 ---
 

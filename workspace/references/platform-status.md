@@ -20,7 +20,7 @@
 | YouTube | social-auto-upload | √ | 按需 `npm run overseas:install` |
 | TikTok | SAU tk_uploader | √ | ⚠️ 国内需 `TK_PROXY`；按需 overseas:install |
 | X (Twitter) | baoyu-post-to-x | √ | ⚠️ 部分账号被平台限发（非 CLI 故障） |
-| 抖音 | PVA + dy-create | × | 代码在仓，未 E2E 验证 |
+| 抖音 | SAU + dy-create | ⚠️ | SAU 上传已测通；风控验证码需人工 |
 | LinkedIn | gxbvc/linkedin-cli | × | OAuth 已接，未 E2E 验证 |
 | 公众号 | baoyu-post-to-wechat（文档） | × | 无本仓 publish skill / install 脚本 |
 | Instagram | review 规则 | × | 仅审核规格，无发布 |
