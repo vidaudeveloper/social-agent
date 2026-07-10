@@ -1,0 +1,65 @@
+# YouTube 脚本分析 schema（v2）
+# Agent 分析后写入 scripts_raw.json 各条目的扩展字段 + HTML #1 深拆区块
+
+videoId: string
+topic: string
+title_pattern: string
+
+hook:
+  type: question | stat | contrarian | story | comparison
+  text: string
+  estimated_seconds: number
+
+structure:
+  hook: string
+  body: string
+  cta: string
+  beats:
+    - name: hook | problem | solution_steps | proof | cta
+      duration_pct: number
+      summary: string
+
+golden_phrases: string[]
+cta_pattern: string
+tags: string[]
+
+engagement:
+  grade: S | A | B | C
+  gradeLabel: string  # 真爆款 | 流量型 | 潜力型 | 普通
+  er: number
+  view_velocity: number
+
+# HTML #1 深拆（Agent 填写）
+deep_dive:
+  viral_points: string[]       # 爆点总结
+  visual_style_note: string    # 画面与风格（缩略图/标题推断）
+  replicability: string        # 能否复刻 / 怎么复刻
+  suggested_owners: string[]   # 建议负责人
+  template_outline: string     # 可提炼模板（节拍公式）
+
+source:
+  videoId: string
+  url: string
+  title: string
+  analyzed_at: string
+
+# scripts_raw.json 单条契约（对齐 workbuddy）
+scripts_raw_entry:
+  id: string
+  title: string
+  channel: string
+  views: string
+  er: string
+  grade: string
+  dur: number
+  topic: string
+  product: string
+  ok: boolean
+  text: string
+  timed: [{ t: string, text: string }]
+  sentences: [{ start: string, end: string, text: string }]
+  structure: { hook: string, body: string, cta: string }
+  golden_phrases: string[]
+  url: string
+  # 可选 Agent 深拆字段
+  deep_dive: object

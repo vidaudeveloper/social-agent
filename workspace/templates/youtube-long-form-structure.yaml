@@ -1,0 +1,27 @@
+# Long-form YouTube script structure template (5–20 min)
+
+carrier: long-form
+duration_min_sec: 300
+duration_max_sec: 1200
+
+beats:
+  - name: hook
+    duration_pct: 10
+    notes: "反常识 / 数字 / 年份；前 30 秒抓住注意力"
+  - name: problem
+    duration_pct: 20
+    notes: "观众痛点或常见误区"
+  - name: solution_steps
+    duration_pct: 50
+    notes: "3–5 个可执行步骤或论据"
+  - name: proof
+    duration_pct: 10
+    notes: "案例、数据或对比"
+  - name: cta
+    duration_pct: 10
+    notes: "评论互动题 / 订阅 / 下一集预告"
+
+title_patterns:
+  - "数字 + 利益点 + 年份"
+  - "How to X without Y"
+  - "X mistakes killing your Y in 2026"

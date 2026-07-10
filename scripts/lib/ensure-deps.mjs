@@ -84,6 +84,18 @@ export const DEP_CHECKS = {
     check: () => existsSync(join(profileRoot, 'tool/social-auto-upload/sau_cli.py')),
     fix: 'npm run overseas:install',
   },
+  'youtube-explore': {
+    label: 'YouTube explore (transcript-api + TubePilot MCP)',
+    check: () => {
+      const r = spawnSync(
+        'uv',
+        ['run', '--with', 'youtube-transcript-api', 'python', '-c', 'import youtube_transcript_api'],
+        { encoding: 'utf8', shell: true },
+      );
+      return r.status === 0;
+    },
+    fix: 'uv pip install youtube-transcript-api；TubePilot 见 workspace/references/youtube-explore-setup.md',
+  },
 };
 
 /**

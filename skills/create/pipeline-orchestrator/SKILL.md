@@ -21,6 +21,7 @@ metadata:
       - publish/linkedin
       - publish/x
       - explore/xiaohongshu
+      - explore/youtube/yt-viral-research
       - review
       - humanizer
 ---
@@ -48,6 +49,7 @@ metadata:
 
 - web_search：不同切入角关键词
 - 小红书 `search-feeds`（explore 层 / XHS Bridge）
+- **YouTube 英文赛道**：`explore/youtube/yt-viral-research`（TubePilot MCP → `youtube:explore`）或读已有 `$HERMES_ROOT/知识库/youtube/{slug}/scripts_raw.json` 与 HTML 报告
 - 知乎热榜（如已登录）
 - 对照 `$HERMES_ROOT/文章/` 近 30 天标题去重
 
@@ -60,6 +62,8 @@ metadata:
 ## Step 3: 母稿生产
 
 按 Step 0 语言偏好决定母稿与改写语言。写入 `$HERMES_ROOT/文章/{平台}/{日期}_{slug}.md`
+
+**YouTube 口播稿**：若存在 `$HERMES_ROOT/知识库/youtube/{slug}/scripts_raw.json` 或 `{slug}_爆款报告.html`，优先作结构/钩子参考（见 `explore/youtube/yt-script-analyze`）。
 
 ## Step 4: 润色 + 排版 + 配图 + 视频（可选）
 

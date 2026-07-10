@@ -19,6 +19,11 @@ const USAGE = `YouTube Skills CLI（仅 sau 单路径）
   create-video             TTS + 合成 16:9 视频（不发布）
   pipeline                 用户画像 → 创作 → 发布 全流程
 
+create-video 参数:
+  --script-file <path>     口播稿 .md（优先于 VIDEO_SCRIPT / 默认稿）
+  --title, -t <text>       标题
+  --slug, -s <slug>        文件名 slug
+
 publish 参数:
   --video, -v <path>       视频绝对路径
   --title, -t <text>       标题

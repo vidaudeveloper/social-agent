@@ -21,7 +21,7 @@ explore → create → review → publish → analytics
 
 | 层 | 前缀示例 |
 |----|----------|
-| explore | `explore/xiaohongshu` |
+| explore | `explore/xiaohongshu`、`explore/youtube` |
 | create | `create/pipeline-orchestrator`、`create/tts-narration`、`create/remotion` |
 | review | `review` |
 | publish | `publish/xiaohongshu`、`publish/youtube` |

@@ -1,7 +1,6 @@
 # Credentials & secrets — NEVER commit
 auth.json
 .env
-.env.EXAMPLE
 
 # Runtime databases & state
 state.db

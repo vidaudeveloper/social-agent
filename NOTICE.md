@@ -20,6 +20,8 @@
 | gxbvc/linkedin-cli | LinkedIn OAuth 发帖 | [gxbvc/linkedin-cli](https://github.com/gxbvc/linkedin-cli) |
 | reddit-skills | Reddit 扩展桥 | [1146345502/reddit-skills](https://github.com/1146345502/reddit-skills) |
 | pyzhihu-cli | 知乎发布 | 见 `skills/publish/zhihu/` |
+| tubepilot (npm MCP) | YouTube explore 爆款发现 | [ixex/tubepilot](https://github.com/ixex/tubepilot) |
+| youtube-transcript-api | YouTube explore 字幕抽取 | [jdepoix/youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) |
 
 ## VidAU 自有部分
 

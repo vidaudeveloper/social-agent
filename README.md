@@ -125,6 +125,7 @@ npm run remotion:check
 | `workspace/references/dependency-policy.md` | 按需安装与 Agent 约束 |
 | `workspace/references/platform-login-quickstart.md` | 各平台登录操作速查 |
 | `workspace/references/publish-confirm-paths.md` | 发布前确认绝对路径规范 |
+| `workspace/references/youtube-explore-setup.md` | YouTube 爆款调研（TubePilot MCP + 字幕 API） |
 | `skills/README.md` | Skills 五层索引 |
 
 ## 目录结构

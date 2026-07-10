@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from 'fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
@@ -33,23 +33,62 @@ Under three thousand dollars budget? Start with TikTok Shop only. Build cash flo
 
 Which stage are you in: TikTok only, DTC only, or dual-store? Comment below.`;
 
+/**
+ * @param {string[]} argv
+ * @returns {Record<string, string>}
+ */
+function parseCreateVideoArgs(argv) {
+  /** @type {Record<string, string>} */
+  const opts = {};
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i];
+    if (a === '--script-file' || a === '--title' || a === '--slug') {
+      opts[a.slice(2)] = argv[++i] ?? '';
+    }
+  }
+  return opts;
+}
+
+/**
+ * @param {string} filePath
+ * @returns {string}
+ */
+function loadVoiceoverFromFile(filePath) {
+  const raw = readFileSync(filePath, 'utf8');
+  const section = raw.match(/##\s*Voiceover Script\s*\n+([\s\S]*?)(?:\n##\s|$)/i);
+  if (section) return section[1].trim();
+  return raw.replace(/^#.*$/m, '').trim();
+}
+
 export async function cmdCreateVideo(argv) {
   const profile = loadUserProfile();
+  const opts = parseCreateVideoArgs(argv);
   const ts = stamp();
-  const slug = process.env.VIDEO_SLUG || 'youtube-video';
-  const text = process.env.VIDEO_SCRIPT || DEFAULT_SCRIPT;
-  const title = process.env.VIDEO_TITLE || 'TikTok Shop + DTC Store: Dual-Store Playbook for 2026';
+  const slug = opts.slug || process.env.VIDEO_SLUG || 'youtube-video';
+  const title =
+    opts.title || process.env.VIDEO_TITLE || 'TikTok Shop + DTC Store: Dual-Store Playbook for 2026';
+
+  let text = process.env.VIDEO_SCRIPT || '';
+  let scriptPath = opts['script-file'] || process.env.VIDEO_SCRIPT_FILE || '';
+
+  if (scriptPath) {
+    text = loadVoiceoverFromFile(scriptPath);
+  } else if (!text) {
+    text = DEFAULT_SCRIPT;
+  }
 
   const scriptDir = join(hermesRoot, '文章', 'YouTube');
   const videoDir = join(hermesRoot, '视频');
   mkdirSync(scriptDir, { recursive: true });
 
-  const scriptPath = join(scriptDir, `${ts}_${slug}.md`);
-  writeFileSync(
-    scriptPath,
-    `# ${title}\n\n## Voiceover Script\n\n${text}\n`,
-    'utf8'
-  );
+  if (!scriptPath) {
+    scriptPath = join(scriptDir, `${ts}_${slug}.md`);
+    writeFileSync(
+      scriptPath,
+      `# ${title}\n\n## Voiceover Script\n\n${text}\n`,
+      'utf8',
+    );
+  }
 
   const { videoPath } = createVideoFromScript({
     text,

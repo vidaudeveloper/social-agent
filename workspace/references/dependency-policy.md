@@ -13,8 +13,9 @@
 | LinkedIn | `tool/linkedin-cli/dist/cli.js` | `npm run linkedin:setup` | 3–6 min |
 | 知乎 CLI | 系统 PATH 有 `zhihu` | `uv tool install pyzhihu-cli` | ~1 min |
 | 抖音 | `tool/social-auto-upload/sau_cli.py` | `npm run overseas:install` | 与 YouTube/TikTok 共用 SAU |
+| YouTube explore | `uv` + `youtube-transcript-api`；TubePilot MCP | `uv pip install youtube-transcript-api` + 配置 MCP | ~1 min |
 
-检查命令：`npm run deps:check -- --platform xhs-card,youtube,tiktok,x,reddit,linkedin,zhihu,douyin`
+检查命令：`npm run deps:check -- --platform xhs-card,youtube,tiktok,x,reddit,linkedin,zhihu,douyin,youtube-explore`
 
 ## Playwright 使用范围
 

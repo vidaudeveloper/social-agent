@@ -1,5 +1,30 @@
 # 变更与修复记录
 
+## 2026-07-10 — YouTube explore 爆款调研技能
+
+**新增**：
+- `skills/explore/youtube/`：`yt-viral-discover`、`yt-transcript-extract`、`yt-script-analyze`、`yt-viral-research`
+- CLI：`npm run youtube:score|extract|research`
+- 配置文档：`workspace/references/youtube-explore-setup.md`（TubePilot MCP + `YOUTUBE_API_KEY` + youtube-transcript-api）
+- `workspace/templates/youtube-long-form-structure.yaml`
+- YouTube `create-video` 支持 `--script-file`
+
+**依赖**：TubePilot（npm MCP）、youtube-transcript-api（pip）；源码不进本仓库。
+
+**联调（2026-07-10）**：新增 `youtube:explore-full` 一键流程、`report-html` 老板报告；yt-dlp 作 discover/字幕补位；YouTube IP 限流时报告降级为简介要点。
+
+## 2026-07-10 — YouTube explore v2 知识库契约
+
+**改造**：
+- 产出统一到 `$HERMES_ROOT/知识库/youtube/{slug}/`：`{slug}_爆款报告.html`、`scripts_raw.json`、`ranked.json`、`raw.json`
+- 全库金句表：`知识库/youtube/金句库.csv`（追加去重）
+- 新管线：`npm run youtube:explore`；`youtube:explore-full` 为 yt-dlp `--fallback` 补位
+- `sentence-rebuild.mjs`：cue → timed/sentences；`score.mjs` 增加 `gradeLabel`（真爆款/流量型/潜力型）
+- `report-boss-html.mjs`：横向排行图 + #1 深拆 + 金句区块
+- Agent 对话只交付 HTML + 路径清单（见 `yt-viral-research/SKILL.md`）
+
+**废弃对用户暴露**：`探索/YouTube/` 时间戳报告为主产出、`golden-phrases.jsonl`、`playbooks/*.md`
+
 ## 2026-07-09 — 清理本地 demo / 废弃工具脚本
 
 **删除（勿进远程仓库）**：
