@@ -37,4 +37,4 @@ metadata:
 - creative-agent 负责：创意成片
 - 回到 social-agent 后执行 `publish/*` 或 computer-use 发布
 
-详见 [`workspace/references/creative-agent-routing.md`](../../../../workspace/references/creative-agent-routing.md)。
+详见 `workspace/references/creative-agent-routing.md`（相对仓库根）。

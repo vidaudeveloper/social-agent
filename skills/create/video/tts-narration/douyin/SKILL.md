@@ -21,7 +21,7 @@ version: 1.0.0
 
 - `uv run edge-tts`
 - `ffmpeg`（含 libass）
-- ~~FFCreator~~：不推荐；高质量视频见 [`create/video/creative-agent/SKILL.md`](../creative-agent/SKILL.md) 或 [`create/video/remotion/SKILL.md`](../remotion/SKILL.md)
+- ~~FFCreator~~：不推荐；高质量视频见 `skills/create/video/creative-agent/` 或 `skills/create/video/remotion/`
 
 ## 命令
 

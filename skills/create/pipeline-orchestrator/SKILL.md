@@ -31,7 +31,7 @@ metadata:
 **触发条件**：用户说「跑一篇内容」「今日选题」「发一篇文章」「帮我分发」「全自动流水线」  
 **不要用于**：只写一篇稿不发布 / 只查热点不创作 / 纯翻译纯美工
 
-**平台状态唯一来源**：[`workspace/references/platform-status.md`](../../../workspace/references/platform-status.md)
+**平台状态唯一来源**：`workspace/references/platform-status.md`（相对仓库根）
 
 ## Step 0: 初始化用户画像
 
@@ -70,7 +70,7 @@ metadata:
 1. **humanizer** 去 AI 味
 2. 小红书先 `npm run pipeline:xhs` → 失败再 tokenware（须用户确认）
 3. 其他平台 → tokenware-image 封面
-4. **视频类型**（用户需要成片时，见 [`create/video/README.md`](../video/README.md)）：
+4. **视频类型**（用户需要成片时，见 `skills/create/video/README.md`）：
    - **TTS 口播**（默认）：`create/tts-narration` → `pipeline:douyin` / `pipeline:tiktok` / youtube `create-video`
    - **Remotion 动效**：`create/remotion` → 独立项目渲染至 `$HERMES_ROOT/视频/remotion/{slug}/`
    - **创意商业片**：切换 `creative-agent` profile（`create/creative-agent`）

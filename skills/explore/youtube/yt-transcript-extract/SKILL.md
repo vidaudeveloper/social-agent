@@ -13,7 +13,7 @@ metadata:
 
 ## 配置
 
-[`workspace/references/youtube-explore-setup.md`](../../../../workspace/references/youtube-explore-setup.md) §3
+`workspace/references/youtube-explore-setup.md` §3（相对仓库根）
 
 ```powershell
 uv pip install youtube-transcript-api

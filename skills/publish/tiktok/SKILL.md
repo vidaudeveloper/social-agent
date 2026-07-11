@@ -19,7 +19,7 @@ version: 1.1.0
 
 | 子技能 | 说明 |
 |--------|------|
-| tt-create | 英文口播 MD → 1080×1920 MP4（见 [`create/video/tts-narration/tiktok`](../../create/video/tts-narration/tiktok/SKILL.md)） |
+| tt-create | 英文口播 MD → 1080×1920 MP4（见 `skills/create/video/tts-narration/tiktok/`） |
 | tt-auth | 登录 / check-login |
 | tt-publish | 上传已有 MP4 |
 

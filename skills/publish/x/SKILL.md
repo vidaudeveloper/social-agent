@@ -20,7 +20,8 @@ metadata:
 ## 技能边界
 
 ```powershell
-node skills/x/scripts/cli.mjs <command>
+node skills/publish/x/scripts/cli.mjs <command>
+# 或：npm run x:login / x:check / x:publish
 ```
 
 ## 子技能
@@ -35,8 +36,8 @@ node skills/x/scripts/cli.mjs <command>
 ```powershell
 npm run overseas:install
 npm run x:login
-node skills/x/scripts/cli.mjs publish --text "Hello from pipeline!" --image "$HERMES_ROOT/图片/X/cover.jpg"
-node skills/x/scripts/cli.mjs publish --file "$HERMES_ROOT/文章/X/post.md"
+npm run x:publish -- --text "Hello from pipeline!" --image "$HERMES_ROOT/图片/X/cover.jpg"
+npm run x:publish -- --file "$HERMES_ROOT/文章/X/post.md"
 ```
 
 ## 与主流水线

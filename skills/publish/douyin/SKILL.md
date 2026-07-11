@@ -35,12 +35,12 @@ version: 1.0.0
 
 | 子技能 | 说明 |
 |--------|------|
-| dy-create | 口播 MD → 1080×1920 MP4（见 [`create/video/tts-narration/douyin`](../../create/video/tts-narration/douyin/SKILL.md)） |
+| dy-create | 口播 MD → 1080×1920 MP4（见 `skills/create/video/tts-narration/douyin/`） |
 
 ## 渲染器
 
 - **默认且推荐**：`ffmpeg` + ASS 花字（黑底、关键词高亮、淡入动画）
-- 复杂成片请用 [`create/video/remotion`](../../create/video/remotion/SKILL.md) 或 [`create/video/creative-agent`](../../create/video/creative-agent/SKILL.md)
+- 复杂成片请用 `skills/create/video/remotion/` 或 `skills/create/video/creative-agent/`
 - 强制：`$env:DOUYIN_RENDERER = "ffmpeg"`
 
 ## 依赖

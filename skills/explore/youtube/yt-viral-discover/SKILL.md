@@ -15,7 +15,7 @@ metadata:
 
 ## 配置
 
-**必须先读**：[`workspace/references/youtube-explore-setup.md`](../../../../workspace/references/youtube-explore-setup.md)
+**必须先读**：`workspace/references/youtube-explore-setup.md`（相对仓库根）
 
 - TubePilot MCP 需配置 `YOUTUBE_API_KEY`
 - 缺 key 时停止，引导用户自行申请

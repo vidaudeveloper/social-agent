@@ -30,7 +30,7 @@ metadata:
 
 见 [`references/analysis-schema.yaml`](references/analysis-schema.yaml)
 
-通用结构模板：[`workspace/templates/youtube-long-form-structure.yaml`](../../../../workspace/templates/youtube-long-form-structure.yaml)
+通用结构模板：`workspace/templates/youtube-long-form-structure.yaml`（相对仓库根）
 
 ## Agent 必做
 

@@ -10,7 +10,7 @@ metadata:
 
 # 知乎 Skills（HTML 发布）
 
-> **写稿与格式规则**以 [`review/rules/zhihu.yaml`](../../review/rules/zhihu.yaml) 为准；发布前建议 `npm run review:lint -- --platform zhihu --file <文稿>`。
+> **写稿与格式规则**以 `skills/review/rules/zhihu.yaml` 为准；发布前建议 `npm run review:lint -- --platform zhihu --file <文稿>`。
 
 ## 为何不用 `zhihu article` 直传 .md
 

@@ -85,7 +85,7 @@ npm run youtube:publish -- --video "$HERMES_ROOT/视频/xxx.mp4" --title "标题
 | Hermes ID | 路径 | 用途 |
 |-----------|------|------|
 | `publish/youtube/yt-auth` | [skills/yt-auth/SKILL.md](./skills/yt-auth/SKILL.md) | login / check-login |
-| `publish/youtube/yt-create` | [create/video/tts-narration/youtube/SKILL.md](../../create/video/tts-narration/youtube/SKILL.md) | create-video（TTS 口播） |
+| `publish/youtube/yt-create` | `skills/create/video/tts-narration/youtube/SKILL.md` | create-video（TTS 口播） |
 | `publish/youtube/yt-publish` | [skills/yt-publish/SKILL.md](./skills/yt-publish/SKILL.md) | publish |
 | `publish/youtube/yt-pipeline` | [skills/yt-pipeline/SKILL.md](./skills/yt-pipeline/SKILL.md) | pipeline 全流程 |
 | `publish/youtube/youtube-upload` | [skills/youtube-upload/SKILL.md](./skills/youtube-upload/SKILL.md) | 上传契约与运行前提 |

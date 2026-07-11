@@ -10,6 +10,8 @@
     "tool:install": "node scripts/run-tool-install.mjs",
     "pipeline:xhs": "node scripts/pipeline-xhs.mjs",
     "xhs:card-render": "node scripts/run-xhs-card.mjs",
+    "image:check-key": "uv run python skills/create/image/scripts/cli.py check-key",
+    "image:generate": "uv run python skills/create/image/scripts/cli.py generate",
     "overseas:install": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-overseas-tools.ps1",
     "reddit:setup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-reddit-tools.ps1",
     "reddit:check-login": "node skills/publish/reddit/scripts/cli.mjs login",

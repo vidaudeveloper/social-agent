@@ -18,7 +18,7 @@ metadata:
 
 ## 配置
 
-[`workspace/references/youtube-explore-setup.md`](../../../../workspace/references/youtube-explore-setup.md)
+`workspace/references/youtube-explore-setup.md`（相对仓库根）
 
 ## 端到端流程
 
@@ -48,7 +48,7 @@ npm run youtube:explore-full -- --topic tiktok-shop --keyword "TikTok Shop 2026"
 
 ### Step 1 — 发现（TubePilot MCP）
 
-按 [`yt-viral-discover`](../yt-viral-discover/SKILL.md) 调用 MCP，保存：
+按 `yt-viral-discover`（`skills/explore/youtube/yt-viral-discover/`）调用 MCP，保存：
 
 `$HERMES_ROOT/知识库/youtube/{topic_slug}/raw.json`
 
@@ -73,7 +73,7 @@ npm run youtube:research -- --from ".../ranked.json" --topic {slug}
 
 ### Step 4 — 分析沉淀（Agent）
 
-切换 [`yt-script-analyze`](../yt-script-analyze/SKILL.md)，读 `scripts_raw.json`，为 Top 5（至少 #1）补充：
+切换 `yt-script-analyze`（`skills/explore/youtube/yt-script-analyze/`），读 `scripts_raw.json`，为 Top 5（至少 #1）补充：
 
 - `structure.hook / body / cta`
 - `golden_phrases[]`
@@ -103,4 +103,4 @@ npm run youtube:research -- --from ".../ranked.json" --topic {slug}
 
 ## 选题规则
 
-遵循 [`workspace/references/topic-research-diversity.md`](../../../../workspace/references/topic-research-diversity.md)。
+遵循 `workspace/references/topic-research-diversity.md`（相对仓库根）。

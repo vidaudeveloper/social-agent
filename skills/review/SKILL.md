@@ -98,7 +98,7 @@ npm run review:lint -- --platform <platform> --file "<content_file>" [--carrier 
 
 ## 与管线的关系
 
-[`pipeline-orchestrator`](../create/pipeline-orchestrator/SKILL.md) 在 Step 4 与 Step 5 之间可选调用本技能（Step 4.5）。管线内仅引用技能名，**不重复**手册条文。
+`pipeline-orchestrator`（`skills/create/pipeline-orchestrator/`）在 Step 4 与 Step 5 之间可选调用本技能（Step 4.5）。管线内仅引用技能名，**不重复**手册条文。
 
 ## 常见陷阱
 

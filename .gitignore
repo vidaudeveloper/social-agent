@@ -75,3 +75,6 @@ Thumbs.db
 # Logs
 errors.log
 .hermes_history
+
+# Local-only bug log — do not push
+docs/BUG.md

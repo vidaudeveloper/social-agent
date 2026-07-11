@@ -33,7 +33,7 @@ metadata:
 验证：
 
 ```powershell
-uv run python skills/image/scripts/cli.py check-key
+npm run image:check-key
 ```
 
 ## 平台尺寸
@@ -53,13 +53,13 @@ uv run python skills/image/scripts/cli.py check-key
 
 ```powershell
 # 知乎封面
-uv run python skills/image/scripts/cli.py generate `
+npm run image:generate -- `
   --platform zhihu `
   --prompt "TK小店选品趋势信息图，现代扁平风，中文标题" `
   --out "$HERMES_ROOT/图片/知乎/20260630_cover.png"
 
 # 小红书卡片
-uv run python skills/image/scripts/cli.py generate `
+npm run image:generate -- `
   --platform xiaohongshu `
   --prompt "竖版知识卡片，3条选品技巧，简洁配色" `
   --out "$HERMES_ROOT/图片/小红书/card1.jpg"
