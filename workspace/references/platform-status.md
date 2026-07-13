@@ -22,7 +22,7 @@
 | X (Twitter) | baoyu-post-to-x | √ | ⚠️ 部分账号被平台限发（非 CLI 故障） |
 | 抖音 | SAU + dy-create | ⚠️ | SAU 上传已测通；风控验证码需人工 |
 | LinkedIn | gxbvc/linkedin-cli | × | OAuth 已接，未 E2E 验证 |
-| 公众号 | baoyu-post-to-wechat（文档） | × | 无本仓 publish skill / install 脚本 |
+| 公众号 | 本仓 `skills/publish/wechat`（微信草稿 API） | √ | 默认 `draft_only`（草稿已 E2E）；正式群发建议后台手动；`full_publish` 可选且≠后台手动发 |
 | Instagram | review 规则 | × | 仅审核规格，无发布 |
 | Facebook | review 规则 | × | 仅审核规格，无发布 |
 

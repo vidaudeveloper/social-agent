@@ -14,8 +14,10 @@
 | 知乎 CLI | 系统 PATH 有 `zhihu` | `uv tool install pyzhihu-cli` | ~1 min |
 | 抖音 | `tool/social-auto-upload/sau_cli.py` | `npm run overseas:install` | 与 YouTube/TikTok 共用 SAU |
 | YouTube explore | `uv` + `youtube-transcript-api`；TubePilot MCP | `uv pip install youtube-transcript-api` + 配置 MCP | ~1 min |
+| 公众号 | Node 内置 `fetch` + `.env` 密钥（无额外安装） | 配置 `WECHAT_APP_ID` / `WECHAT_APP_SECRET` + IP 白名单 | — |
 
-检查命令：`npm run deps:check -- --platform xhs-card,youtube,tiktok,x,reddit,linkedin,zhihu,douyin,youtube-explore`
+检查命令：`npm run deps:check -- --platform xhs-card,youtube,tiktok,x,reddit,linkedin,zhihu,douyin,youtube-explore`  
+公众号验密钥：`npm run wechat:check-login`
 
 ## Playwright 使用范围
 

@@ -12,5 +12,6 @@
 | LinkedIn | [`linkedin/`](linkedin/) |
 | X | [`x/`](x/) |
 | 抖音 | [`douyin/`](douyin/) |
+| 公众号 | [`wechat/`](wechat/) |
 
 登录速查：[`workspace/references/platform-login-quickstart.md`](../../workspace/references/platform-login-quickstart.md)

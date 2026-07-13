@@ -41,8 +41,8 @@ Step 5: 自动发布 — 各平台 CLI（失败不阻塞全局）
 
 **平台状态唯一来源**：[`workspace/references/platform-status.md`](workspace/references/platform-status.md)
 
-**√ 可自动发布**：知乎、小红书、Reddit、YouTube、TikTok、X（baoyu）。  
-**× 默认只出稿**：抖音、公众号、LinkedIn。
+**√ 可自动发布**：知乎、小红书、Reddit、YouTube、TikTok、X（baoyu）、公众号（默认进草稿）。  
+**× 默认只出稿**：抖音、LinkedIn。
 
 **关键约束**：
 - **配置保护（最高优先级）**：禁止修改 `config.yaml` 的 `model`/`providers` 段；禁止 `switch_model`；API 403 时提示用户查 `.env`/tokenware，不得自行换模型或改 `base_url`

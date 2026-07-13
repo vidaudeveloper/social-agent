@@ -19,7 +19,7 @@
 | **YouTube** | ✅ | `npm run overseas:install` | 有头 login → **浏览器登 Google** → 终端 **Enter** | cookie 在 `tool/social-auto-upload/cookies/` |
 | **TikTok** | ✅ | `overseas:install` + `TK_PROXY`（国内） | 有头 login → **浏览器登 TikTok** → 终端 **Enter** | `npm run tiktok:check-login` |
 | **Reddit** | ✅ | `npm run reddit:setup` + 装扩展 | Chrome 登 Reddit；**界面必须 English** | `npm run reddit:check-login` |
-| **公众号** | ⏳ | `.env` 配 `WECHAT_APP_ID` / `WECHAT_APP_SECRET` | **无浏览器登录**；API 进草稿箱，你在公众平台后台发布 | — |
+| **公众号** | ✅ | `.env` 配 `WECHAT_APP_ID` / `WECHAT_APP_SECRET` + IP 白名单 | **无浏览器登录**；API 进草稿箱，你在公众平台后台发布 | `npm run wechat:check-login` |
 | **抖音** | ⏳ | `overseas:install` + ffmpeg + 系统 Chrome | `douyin:login` 扫码一次 | `npm run douyin:check` |
 | **LinkedIn** | ⏳ | `linkedin:setup` + `.env` OAuth | 授权页 **手动登录授权** → 终端 **Enter** | `npm run linkedin:check-login` |
 | **X** | ✅ | `npm run x:setup` | Chrome **手动登 X** → Enter → cookie 存 profile；**勿关浏览器** | `npm run x:check-login` |
@@ -50,8 +50,14 @@ npm run zhihu:check-login
 
 ## 公众号
 
-在 Hermes `.env` 配置服务号 `WECHAT_APP_ID` / `WECHAT_APP_SECRET`。  
-发布走 API 进**草稿箱**，你在 [微信公众平台](https://mp.weixin.qq.com/) 后台审阅后群发。
+在 Hermes `.env` 配置服务号 `WECHAT_APP_ID` / `WECHAT_APP_SECRET`，并在公众平台把本机出口 IP 加入白名单。
+
+```powershell
+npm run wechat:check-login
+npm run wechat:publish -- --file "$HERMES_ROOT/文章/公众号/xxx.md" --mode draft_only
+```
+
+发布走 API 进**草稿箱**，你在 [微信公众平台](https://mp.weixin.qq.com/) 后台审阅后群发。`--mode full_publish` 仅测试用（API 成功 ≠ 后台手动发布首页行为）。
 
 ---
 

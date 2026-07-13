@@ -90,8 +90,8 @@ metadata:
 1. 对照 `platform-login-quickstart.md` 检查登录态
 2. `npm run deps:check -- --platform ...`（缺依赖则停止，见 `dependency-policy.md`）
 
-**√ 可自动发布**：知乎、小红书、Reddit、YouTube、TikTok、X。  
-**× 默认只出稿**：抖音、公众号、LinkedIn。
+**√ 可自动发布**：知乎、小红书、Reddit、YouTube、TikTok、X、公众号（默认草稿）。  
+**× 默认只出稿**：抖音、LinkedIn。
 
 | 平台 | 命令 |
 |------|------|
@@ -102,6 +102,7 @@ metadata:
 | Reddit | `npm run reddit:publish` |
 | LinkedIn | `npm run linkedin:publish` |
 | X | `npm run x:publish` |
+| 公众号 | `npm run wechat:publish -- --file ... --mode draft_only` |
 
 **规则**：失败不阻塞全局；间隔 5–10 分钟；缺依赖禁止找替代方案。
 

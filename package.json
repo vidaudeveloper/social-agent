@@ -55,6 +55,8 @@
     "douyin:upload": "node scripts/run-douyin.mjs upload",
     "review:lint": "node skills/review/scripts/lint.mjs",
     "review:sync-specs": "node skills/review/scripts/sync-publish-specs.mjs",
-    "remotion:check": "node scripts/remotion-skill-check.mjs"
+    "remotion:check": "node scripts/remotion-skill-check.mjs",
+    "wechat:check-login": "node skills/publish/wechat/scripts/cli.mjs check-login",
+    "wechat:publish": "node skills/publish/wechat/scripts/cli.mjs publish"
   }
 }
