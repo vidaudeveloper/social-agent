@@ -401,7 +401,8 @@ See [rules/voiceover.md](rules/voiceover.md) for adding AI-generated voiceover t
 3. 按本 SKILL 与 `rules/` 编写 Composition
 4. 预览：`npx remotion studio`
 5. 渲染：`npx remotion render [composition-id] out/video.mp4`
-6. 回到 social-agent Step 5 用 `publish/*` 或 computer-use 发布
+6. **成片交付**：优先让用户预览；做不到则给出 MP4 **绝对路径**
+7. 回到 social-agent Step 5 用 `publish/*` 或 computer-use 发布
 
 ### 技能检查
 
@@ -430,3 +431,4 @@ npm run remotion:check
 3. 抓真图 / 写 `beats.ts` → 逐 beat 配音 → `Series` 对齐声画
 4. 开场要冲击力大标题；动效库混用；实操用 `ScreenshotFocus` 托底
 5. 参考 `content/视频/remotion/morelogin-tutorial/`（**叙事 v10 + 视觉 v9**）
+6. **渲染完成后必须给用户预览；无法预览则发送成片绝对路径**（见 tutorial-beat「成片后必须给用户看」）
