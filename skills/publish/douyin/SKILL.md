@@ -35,7 +35,7 @@ version: 1.0.0
 
 | 子技能 | 说明 |
 |--------|------|
-| dy-create | 口播 MD → 1080×1920 MP4（见 `skills/create/video/tts-narration/douyin/`） |
+| dy-create（路径 `create/video/tts-narration/douyin`） | 口播 MD → 1080×1920 MP4 |
 
 ## 渲染器
 

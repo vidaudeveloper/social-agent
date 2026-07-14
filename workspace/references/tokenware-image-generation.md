@@ -1,6 +1,6 @@
 # Tokenware AI 生图
 
-> 配图请加载 **`tokenware-image`** 技能（`skills/image/skills/tokenware-image/SKILL.md`）。  
+> 配图请加载 **`tokenware-image`** 技能（`skills/create/image/skills/tokenware-image/SKILL.md`）。  
 > 本文件为 API 速查；完整流程见子技能文档。
 
 ## 调用地址
@@ -14,7 +14,8 @@ POST https://www.tokenware.ai/v1/images/generations
 ## CLI（推荐）
 
 ```powershell
-uv run python skills/image/scripts/cli.py generate --platform zhihu --prompt "..." --out "$HERMES_ROOT/图片/知乎/cover.png"
+npm run image:generate -- --platform zhihu --prompt "..." --out "$HERMES_ROOT/图片/知乎/cover.png"
+# 等效：uv run python skills/create/image/scripts/cli.py generate ...
 npm run image:check-key
 ```
 

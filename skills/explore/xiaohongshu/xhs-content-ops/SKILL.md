@@ -5,6 +5,11 @@ description: |
   当用户要求竞品分析、热点追踪、内容创作、互动管理等复合任务时触发。
 version: 1.0.0
 metadata:
+  hermes:
+    tags: [xiaohongshu, explore, ops]
+    related_skills:
+      - explore/xiaohongshu/xhs-explore
+      - publish/xiaohongshu
   openclaw:
     requires:
       bins:
@@ -14,6 +19,7 @@ metadata:
     os:
       - darwin
       - linux
+      - windows
 ---
 
 # 小红书复合内容运营

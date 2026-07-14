@@ -19,8 +19,8 @@ version: 1.1.0
 
 | 子技能 | 说明 |
 |--------|------|
-| tt-create | 英文口播 MD → 1080×1920 MP4（见 `skills/create/video/tts-narration/tiktok/`） |
-| tt-auth | 登录 / check-login |
+| tt-create（路径 `create/video/tts-narration/tiktok`） | 英文口播 MD → 1080×1920 MP4 |
+| tt-auth | 登录 / check-login（`skills/publish/tiktok/skills/tt-auth/`） |
 | tt-publish | 上传已有 MP4 |
 
 ## 视频创作
@@ -50,4 +50,4 @@ npm run tiktok:publish -- --video "$HERMES_ROOT/视频/TikTok/xxx/yyy.mp4" --tit
 - `TIKTOK_MAX_DURATION_SEC` — 时长上限（默认 90）
 - `TIKTOK_TTS_VOICE` — 音色预设（如 us-female）
 
-国内访问 TikTok：Playwright 不吃系统代理，页面会一直加载。见 `skills/tt-auth/SKILL.md`。
+国内访问 TikTok：Playwright 不吃系统代理，页面会一直加载。见 `skills/publish/tiktok/skills/tt-auth/SKILL.md`。

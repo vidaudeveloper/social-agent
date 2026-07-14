@@ -14,6 +14,7 @@ metadata:
     os:
       - darwin
       - linux
+      - windows
 ---
 
 # 小红书社交互动

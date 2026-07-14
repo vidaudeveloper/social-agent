@@ -2,7 +2,14 @@
 name: tt-create
 description: |
   TikTok 竖版视频创作：黑底花字 + 英文 Edge TTS + ffmpeg，时长限制约 90 秒，不发布。
+  Hermes 路径：create/video/tts-narration/tiktok。
 version: 1.0.0
+metadata:
+  hermes:
+    tags: [video, tts, tiktok, create]
+    related_skills:
+      - create/video/tts-narration
+      - publish/tiktok
 ---
 
 # TikTok 视频创作

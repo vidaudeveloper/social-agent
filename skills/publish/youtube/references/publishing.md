@@ -39,10 +39,13 @@ YT_PROXY = "http://127.0.0.1:7890"  # 改成你的代理端口
 ```
 skills/publish/youtube/
 ├── SKILL.md
-├── skills/yt-auth|yt-publish|yt-create|yt-pipeline/
+├── skills/yt-auth|yt-publish|yt-pipeline|youtube-upload/
 ├── scripts/cli.mjs
 ├── scripts/commands/     # auth.mjs, publish.mjs, pipeline.mjs
 └── references/publishing.md
+
+# TTS 口播创作（create 层，不在本目录）：
+#   skills/create/video/tts-narration/youtube/SKILL.md  (name: yt-create)
 
 tool/social-auto-upload/
 ├── sau_cli.py

@@ -8,13 +8,13 @@
 
 ## 功能概览
 
-| 技能 | 说明 | 核心能力 |
-|------|------|----------|
-| **xhs-auth** | 认证管理 | 登录检查、扫码登录、手机验证码登录 |
-| **xhs-publish** | 内容发布 | 图文 / 视频 / 长文发布、定时发布、分步预览 |
-| **xhs-explore** | 内容发现 | 关键词搜索、笔记详情、用户主页、首页推荐 |
-| **xhs-interact** | 社交互动 | 评论、回复、点赞、收藏 |
-| **xhs-content-ops** | 复合运营 | 竞品分析、热点追踪、批量互动、内容创作 |
+| 技能 | 说明 | 核心能力 | 路径 |
+|------|------|----------|------|
+| **xhs-auth** | 认证管理 | 登录检查、扫码登录、手机验证码登录 | `publish/xiaohongshu/skills/xhs-auth` |
+| **xhs-publish** | 内容发布 | 图文 / 视频 / 长文发布、定时发布、分步预览 | `publish/xiaohongshu/skills/xhs-publish` |
+| **xhs-explore** | 内容发现 | 关键词搜索、笔记详情、用户主页、首页推荐 | `explore/xiaohongshu/xhs-explore` |
+| **xhs-interact** | 社交互动 | 评论、回复、点赞、收藏 | `publish/xiaohongshu/skills/xhs-interact` |
+| **xhs-content-ops** | 复合运营 | 竞品分析、热点追踪、批量互动、内容创作 | `explore/xiaohongshu/xhs-content-ops` |
 
 支持**连贯操作** — 你可以用自然语言下达复合指令，Agent 会自动串联多个技能完成任务。例如：
 
@@ -182,15 +182,17 @@ skills/publish/xiaohongshu/
 │   ├── image_downloader.py         # 媒体下载（SHA256 缓存）
 │   ├── title_utils.py              # UTF-16 标题长度计算
 │   └── run_lock.py                 # 单实例锁
-├── skills/                         # Claude Code Skills 定义
+├── skills/                         # 发布/认证/互动子技能
 │   ├── xhs-auth/SKILL.md
 │   ├── xhs-publish/SKILL.md
-│   ├── xhs-explore/SKILL.md
-│   ├── xhs-interact/SKILL.md
-│   └── xhs-content-ops/SKILL.md
+│   └── xhs-interact/SKILL.md
 ├── SKILL.md                        # 技能统一入口（路由到子技能）
 ├── pyproject.toml
 └── README.md
+
+# 内容发现 / 复合运营在 explore 层（不在本目录）：
+#   skills/explore/xiaohongshu/xhs-explore/SKILL.md
+#   skills/explore/xiaohongshu/xhs-content-ops/SKILL.md
 ```
 
 ## 开发

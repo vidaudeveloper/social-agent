@@ -5,6 +5,11 @@ description: |
   当用户要求搜索小红书、查看笔记详情、浏览首页、查看用户主页时触发。
 version: 1.0.0
 metadata:
+  hermes:
+    tags: [xiaohongshu, explore, search]
+    related_skills:
+      - explore/xiaohongshu/xhs-content-ops
+      - publish/xiaohongshu
   openclaw:
     requires:
       bins:
@@ -14,6 +19,7 @@ metadata:
     os:
       - darwin
       - linux
+      - windows
 ---
 
 # 小红书内容发现

@@ -16,6 +16,7 @@ metadata:
     os:
       - darwin
       - linux
+      - windows
 ---
 
 # 小红书自动化 Skills
@@ -37,11 +38,11 @@ metadata:
 
 按优先级判断用户意图，路由到对应子技能：
 
-1. **认证相关**（"登录 / 检查登录 / 切换账号"）→ 执行 `xhs-auth` 技能。
-2. **内容发布**（"发布 / 发帖 / 上传图文 / 上传视频"）→ 执行 `xhs-publish` 技能。
-3. **搜索发现**（"搜索笔记 / 查看详情 / 浏览首页 / 查看用户"）→ 执行 `xhs-explore` 技能。
-4. **社交互动**（"评论 / 回复 / 点赞 / 收藏"）→ 执行 `xhs-interact` 技能。
-5. **复合运营**（"竞品分析 / 热点追踪 / 批量互动 / 一键创作"）→ 执行 `xhs-content-ops` 技能。
+1. **认证相关**（"登录 / 检查登录 / 切换账号"）→ `xhs-auth`（`publish/xiaohongshu/skills/xhs-auth`）。
+2. **内容发布**（"发布 / 发帖 / 上传图文 / 上传视频"）→ `xhs-publish`（`publish/xiaohongshu/skills/xhs-publish`）。
+3. **搜索发现**（"搜索笔记 / 查看详情 / 浏览首页 / 查看用户"）→ `xhs-explore`（`explore/xiaohongshu/xhs-explore`）。
+4. **社交互动**（"评论 / 回复 / 点赞 / 收藏"）→ `xhs-interact`（`publish/xiaohongshu/skills/xhs-interact`）。
+5. **复合运营**（"竞品分析 / 热点追踪 / 批量互动 / 一键创作"）→ `xhs-content-ops`（`explore/xiaohongshu/xhs-content-ops`）。
 
 ## 全局约束
 
