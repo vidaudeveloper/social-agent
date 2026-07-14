@@ -8,7 +8,6 @@ metadata:
   hermes:
     tags: [pipeline, content-pipeline, create, orchestrator]
     related_skills:
-      - create/video/tts-narration
       - create/video/remotion
       - create/video/creative-agent
       - create/image
@@ -70,10 +69,10 @@ metadata:
 1. **humanizer** 去 AI 味
 2. 小红书先 `npm run pipeline:xhs` → 失败再 tokenware（须用户确认）
 3. 其他平台 → tokenware-image 封面
-4. **视频类型**（用户需要成片时，见 `skills/create/video/README.md`）：
-   - **TTS 口播**（默认）：`create/tts-narration` → `pipeline:douyin` / `pipeline:tiktok` / youtube `create-video`
-   - **Remotion 动效**：`create/remotion` → 独立项目渲染至 `$HERMES_ROOT/视频/remotion/{slug}/`
-   - **创意商业片**：切换 `creative-agent` profile（`create/creative-agent`）
+4. **视频类型**（用户需要成片时）：**必须先让用户二选一**，未选不准开工：
+   - **Remotion 动画教程/动效片**：`create/remotion`（教程必载 `rules/tutorial-beat-video.md`，含两问确认）→ `$HERMES_ROOT/视频/remotion/{slug}/`
+   - **Creative 创意商业片**：`create/creative-agent`
+   - ~~TTS 黑底花字口播~~：**不再作为默认或推荐**；教程场景禁止用地路径
 
 ## Step 4.5: 发布前审核
 

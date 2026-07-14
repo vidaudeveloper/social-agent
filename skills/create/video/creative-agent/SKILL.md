@@ -1,16 +1,16 @@
 ---
 name: creative-agent
 description: |
-  高质量创意视频路由 — 趋势短片、产品 URL 成片、MCP 创意能力。用户要「创意视频」「商业短片」「不用口播花字」时激活。
-  实际渲染在 creative-agent profile 完成，本技能仅路由与路径约定。
-version: 1.0.0
+  高质量创意视频路由 — 趋势短片、产品 URL 成片、MCP 创意能力。
+  用户要「创意视频」「商业短片」时激活；与 Remotion 教程二选一时选本技能。
+  教程/操作演示请用 create/remotion + tutorial-beat-video。对用户一律简体中文。
+version: 1.1.0
 author: social-agent
 license: MIT
 metadata:
   hermes:
     tags: [video, creative, routing]
     related_skills:
-      - create/tts-narration
       - create/remotion
       - create/pipeline-orchestrator
 ---
@@ -23,7 +23,9 @@ metadata:
 
 - 趋势短片、产品 URL 一键成片
 - 需要 Vision / MCP 创意编排
-- TTS 花字或 Remotion 无法满足质量要求
+- Remotion 教程结构不适用的商业创意片
+
+用户「做视频」时须先与 Remotion **二选一**；未选不准开工。
 
 ## 操作步骤
 

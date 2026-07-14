@@ -1,24 +1,30 @@
 ---
 name: remotion
 description: |
-  Remotion 程序化视频 — React/TypeScript 合成 MP4。用户要「Remotion 成片」「动效视频」「多场景转场」时激活。
-  简单口播请用 create/tts-narration；商业创意片请用 create/creative-agent。
-version: 1.0.0
+  Remotion 程序化视频 — React/TypeScript 合成 MP4。
+  用户要「Remotion」「动效视频」「教程视频」「操作演示」「配置教程」「怎么用 XX」时激活。
+  网站/软件操作教程必须先加载 rules/tutorial-beat-video.md（冲击开场、大字多色、声画同步、差异化动效）。
+  商业创意片请用 create/creative-agent。不要用黑底花字口播做教程。
+  对用户对话一律简体中文。
+version: 1.1.0
 author: remotion-dev (rules vendored)
 license: MIT
 metadata:
   hermes:
-    tags: [video, remotion, react, animation, composition]
+    tags: [video, remotion, react, animation, composition, tutorial]
     related_skills:
-      - create/tts-narration
       - create/creative-agent
       - create/pipeline-orchestrator
-  tags: remotion, video, react, animation, composition
+  tags: remotion, video, react, animation, composition, tutorial
 ---
+
+## 对用户语言
+
+与用户确认、分镜、验收说明：**一律简体中文**。代码、路径、CLI、库名可英文。
 
 ## When to use
 
-Use this skill whenever you are dealing with Remotion code to obtain the domain-specific knowledge.
+Use this skill whenever you are dealing with Remotion code, or when the user wants a **tutorial / how-to / configuration demo video** (not a black-screen caption口播片).
 
 ## New project setup
 
@@ -32,7 +38,9 @@ Replace `my-video` with a suitable project name.
 
 ## Designing a video
 
-Before designing visual scenes, layouts, promos, motion graphics, or text-heavy videos, load [rules/video-layout.md](rules/video-layout.md) for video-first layout and text sizing guidance.
+For **website/software tutorial videos** (how-to, configuration, one sentence per beat), **always** load [rules/tutorial-beat-video.md](rules/tutorial-beat-video.md) first — including the 2-question gate, impact opening, AV sync, and differentiated motion. Reference: `content/视频/remotion/morelogin-tutorial/`（叙事 v10 + 视觉 v9）. Default 1920×1080, do not ask.
+
+Before designing other visual scenes, layouts, promos, or text-heavy non-tutorial videos, load [rules/video-layout.md](rules/video-layout.md).
 
 Animate properties using `useCurrentFrame()` and `interpolate()`. Prefer `interpolate()` over `spring()` unless physics-based motion is explicitly needed. Use `Easing.bezier()` to customize timing, including jumpy or overshooting motion.
 
@@ -401,10 +409,24 @@ See [rules/voiceover.md](rules/voiceover.md) for adding AI-generated voiceover t
 npm run remotion:check
 ```
 
-### 与 tts-narration 选型
+### 视频类型选型（强制）
+
+用户要成片时，**先问选哪一种**（未选不准开工）：
 
 | 需求 | 选 |
 |------|-----|
-| 快速口播、黑底花字 | `create/tts-narration` |
-| 品牌动效、图表、精细转场 | `create/remotion`（本技能） |
-| 全自动创意商业片 | `create/creative-agent` |
+| **网站/软件操作教程**、一句一镜、信息图+真截图 | `create/remotion` + [rules/tutorial-beat-video.md](rules/tutorial-beat-video.md) |
+| 品牌动效、图表、精细转场（非教程） | `create/remotion` + [rules/video-layout.md](rules/video-layout.md) |
+| 创意商业短片、趋势片 | `create/creative-agent` |
+
+教程片**默认走 Remotion**，不要落到黑底花字口播。
+
+### 教程片快速路径
+
+用户要「教程 / 操作演示 / 配置 / 怎么用」时：
+
+1. 读 [rules/tutorial-beat-video.md](rules/tutorial-beat-video.md)（**整份**，含两问门闩）
+2. 问完两问 → 分镜表（旁白\|画面分列）→ 用户确认
+3. 抓真图 / 写 `beats.ts` → 逐 beat 配音 → `Series` 对齐声画
+4. 开场要冲击力大标题；动效库混用；实操用 `ScreenshotFocus` 托底
+5. 参考 `content/视频/remotion/morelogin-tutorial/`（**叙事 v10 + 视觉 v9**）

@@ -1,33 +1,30 @@
 # create/video — 视频类型索引
 
-按**成片方式**划分，不按平台划分。平台差异在 `tts-narration/` 子技能中说明。
-
 ```text
-用户要出视频 → 先选类型 → 再选平台/参数
+用户要出视频 → 先选类型（强制）→ Remotion 教程再问两问 → 再制作
 ```
 
 | 类型 | 路径 | 适用场景 | Hermes 前缀 |
 |------|------|----------|-------------|
-| **TTS 口播** | [`tts-narration/`](tts-narration/) | 纯文字 + Edge TTS + ffmpeg 花字/横版 | `create/tts-narration` |
-| **Remotion** | [`remotion/`](remotion/) | React 程序化动效、多场景、品牌模板 | `create/remotion` |
-| **创意成片** | [`creative-agent/`](creative-agent/) | 趋势片、产品 URL、MCP 创意（切 profile） | `create/creative-agent` |
+| **Remotion** | [`remotion/`](remotion/) | 教程（一句一镜）、程序化动效、多场景 | `create/remotion` |
+| **创意成片** | [`creative-agent/`](creative-agent/) | 趋势片、产品宣传、MCP 创意 | `create/creative-agent` |
+| ~~TTS 口播~~ | [`tts-narration/`](tts-narration/) | **已弃用（不推荐）**；勿用于新教程 | — |
 
-## 快速选择
+## 强制选型
 
-| 用户需求 | 推荐 |
-|----------|------|
-| 抖音/TikTok/YouTube 口播短视频 | `tts-narration` → 对应平台子技能 |
-| 复杂动效、图表、转场、字幕动画 | `remotion` |
-| 高质量商业短片、批量创意 | `creative-agent` profile |
+| 用户需求 | 选 |
+|----------|-----|
+| 教程 / 操作演示 / 配置 / 怎么用 | **Remotion** + `rules/tutorial-beat-video.md` |
+| 复杂动效、图表、转场（非教程） | Remotion + `rules/video-layout.md` |
+| 高质量商业短片、创意 | creative-agent |
 
-## 产出路径约定
+选定 Remotion **教程**后，只再问 skill 内规定的 **2 个问题**（背景+形象、文档+素材），不要长问卷。画幅默认 1920×1080，不必再问。
+
+## 产出路径
 
 | 类型 | 默认目录 |
 |------|----------|
-| TTS 口播 | `$HERMES_ROOT/视频/{slug}/` |
 | Remotion | `$HERMES_ROOT/视频/remotion/{slug}/` |
-| creative-agent | `$HERMES_ROOT/视频/`（与 social-agent 对齐） |
+| creative-agent | `$HERMES_ROOT/视频/` |
 
-## 脚本位置
-
-TTS 口播的 `create-video` CLI 仍在 `skills/publish/{platform}/scripts/`（发布与创作共用工具链）。
+对用户说明与确认：**一律简体中文**。

@@ -1,23 +1,25 @@
 ---
 name: tts-narration
 description: |
-  纯文字 + Edge TTS + ffmpeg 口播视频（黑底花字竖版或横版）。用户要「口播视频」「TTS 成片」「pipeline:douyin/tiktok」时激活。
-  复杂动效请用 create/remotion；商业创意片请用 create/creative-agent。
-version: 1.0.0
+  【已弃用】黑底花字 TTS 口播。新需求不要激活本技能。
+  教程/动效请用 create/remotion；创意片请用 create/creative-agent。
+  仅在用户明确要求「恢复旧口播管线」时才使用。
+version: 1.1.0
 author: social-agent
 license: MIT
 metadata:
   hermes:
-    tags: [video, tts, edge-tts, ffmpeg, narration]
+    tags: [video, tts, edge-tts, ffmpeg, narration, deprecated]
     related_skills:
       - create/remotion
       - create/creative-agent
-      - create/pipeline-orchestrator
 ---
 
-# TTS 口播视频（tts-narration）
+# TTS 口播视频（tts-narration）— 已弃用
 
-**默认轻量成片方案**：不依赖 Remotion、不依赖 Playwright。
+**不再作为默认或推荐成片方式。** 教程与动效 → `create/remotion`；创意 → `create/creative-agent`。
+
+以下内容仅供历史管线排障，新项目勿跟做。
 
 ## 平台子技能
 
