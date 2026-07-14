@@ -3,10 +3,10 @@ name: remotion
 description: |
   Remotion 程序化视频 — React/TypeScript 合成 MP4。
   用户要「Remotion」「动效视频」「教程视频」「操作演示」「配置教程」「怎么用 XX」时激活。
-  网站/软件操作教程必须先加载 rules/tutorial-beat-video.md（冲击开场、大字多色、声画同步、差异化动效）。
+  网站/软件操作教程必须先加载 rules/tutorial-beat-video.md（冲击开场、大字多色、声画同步、差异化动效、unDraw/emoji、思维导图与卡片对比、网站图标）。
   商业创意片请用 create/creative-agent。不要用黑底花字口播做教程。
   对用户对话一律简体中文。
-version: 1.1.0
+version: 1.2.0
 author: remotion-dev (rules vendored)
 license: MIT
 metadata:
@@ -429,6 +429,6 @@ npm run remotion:check
 1. 读 [rules/tutorial-beat-video.md](rules/tutorial-beat-video.md)（**整份**，含两问门闩）
 2. 问完两问 → 分镜表（旁白\|画面分列）→ 用户确认
 3. 抓真图 / 写 `beats.ts` → 逐 beat 配音 → `Series` 对齐声画
-4. 开场要冲击力大标题；动效库混用；实操用 `ScreenshotFocus` 托底
+4. 开场要冲击力大标题；**大图标/网站 Logo**；讲述用思维导图、卡片对比等多种形态；概念镜引用 **unDraw + OpenMoji/Twemoji**（见 tutorial-beat 素材栈）
 5. 参考 `content/视频/remotion/morelogin-tutorial/`（**叙事 v10 + 视觉 v9**）
 6. **渲染完成后必须给用户预览；无法预览则发送成片绝对路径**（见 tutorial-beat「成片后必须给用户看」）

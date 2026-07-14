@@ -2,6 +2,7 @@
 name: tutorial-beat-video
 description: |
   网站/软件操作教程 Remotion 成片（一句一镜、信息图冲击开场、真截图实操、声画同步）。
+  须用多样讲述（思维导图/卡片对比等）、unDraw+OpenMoji/Twemoji、网站图标；文字与图标都要大。
   用户要「教程视频」「操作演示」「配置教程」「怎么用 XX」时必须加载本规则。
   对话对用户一律简体中文。
 metadata:
@@ -50,11 +51,13 @@ metadata:
 - 前几镜禁止「小字 + 一张白卡」撑满  
 - 大标题砸入 / 关键词分段入场 / 图标弹压，第一眼抓住人  
 
-### 标题够大够醒目
+### 标题与图标：够大够醒目（强制）
 
-- 1920 宽：主标题建议 **120–160px**；标签 ≥44px  
+- 1920 宽：主标题建议 **120–160px**；副标题/标签 ≥44px；正文概念句 ≥36px  
 - **一句话可多色**（深灰 / 琥珀 / 警示红等）拉开层次  
 - 浅底禁止浅色字；深底禁止过暗字  
+- **图标/表情同样要大**：概念镜主图标边长建议 **96–160px**；行内语义图标 ≥48px；禁止 16–24px 小图标「凑数」  
+- 图标与标题同级醒目：能独立被看清，不依赖旁白才知道画了什么  
 
 ### 音画必须同步
 
@@ -71,11 +74,77 @@ metadata:
 ### 禁止
 
 - ❌ 整页静态念稿  
-- ❌ 非实操段只有空旷小白卡  
+- ❌ 非实操段只有空旷小白卡 / 纯文字步骤列表（禁止用 Step 文字条代替信息图或真截图）  
 - ❌ Mock UI 代替真实截图  
 - ❌ 装饰网络/粒子抢主画面  
 - ❌ 吉祥物挡住实操关键按钮  
 - ❌ CSS `transition` / `animation` / Tailwind 动画类驱动时间轴  
+- ❌ 概念镜不用图标/插画、也不出网站 Logo（画面过干）  
+- ❌ 热链外网 CDN 渲染（素材必须本地 `public/`）  
+
+---
+
+## 讲述方式必须多样（强制）
+
+教程片**禁止**全程「左大数字 + 右 bullet」。概念段（A/B/C/D/F）至少混用下面若干形态，**同片内至少 3 种**：
+
+| 形态 | 何时用 | 画面要点 |
+|------|--------|----------|
+| **冲击大标题** | 钩子、金句、警告 | 大字多色 + 图标/表情砸入 |
+| **卡片对比** | 选型、对错、前后方案 | 左右或上下卡 stagger；❌/✅ 或评分；可用大图标 |
+| **思维导图 / 中心辐射** | 风控因素、账号稳定要素、总结 | 中心节点 + 卫星节点连线弹出（参考 risk-relation / mindmap） |
+| **流程/时间轴** | 三步回顾、方案桥接 | 横向步骤珠或编号卡依次亮起 |
+| **关联/矩阵** | 平台身份、多账号 | Logo/图标横排再叠态（禁用标等） |
+| **插画情景** | 痛点共鸣、成功收尾 | unDraw 一镜一图，改色匹配片主色 |
+| **真截图托底** | 实操 E | 文档/后台真图；可加小角标图标，不挡控件 |
+
+分镜表「画面」列必须写清本镜用了哪一种形态；连续 3 镜同一种文字列表 = 不合格。
+
+---
+
+## 视觉素材栈（强制引用）
+
+概念镜丰富画面时，**按下表取用**（先下载到 `public/`，再用 `staticFile` / `<Img>`）：
+
+### 插画 — unDraw
+
+- 站点：https://undraw.co （图库分页如 https://undraw.co/illustrations ）  
+- 用法：选图 → 调主色与片一致 → 导出 SVG/PNG → `public/illustrations/{name}.svg`  
+- 用于：钩子痛点、原因、方案桥接、升华（每概念段 1 张即可，勿每镜换风）  
+- **不可**用插画代替实操真截图  
+
+### 表情 — OpenMoji 或 Twemoji（全片锁定一种）
+
+| 源 | 地址 | 说明 |
+|----|------|------|
+| **OpenMoji** | https://openmoji.org | 偏插画风，易与 unDraw 统一；优先推荐 |
+| **Twemoji** | https://github.com/jdecked/twemoji （SVG 例：`assets/svg/1f44a.svg`） | 偏产品/社交风 |
+
+- 拷贝所需 SVG 到 `public/emoji/`，Remotion 用图片组件渲染，**不要**依赖系统字体 emoji（防方块/不一致）  
+- 表情要大（见上「图标够大」）；用于警告、成功、手势等语义点缀  
+
+### 网站 / 品牌图标（强制出现）
+
+- 题材涉及的产品、站点、浏览器、支付方式等，必须在相关镜出 **官网 favicon / 品牌 Logo / 可识别图标**（如 LycheeIP、MoreLogin、目标平台）  
+- 来源优先级：官方站点 favicon/logo 下载进 `public/logos/` → 文档页已有图 → 再用语义插画兜底  
+- 钩子「多身份」、方案「A × B 桥接」、实操章节卡：Logo **大而清晰**（建议高度 **64–120px**）  
+- 禁止只写文字品牌名、画面上完全没有对应图标  
+
+### 可选：UI 线性图标
+
+- 需要细粒度操作语义时可用 **lucide-react**（或等价 SVG），尺寸同样要醒目；与 OpenMoji/Twemoji 不重复堆砌  
+
+### 素材目录约定
+
+```
+public/
+├── screenshots/     # 文档真实截图
+├── illustrations/   # unDraw 导出
+├── emoji/           # OpenMoji 或 Twemoji SVG
+├── logos/           # 网站/产品图标
+├── voiceover.mp3
+└── voiceover-meta.json
+```
 
 ---
 
@@ -101,25 +170,25 @@ F 升华     「不只是单一因素」→ 回顾 → CTA
 
 ---
 
-## 视觉规范（v9 经验）
+## 视觉规范（v9 + 素材强化）
 
 - 背景全片统一（确认问卷里定好的风格）；装饰线/节点 **极淡、稀疏（约 4–5 条）**  
-- 概念/标题镜：可出吉祥物（约痛点 / 桥接 / 结尾三现）  
-- 截图镜：深色描边 + 浅色内衬托底，与背景分离  
-- 纯文字镜：必须加大字号 **或** 出形象，否则不合格  
+- 概念/标题镜：可出吉祥物（约痛点 / 桥接 / 结尾三现）+ **unDraw / 大图标 / 网站 Logo**  
+- 截图镜：深色描边 + 浅色内衬托底，与背景分离；角标可用 emoji/Logo，不挡控件  
+- 纯文字镜：不合格——必须加大字 + 大图标，或改成上表中的信息图形态  
 
-参考组件：`PopLayout`、`LycheeMascot`（或项目吉祥物）、`ScreenshotFocus`、`InfographicScenes`。
+参考组件：`PopLayout`、`LycheeMascot`（或项目吉祥物）、`ScreenshotFocus`、`InfographicScenes`（含对比卡、思维导图类场景）。
 
 ---
 
 ## 工作流
 
 1. 类型选型（Remotion / Creative）  
-2. 两问确认  
-3. 分镜表：**镜头号 | 时长 | 景别 | 旁白 | 画面**（旁白与画面分列）→ 用户确认  
-4. 素材：抓真图或声明缺失；禁止假界面糊弄  
+2. 两问确认（须拆成两次提问，每问独立选项）  
+3. 分镜表：**镜头号 | 时长 | 景别 | 旁白 | 画面**（旁白与画面分列；画面注明形态：导图/对比卡/截图等）→ 用户确认  
+4. 素材：文档真截图 + **unDraw / OpenMoji|Twemoji / logos** 落入 `public/`；禁止假界面、禁止热链  
 5. 逐 beat TTS → `voiceover-meta.json` + vtt；语速加速则同步缩放 meta  
-6. 实现 beats + 场景；动效库混用  
+6. 实现 beats + 场景；动效库混用；Concept 镜挂大图标/Logo  
 7. 抽帧自检 → 全量渲染  
 8. **成片交付（强制）**：见下方「成片后必须给用户看」  
 
@@ -145,20 +214,25 @@ Windows 中文路径易炸：可同步到 `D:\tmp\{slug}` 再 `npx remotion rend
 content/视频/remotion/{slug}/
 ├── src/data/beats.ts / screenshots.ts / voiceoverMeta.ts
 ├── src/components/PopLayout · InfographicScenes · ScreenshotFocus · motion
-├── public/screenshots/ · voiceover.mp3 · voiceover-meta.json · captions.vtt
+├── public/
+│   ├── screenshots/ · illustrations/ · emoji/ · logos/
+│   ├── voiceover.mp3 · voiceover-meta.json · captions.vtt
 └── out/
 ```
 
-配音细节见 [voiceover.md](./voiceover.md)。截图抓取注意 CDN Referer。
+配音细节见 [voiceover.md](./voiceover.md)。截图抓取注意 CDN Referer。unDraw / OpenMoji / Twemoji 见上文「视觉素材栈」。
 
 ---
 
 ## 生成后检查清单
 
 - [ ] 开场有冲击力大标题（够大、可多色），不是小白卡  
+- [ ] **图标/Logo/表情够大醒目**；非实操段有 unDraw 或等效视觉锚点  
+- [ ] **讲述形态多样**（导图/对比卡/流程等，非全程 bullet）  
+- [ ] **相关网站/产品图标已入画**  
 - [ ] 元素动效有差异，非全片同一种缩放  
-- [ ] 每句动画铺满旁白时长（声画同步）  
-- [ ] 实操为真实截图 + 托底；无 Mock UI  
+- [ ] 每句动画铺满旁白时长（声画同步）；根组件有 `<Audio>`  
+- [ ] 实操为真实截图 + 托底；无 Mock UI；素材均在 `public/`  
 - [ ] 浅底无白字糊掉；装饰不抢戏  
 - [ ] 无验证段（除非用户明确要求）  
 - [ ] **已给用户预览，或已发送成片绝对路径**  
