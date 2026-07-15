@@ -6,5 +6,5 @@
 |------|------|
 | [`topic-research/`](topic-research/) | 选题规则（链到 `workspace/references/topic-research-diversity.md`） |
 | [`youtube/`](youtube/) | YouTube 爆款调研（TubePilot MCP + score/extract CLI） |
-| [`xiaohongshu/`](xiaohongshu/) | xhs-explore、xhs-content-ops |
+| [`xiaohongshu/`](xiaohongshu/) | xhs-explore、xhs-content-ops、**xhs-research**（报告落盘 → `知识库/xiaohongshu/`） |
 | [`reddit/`](reddit/) | reddit:feed 相关文档 |

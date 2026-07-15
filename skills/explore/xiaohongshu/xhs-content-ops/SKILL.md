@@ -3,12 +3,13 @@ name: xhs-content-ops
 description: |
   小红书复合内容运营技能。组合搜索、详情、发布、互动等能力完成运营工作流。
   当用户要求竞品分析、热点追踪、内容创作、互动管理等复合任务时触发。
-version: 1.0.0
+version: 1.1.0
 metadata:
   hermes:
     tags: [xiaohongshu, explore, ops]
     related_skills:
       - explore/xiaohongshu/xhs-explore
+      - explore/xiaohongshu/xhs-research
       - publish/xiaohongshu
   openclaw:
     requires:
@@ -89,16 +90,14 @@ python scripts/cli.py search-feeds \
 python scripts/cli.py get-feed-detail \
   --feed-id FEED_ID --xsec-token XSEC_TOKEN
 ```
-4. 整理分析报告，包含：
-   - 标题风格分析
-   - 封面图特点
-   - 正文结构（开头/中间/结尾）
-   - 话题标签使用
-   - 互动数据对比（点赞/评论/收藏）
+4. 整理分析要点（标题/结构/标签/互动），**必须落盘**（见下一步）。
+5. **报告留存（强制）**：切换或内联执行 `explore/xiaohongshu/xhs-research`：
+   - `save-raw` → 多篇 `save-details --append` →（可选）`save-insights` → `build`
+   - 产出：`$HERMES_ROOT/知识库/xiaohongshu/{slug}/{slug}_竞品报告.html` 与 `{slug}_创作参考.md`
 
 **输出格式：**
 
-使用 markdown 表格对比各笔记的关键指标，并总结共性特征和差异化策略。
+对话里只用 markdown 表格做**简短**对比 + 1–2 句结论；完整报告以知识库路径为准，勿贴长文。
 
 ### 热点追踪
 
@@ -118,28 +117,29 @@ python scripts/cli.py search-feeds \
   --keyword "关键词" --sort-by 最多点赞
 ```
 3. 对高互动笔记获取详情，分析内容模式。
-4. 输出趋势报告：
-   - 各关键词热度排名
-   - 爆款内容特征
-   - 选题建议
+4. 输出趋势摘要（关键词热度 / 爆款特征 / 选题建议）。
+5. **报告留存（强制）**：执行 `xhs-research` 落盘（同一关键词共用一个 `{slug}`），更新 `LATEST.json`。
 
 ### 内容创作
 
-目标：研究话题 → 辅助生成草稿 → 用户确认 → 发布。
+目标：读历史创作参考（若有）→ 必要时补调研 → 草稿 → 用户确认 → 发布。
 
 **步骤：**
 
 1. 确认创作主题。
-2. 搜索相关笔记，获取灵感：
+2. **先读知识库**（强制）：
+   - `$HERMES_ROOT/知识库/xiaohongshu/LATEST.json`
+   - 或同主题 `{slug}_创作参考.md`
+   - 若 7 天内已有同关键词报告，默认直接基于创作参考写稿；仅当用户要求「重新分析」时再爬。
+3. 无可用报告时：搜索 + 详情分析，并走 `xhs-research` 落盘后再写稿：
 ```bash
 python scripts/cli.py search-feeds \
   --keyword "主题关键词" --sort-by 最多点赞
 ```
-3. 选取 2-3 篇参考笔记，获取详情分析内容结构。
-4. 基于分析结果，辅助用户生成草稿：
+4. 基于《创作参考》与分析结果生成草稿：
    - 标题（符合小红书风格，UTF-16 长度 ≤ 20）
    - 正文（段落清晰，口语化）
-   - 话题标签
+   - 话题标签（优先创作参考中的热门标签）
 5. 通过 `AskUserQuestion` 让用户确认最终内容。
 6. 执行发布（参考 xhs-publish 流程）：
 ```bash

@@ -9,6 +9,7 @@ metadata:
     tags: [xiaohongshu, explore, search]
     related_skills:
       - explore/xiaohongshu/xhs-content-ops
+      - explore/xiaohongshu/xhs-research
       - publish/xiaohongshu
   openclaw:
     requires:

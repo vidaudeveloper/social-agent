@@ -15,6 +15,8 @@
 | **xhs-explore** | 内容发现 | 关键词搜索、笔记详情、用户主页、首页推荐 | `explore/xiaohongshu/xhs-explore` |
 | **xhs-interact** | 社交互动 | 评论、回复、点赞、收藏 | `publish/xiaohongshu/skills/xhs-interact` |
 | **xhs-content-ops** | 复合运营 | 竞品分析、热点追踪、批量互动、内容创作 | `explore/xiaohongshu/xhs-content-ops` |
+| **xhs-research** | 发前调研落盘 | 竞品/热点 → HTML + 创作参考 | `explore/xiaohongshu/xhs-research`（`npm run xhs:research`） |
+| **xhs-post-analytics** | 发后作品复盘 | 自己账号作品数据 → HTML + 下次创作参考 | `analytics/xiaohongshu`（`npm run xhs:stats`） |
 
 支持**连贯操作** — 你可以用自然语言下达复合指令，Agent 会自动串联多个技能完成任务。例如：
 
