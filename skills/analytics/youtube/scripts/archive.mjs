@@ -14,6 +14,7 @@ import {
   channelDir,
   reportHtmlPath,
   reportJsonPath,
+  nextRefPath,
   latestIndexPath,
   formatBeijingTime,
   formatBeijingDate,
@@ -21,6 +22,7 @@ import {
   analyticsYtDir,
 } from './lib/paths.mjs';
 import { writeYoutubeReportHtml } from './lib/report-html.mjs';
+import { buildInsights, writeNextCreativeRef } from './lib/insights.mjs';
 
 const profileRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../../../..');
 const cliRoot = resolve(
@@ -210,14 +212,23 @@ export function runArchive(argv = []) {
   };
 
   const slug = channelSlug(String(channel.customUrl || channel.title || channel.id));
+  const { findings, suggestions } = buildInsights({
+    channel,
+    summary,
+    videos,
+    period: { startDate, endDate },
+  });
+
   const report = {
-    title: 'YouTube 频道作品复盘',
+    title: 'YouTube 频道作品数据全分析',
     generatedAt: formatBeijingTime(),
     period: { startDate, endDate, days: daysN },
     channel,
     summary,
     days,
     videos,
+    findings,
+    suggestions,
     dataNote:
       '数据来源：YouTube Data API v3 + YouTube Analytics API v2（Analytics 与公开统计口径可能略有差异）',
   };
@@ -225,8 +236,14 @@ export function runArchive(argv = []) {
   mkdirSync(channelDir(slug), { recursive: true });
   const htmlOut = reportHtmlPath(slug, dateKey);
   const jsonOut = reportJsonPath(slug, dateKey);
+  const mdOut = nextRefPath(slug, dateKey);
   writeFileSync(jsonOut, JSON.stringify(report, null, 2), 'utf8');
   writeYoutubeReportHtml({ report, outPath: htmlOut });
+  writeNextCreativeRef({
+    report,
+    outPath: mdOut,
+    reportHtmlName: `${dateKey}_作品复盘.html`,
+  });
 
   const latest = {
     type: 'youtube-post-publish',
@@ -238,8 +255,10 @@ export function runArchive(argv = []) {
     updatedAt: formatBeijingTime(),
     reportHtml: htmlOut,
     reportJson: jsonOut,
+    nextRef: mdOut,
     videoCount: videos.length,
     summary,
+    bestTitle: /** @type {any} */ (findings.best)?.title || '',
   };
   mkdirSync(analyticsYtDir, { recursive: true });
   writeFileSync(latestIndexPath(), JSON.stringify(latest, null, 2), 'utf8');
@@ -250,9 +269,15 @@ export function runArchive(argv = []) {
     date: dateKey,
     period: report.period,
     summary,
+    findings: {
+      best: findings.best,
+      issueCount: findings.issues.length,
+    },
+    suggestionCount: suggestions.length,
     paths: {
       reportHtml: htmlOut,
       reportJson: jsonOut,
+      nextRef: mdOut,
       latest: latestIndexPath(),
     },
   };

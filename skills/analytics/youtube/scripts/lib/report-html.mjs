@@ -46,7 +46,11 @@ export function writeYoutubeReportHtml(opts) {
   const days = Array.isArray(report.days) ? report.days : [];
   const videos = Array.isArray(report.videos) ? report.videos : [];
   const summary = /** @type {Record<string, unknown>} */ (report.summary || {});
-  const title = String(report.title || 'YouTube 频道作品复盘');
+  const findings = /** @type {Record<string, unknown>} */ (report.findings || {});
+  const best = /** @type {Record<string, unknown>} */ (findings.best || {});
+  const issues = Array.isArray(findings.issues) ? findings.issues : [];
+  const suggestions = Array.isArray(report.suggestions) ? report.suggestions : [];
+  const title = String(report.title || 'YouTube 频道作品数据全分析');
   const generatedAt = String(report.generatedAt || formatBeijingTime());
   const dataNote = String(
     report.dataNote ||
@@ -129,6 +133,43 @@ export function writeYoutubeReportHtml(opts) {
     })
     .join('\n');
 
+  const bestReasons = Array.isArray(best.reasons)
+    ? best.reasons.map((r) => `<li>${escapeHtml(String(r))}</li>`).join('')
+    : '';
+
+  const issueRows = issues
+    .map((it) => {
+      const row = /** @type {Record<string, unknown>} */ (it);
+      return `<tr><th>${escapeHtml(String(row.problem || ''))}</th><td>${escapeHtml(
+        String(row.analysis || ''),
+      )}</td></tr>`;
+    })
+    .join('\n');
+
+  const suggestionBlocks = suggestions
+    .map((s, idx) => {
+      const block = /** @type {Record<string, unknown>} */ (s);
+      const items = Array.isArray(block.items) ? block.items : [];
+      const itemHtml = items
+        .map((it) => {
+          const row = /** @type {Record<string, unknown>} */ (it);
+          if (row.bad || row.good) {
+            return `<li><span class="bad">❌ ${escapeHtml(String(row.bad || ''))}</span>
+              <span class="arrow">→</span>
+              <span class="good">✅ ${escapeHtml(String(row.good || ''))}</span></li>`;
+          }
+          return `<li>${escapeHtml(String(row.text || row))}</li>`;
+        })
+        .join('');
+      const body = block.body ? `<p>${escapeHtml(String(block.body))}</p>` : '';
+      return `<div class="suggest-item">
+        <h3>${idx + 1}. ${escapeHtml(String(block.title || '建议'))}</h3>
+        ${body}
+        ${itemHtml ? `<ul class="rewrite">${itemHtml}</ul>` : ''}
+      </div>`;
+    })
+    .join('\n');
+
   const html = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -187,12 +228,34 @@ export function writeYoutubeReportHtml(opts) {
     table { width: 100%; border-collapse: collapse; font-size: .92rem; }
     th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
     th { color: var(--muted); font-weight: 600; background: var(--soft); }
-    .account th { width: 28%; }
+    .account th, .issues th { width: 28%; }
     .videos td.title a { color: var(--accent); text-decoration: none; font-weight: 600; }
     .videos td.title a:hover { text-decoration: underline; }
     .note { color: var(--muted); font-size: .85rem; margin-top: 10px; }
     .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .scroll { overflow-x: auto; }
+    .best {
+      background: #f0faf4;
+      border: 1px solid #c6f0d8;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+    .best strong.hl { color: var(--accent); }
+    .suggest-item { margin-bottom: 14px; }
+    .suggest-item h3 { margin: 0 0 8px; font-size: .98rem; }
+    .rewrite { list-style: none; padding: 0; margin: 0; }
+    .rewrite li {
+      background: var(--soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      display: grid;
+      gap: 4px;
+    }
+    .bad { color: #c03639; }
+    .good { color: var(--ok); }
+    .arrow { color: var(--muted); }
     @media (max-width: 860px) {
       .kpis { grid-template-columns: repeat(3, 1fr); }
       .charts { grid-template-columns: 1fr; }
@@ -204,17 +267,17 @@ export function writeYoutubeReportHtml(opts) {
 </head>
 <body>
   <div class="wrap">
-    <h1>${escapeHtml(title)}</h1>
+    <h1>📊 ${escapeHtml(title)}</h1>
     <p class="sub">
       频道「${escapeHtml(String(channel.title || ''))}」 ·
       区间 ${escapeHtml(String(period.startDate || ''))} ~ ${escapeHtml(String(period.endDate || ''))} ·
-      生成于 ${escapeHtml(generatedAt)}（北京时间）
+      生成于 ${escapeHtml(generatedAt)}（北京时间） · 共 ${videos.length} 条作品样本
     </p>
 
     <div class="kpis">${summaryCards}</div>
 
     <section>
-      <h2>频道概况</h2>
+      <h2>👤 频道概况</h2>
       <table class="account">${channelRows || '<tr><td colspan="2">暂无数据</td></tr>'}</table>
     </section>
 
@@ -224,7 +287,7 @@ export function writeYoutubeReportHtml(opts) {
     </div>
 
     <section>
-      <h2>分视频表现（Analytics）</h2>
+      <h2>📋 作品数据总览（Analytics）</h2>
       <div class="scroll videos">
         <table>
           <thead>
@@ -237,6 +300,32 @@ export function writeYoutubeReportHtml(opts) {
           <tbody>${videoRows || '<tr><td colspan="9">区间内无视频数据</td></tr>'}</tbody>
         </table>
       </div>
+      <p class="note">${escapeHtml(dataNote)}</p>
+    </section>
+
+    <section>
+      <h2>🔍 关键发现</h2>
+      ${
+        best.title || best.summary
+          ? `<div class="best">
+        <p><strong>✅ 表现最好的内容</strong></p>
+        <p><strong class="hl">${escapeHtml(String(best.title || ''))}</strong>
+          ${best.summary ? ` — ${escapeHtml(String(best.summary))}` : ''}</p>
+        ${bestReasons ? `<ul>${bestReasons}</ul>` : ''}
+      </div>`
+          : ''
+      }
+      ${
+        issueRows
+          ? `<p><strong>⚠️ 数据偏低 / 结构问题诊断</strong></p>
+      <table class="issues">${issueRows}</table>`
+          : ''
+      }
+    </section>
+
+    <section>
+      <h2>💡 优化建议</h2>
+      ${suggestionBlocks || '<p class="note">暂无建议</p>'}
     </section>
 
     <section>
@@ -252,7 +341,6 @@ export function writeYoutubeReportHtml(opts) {
           <tbody>${dayRows || '<tr><td colspan="8">区间内无播放</td></tr>'}</tbody>
         </table>
       </div>
-      <p class="note">${escapeHtml(dataNote)}</p>
     </section>
   </div>
   <script>

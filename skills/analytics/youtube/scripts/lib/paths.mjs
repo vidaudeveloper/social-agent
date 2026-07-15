@@ -37,6 +37,14 @@ export function reportJsonPath(channelSlug, dateKey) {
   return join(channelDir(channelSlug), `${dateKey}_作品复盘.json`);
 }
 
+/**
+ * @param {string} channelSlug
+ * @param {string} dateKey
+ */
+export function nextRefPath(channelSlug, dateKey) {
+  return join(channelDir(channelSlug), `${dateKey}_下次创作参考.md`);
+}
+
 export function latestIndexPath() {
   return join(analyticsYtDir, 'LATEST.json');
 }
