@@ -25,7 +25,7 @@ explore → create → review → publish → analytics
 | create | `create/pipeline-orchestrator`、`create/tts-narration`、`create/remotion` |
 | review | `review` |
 | publish | `publish/xiaohongshu`、`publish/youtube` |
-| analytics | `analytics/linkedin` |
+| analytics | `analytics/linkedin`、`analytics/xiaohongshu`、`analytics/youtube` |
 
 ## 平台状态与依赖
 

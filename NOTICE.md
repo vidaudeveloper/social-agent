@@ -22,6 +22,7 @@
 | pyzhihu-cli | 知乎发布 | 见 `skills/publish/zhihu/` |
 | tubepilot (npm MCP) | YouTube explore 爆款发现 | [ixex/tubepilot](https://github.com/ixex/tubepilot) |
 | youtube-transcript-api | YouTube explore 字幕抽取 | [jdepoix/youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) |
+| youtube-analytics-cli | YouTube 频道/作品 Analytics | [Bin-Huang/youtube-analytics-cli](https://github.com/Bin-Huang/youtube-analytics-cli) |
 
 ## VidAU 自有部分
 

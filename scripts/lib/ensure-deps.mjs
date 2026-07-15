@@ -3,12 +3,13 @@
  * 平台依赖 marker 检查（hint-only，不自动安装）
  */
 import { existsSync } from 'fs';
-import { join, resolve } from 'path';
+import { dirname, join, resolve } from 'path';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { baoyuXScriptsDir } from './baoyu-x.mjs';
 
-const profileRoot = resolve(join(fileURLToPath(import.meta.url), '../..'));
+// scripts/lib → profile root（必须用 dirname，否则 join(文件路径, '../..') 会停在 scripts/）
+const profileRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 
 /** @type {Record<string, { label: string, check: () => boolean, fix: string }>} */
 export const DEP_CHECKS = {
@@ -95,6 +96,18 @@ export const DEP_CHECKS = {
       return r.status === 0;
     },
     fix: 'uv pip install youtube-transcript-api；TubePilot 见 workspace/references/youtube-explore-setup.md',
+  },
+  'youtube-analytics': {
+    label: 'YouTube Analytics (youtube-analytics-cli)',
+    check: () =>
+      existsSync(
+        join(
+          profileRoot,
+          (process.env.YOUTUBE_ANALYTICS_CLI_ROOT || 'tool/youtube-analytics-cli').replace(/\\/g, '/'),
+          'node_modules/youtube-analytics-cli/dist/index.js',
+        ),
+      ),
+    fix: 'npm run youtube:stats-setup',
   },
 };
 
