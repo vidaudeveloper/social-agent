@@ -10,6 +10,7 @@ import { existsSync, readFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { ensureDeps } from './lib/ensure-deps.mjs';
+import { runArchive } from '../skills/analytics/youtube/scripts/archive.mjs';
 
 const profileRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const cliRoot = resolve(
@@ -82,12 +83,17 @@ function printUsage() {
 
 用法:
   npm run youtube:stats -- <youtube-analytics-cli 子命令与参数>
+  npm run youtube:stats -- archive [--days 30] [--start-date YYYY-MM-DD] [--end-date YYYY-MM-DD]
 
 常用:
+  npm run youtube:stats -- archive
   npm run youtube:stats -- videos <videoId>
   npm run youtube:stats -- channels <channelId>
   npm run youtube:stats -- channels
   npm run youtube:stats -- report --metrics views,likes --start-date YYYY-MM-DD --end-date YYYY-MM-DD --dimensions day
+
+archive 会拉取自家频道 + Analytics，落盘 HTML/JSON 到:
+  $HERMES_ROOT/知识库/youtube/发布复盘/{channelSlug}/{date}_作品复盘.html
 
 安装: npm run youtube:stats-setup
 文档: skills/analytics/youtube/
@@ -142,5 +148,17 @@ if (args.length === 0 || args[0] === '-h' || args[0] === '--help') {
 }
 
 ensureDeps(['youtube-analytics']);
+
+if (args[0] === 'archive') {
+  ensureCredentialsForArgs(['channels']);
+  try {
+    runArchive(args.slice(1));
+  } catch (e) {
+    console.error('[archive]', e instanceof Error ? e.message : e);
+    process.exit(1);
+  }
+  process.exit(0);
+}
+
 ensureCredentialsForArgs(args);
 runCli(args);

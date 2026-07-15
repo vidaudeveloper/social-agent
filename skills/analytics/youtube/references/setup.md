@@ -44,11 +44,42 @@ YOUTUBE_API_KEY=
 ### 申请 OAuth（报表）
 
 1. 同一 GCP 项目启用 **YouTube Analytics API**
-2. 创建 OAuth 客户端（Desktop）
-3. 用 [OAuth Playground](https://developers.google.com/oauthplayground/) 或自有流程换 `refresh_token`，scopes：
-   - `https://www.googleapis.com/auth/youtube.readonly`
-   - `https://www.googleapis.com/auth/yt-analytics.readonly`
-   - （收入指标可选）`https://www.googleapis.com/auth/yt-analytics-monetary.readonly`
+2. 创建 OAuth 客户端（**Desktop / 桌面应用**），下载 `client_secret_*.json`
+3. 把 JSON 中的 `client_id` / `client_secret` 写入 profile `.env`：
+   - `YOUTUBE_CLIENT_ID`
+   - `YOUTUBE_CLIENT_SECRET`
+4. 换 `refresh_token`（推荐本仓一键）：
+
+```powershell
+npm run youtube:oauth
+```
+
+浏览器登录后会写回 `YOUTUBE_REFRESH_TOKEN`，并同步 `~/.config/youtube-analytics-cli/credentials.json`。
+
+若回调失败：在 GCP → Clients → 该 Desktop 客户端里，给 Redirect URI 加上  
+`http://127.0.0.1:17890/oauth2callback`。
+
+Scopes（脚本已内置，勿强行加 monetary 除非要看收入）：
+- `https://www.googleapis.com/auth/youtube.readonly`
+- `https://www.googleapis.com/auth/yt-analytics.readonly`
+
+也可用 [OAuth Playground](https://developers.google.com/oauthplayground/)（齿轮里勾选自有 Client ID）手换 token。
+
+#### 浏览器提示 “Google hasn't verified this app”
+
+测试中的自用应用会看到这页，**不必做正式验证**。本机操作：
+
+1. **不要**点蓝色 **Back to safety**
+2. 点左侧灰色文字链接 **Continue**（有的界面要先点 **Advanced / 高级** 才出现 Continue）
+3. 下一页勾选权限 → **Continue / Allow**
+4. 授权成功后应跳到 `http://127.0.0.1:17890/...` 并显示「授权成功」
+
+若 Continue 点了仍进不去 / 报 **access_denied**：
+
+1. GCP → **Google Auth Platform** → **Audience**（或 OAuth consent screen）
+2. 发布状态保持 **Testing**
+3. **Test users** 里把你当前登录的 Gmail **加进去**（必须是授权时用的同一个号）
+4. 关掉标签页后重新执行 `npm run youtube:oauth`
 
 Service Account **不能**用于 YouTube Analytics。
 

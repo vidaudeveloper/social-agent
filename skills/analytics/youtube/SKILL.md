@@ -23,6 +23,7 @@ metadata:
 ## 技能边界
 
 - **唯一执行方式**：`npm run youtube:stats -- <子命令…>`（包装 `scripts/run-youtube-analytics.mjs`）
+- **落盘 HTML**：默认用 `npm run youtube:stats -- archive`（禁止只聊不落盘）
 - 禁止裸 `npx youtube-analytics-cli` 绕过包装（凭据加载与 deps 检查由包装脚本负责）
 - 缺依赖时：提示 `npm run youtube:stats-setup` 后**停止**，等用户确认再装
 - 输出为 JSON；Agent 整理结论时勿复述密钥，勿把完整凭据路径内容贴进对话
@@ -51,12 +52,29 @@ npm run youtube:stats -- videos ID1,ID2 --part snippet,statistics,contentDetails
 npm run youtube:stats -- channels UCxxxxxxxxxxxxxx
 ```
 
-### C. 自家频道 Analytics（OAuth）
-
-1. `npm run youtube:stats -- channels`（验证 OAuth）
-2. 日报 / 分视频 / 国家等：
+### C. 自家频道复盘 + HTML 存档（推荐）
 
 ```powershell
+npm run youtube:stats -- archive
+npm run youtube:stats -- archive --days 30
+npm run youtube:stats -- archive --start-date 2026-06-15 --end-date 2026-07-15
+```
+
+产出：
+
+```text
+$HERMES_ROOT/知识库/youtube/发布复盘/{channelSlug}/
+  {YYYY-MM-DD}_作品复盘.html
+  {YYYY-MM-DD}_作品复盘.json
+$HERMES_ROOT/知识库/youtube/发布复盘/LATEST.json
+```
+
+对话交付：HTML 路径 + 1–2 句结论（勿贴长 JSON）。
+
+### D. 原始 CLI（调试）
+
+```powershell
+npm run youtube:stats -- channels
 npm run youtube:stats -- report `
   --metrics views,likes,estimatedMinutesWatched `
   --start-date YYYY-MM-DD `
@@ -65,9 +83,6 @@ npm run youtube:stats -- report `
   --sort -views `
   --max-results 10
 ```
-
-3. 对话交付：关键指标摘要 + 1–2 句结论；需要落盘时写入  
-   `$HERMES_ROOT/知识库/youtube/发布复盘/`（由 Agent 自行整理 JSON/Markdown，本 CLI 默认只打 stdout）
 
 ## 与 explore 区别
 

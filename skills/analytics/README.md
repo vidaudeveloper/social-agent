@@ -6,7 +6,7 @@
 |------|------|
 | [`linkedin/`](linkedin/) | `npm run linkedin:stats` |
 | [`xiaohongshu/`](xiaohongshu/) | `npm run xhs:stats` — 发布后作品复盘 HTML + 下次创作参考 |
-| [`youtube/`](youtube/) | `npm run youtube:stats` — youtube-analytics-cli（公开统计 / Analytics 报表） |
+| [`youtube/`](youtube/) | `npm run youtube:stats -- archive` — Analytics 报表落盘 HTML + JSON |
 
 说明：
 
