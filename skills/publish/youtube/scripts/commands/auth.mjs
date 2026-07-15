@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { sauAccount, runSau, sauAvailable, sauRoot } from '../../../../scripts/lib/sau.mjs';
+import { sauAccount, runSau, sauAvailable, sauRoot } from '../../../../../scripts/lib/sau.mjs';
 
 function cookiePath(account) {
   return join(sauRoot, 'cookies', `youtube_${account}.json`);

@@ -50,6 +50,7 @@
     "youtube:explore-full": "node skills/explore/youtube/scripts/run-pipeline.mjs --fallback",
     "youtube:stats-setup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-youtube-analytics.ps1",
     "youtube:stats": "node scripts/run-youtube-analytics.mjs",
+    "youtube:oauth": "node scripts/youtube-oauth-login.mjs",
     "xhs:research": "node skills/explore/xiaohongshu/scripts/cli.mjs",
     "xhs:stats": "node skills/analytics/xiaohongshu/scripts/cli.mjs",
     "pipeline:douyin": "node skills/publish/douyin/scripts/cli.mjs create-video",

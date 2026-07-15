@@ -1,5 +1,5 @@
 import { existsSync } from 'fs';
-import { sauAccount, runSau, sauAvailable } from '../../../../scripts/lib/sau.mjs';
+import { sauAccount, runSau, sauAvailable } from '../../../../../scripts/lib/sau.mjs';
 
 function parseArgs(argv) {
   const opts = { privacy: process.env.VIDEO_PRIVACY || 'unlisted' };
