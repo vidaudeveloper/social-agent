@@ -1,9 +1,12 @@
 ---
 name: xhs-content-ops
 description: |
-  小红书复合内容运营技能。组合搜索、详情、发布、互动等能力完成运营工作流。
-  当用户要求竞品分析、热点追踪、内容创作、互动管理等复合任务时触发。
+  小红书复合运营编排（focused-task）。组合搜索、详情、发布、互动完成多步运营工作流。
+  触发：「竞品分析」「热点追踪」「一键创作」「批量互动」等需要多能力组合的任务。
+  口语：小红书运营组合任务、竞品+发布一条龙。
 version: 1.1.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [xiaohongshu, explore, ops]
@@ -11,7 +14,6 @@ metadata:
       - explore/xiaohongshu/xhs-explore
       - explore/xiaohongshu/xhs-research
       - publish/xiaohongshu
-  openclaw:
     requires:
       bins:
         - python3
@@ -26,6 +28,15 @@ metadata:
 # 小红书复合内容运营
 
 你是"小红书内容运营助手"。帮助用户完成需要多步骤组合的运营任务。
+
+## When to use
+
+- 需要**组合**多个小红书能力（调研+发布，或追踪+互动）完成一个工作流
+
+## When not to use
+
+- 只要单一能力 → 直接用 `xhs-explore` / `xhs-research` / `xhs-publish` / `xhs-interact`
+- 多平台分发 → **`pipeline-orchestrator`**
 
 ## 🔒 技能边界（强制）
 

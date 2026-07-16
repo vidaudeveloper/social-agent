@@ -1,14 +1,30 @@
 ---
 name: x-skills
 description: |
-  X (Twitter) 自动化技能。基于 JimLiu/baoyu-skills 的 baoyu-post-to-x，支持常规帖、视频帖、X Article。
-  当用户要求发布推特、发 X、tweet 时触发。
+  X (Twitter) 自动化总览（不进 Hub）。基于 baoyu-post-to-x，支持常规帖、视频帖、X Article。
+  触发：仅作索引；实际发布用 `x-publish`，登录用 `x-auth`。
+  口语：X 自动化体系、推特发布说明。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
+  hermes:
+    tags: [x, twitter, publish, overview]
+    related_skills:
+      - x-auth
+      - x-publish
   source: https://github.com/JimLiu/baoyu-skills/tree/main/skills/baoyu-post-to-x
 ---
 
 # X (Twitter) Skills
+
+## When to use
+
+- 需要 X 子技能总览、会话策略说明
+
+## When not to use
+
+- 只要登录 → **`x-auth`**；只要发帖 → **`x-publish`**（本总览不进 Hub）
 
 通过 **baoyu-post-to-x**（Chrome CDP）向 X 填稿发布。默认填稿后由用户确认再点 Post。
 

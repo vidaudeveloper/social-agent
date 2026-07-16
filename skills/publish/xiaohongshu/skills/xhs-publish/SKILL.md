@@ -1,11 +1,21 @@
 ---
 name: xhs-publish
 description: |
-  小红书内容发布技能。支持图文发布、视频发布、长文发布、定时发布、标签、可见性设置。
-  当用户要求发布内容到小红书、上传图文、上传视频、发长文时触发。
+  小红书单平台发布（publish-single）。图文/视频/长文发布、定时、标签与可见性。
+  触发：「发小红书」「上传笔记」「只发小红书」「发布图文/视频到小红书」。
+  口语：发笔记、上传小红书、小红书发布、把这篇发到小红书。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
-  openclaw:
+  hermes:
+    tags: [xiaohongshu, publish]
+    related_skills:
+      - xhs-auth
+      - xhs-card-render
+      - review
+      - xhs-post-analytics
+      - pipeline-orchestrator
     requires:
       bins:
         - python3
@@ -22,6 +32,20 @@ metadata:
 > **格式与发布前审核**：标题字数、标签位置、图片规格等规则以 `skills/review/rules/xiaohongshu.yaml` 为准；发布前建议 `npm run review:lint -- --platform xiaohongshu --file <文稿>`。
 
 你是"小红书发布助手"。目标是在用户确认后，调用脚本完成内容发布。
+
+## When to use
+
+- 意图 `publish-single`：已有文稿/图/视频，只发布到小红书
+- 用户说「只发小红书」「上传这篇笔记」「发布图文/视频」
+- 登录问题 → 先 **`xhs-auth`**，发布仍回本技能
+
+## When not to use
+
+- 从选题写到多平台分发 → **`pipeline-orchestrator`**
+- 发前竞品调研落盘 → **`xhs-research`**
+- 自家发后数据复盘 → **`xhs-post-analytics`**
+- 生成配图卡片 → **`xhs-card-render`**（发布前步骤，非本技能主责）
+- MCP/Go CLI/外部小红书工具 → **禁止**（见技能边界）
 
 ## 🔒 技能边界（强制）
 

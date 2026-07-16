@@ -1,9 +1,12 @@
 ---
 name: dy-auth
 description: |
-  抖音登录与 cookie 校验（SAU + 系统 Chrome）。发布前扫码登录，或只读校验 cookie。
-  当用户要求抖音登录、检查 cookie、douyin:login / douyin:check 时触发。
+  抖音登录/鉴权（focused-task，SAU + 系统 Chrome）。发布前扫码登录，或只读校验 cookie。
+  触发：「抖音登录」「检查抖音 cookie」「douyin:login」「douyin:check」。
+  口语：登抖音、检查能不能发抖音、cookie 过期。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [douyin, auth, sau]
@@ -13,6 +16,14 @@ metadata:
 ---
 
 # 抖音认证（dy-auth）
+
+## When to use
+
+- 用户只要登录/检查 cookie
+
+## When not to use
+
+- 实际发布视频 → **`dy-publish`**
 
 ## 技能边界
 

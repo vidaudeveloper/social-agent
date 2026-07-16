@@ -1,9 +1,12 @@
 ---
 name: zh-auth
 description: |
-  知乎登录与登录态校验（pyzhihu-cli）。
-  当用户要求知乎登录、zhihu:login / zhihu:check-login 时触发。
+  知乎登录/鉴权（focused-task，pyzhihu-cli）。
+  触发：「知乎登录」「检查知乎登录态」「zhihu:login」。
+  口语：登知乎、检查能不能发知乎。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [zhihu, auth]
@@ -13,6 +16,14 @@ metadata:
 ---
 
 # 知乎认证（zh-auth）
+
+## When to use
+
+- 用户只要登录/检查登录态
+
+## When not to use
+
+- 实际发布长文 → **`zh-publish`**
 
 ## 技能边界
 

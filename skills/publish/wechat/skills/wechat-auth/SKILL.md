@@ -1,9 +1,28 @@
 ---
 name: wechat-auth
-description: 校验微信公众号 AppID/AppSecret 并获取 access_token。发布前或排查 IP 白名单时使用。
+description: |
+  微信公众号登录/鉴权（focused-task）。校验 AppID/AppSecret 并获取 access_token。
+  触发：「公众号登录检查」「wechat check-login」「IP 白名单排查」。
+  口语：查公众号密钥、能不能发公众号、access_token 过期。
+version: 1.0.0
+author: social-agent
+license: MIT
+metadata:
+  hermes:
+    tags: [wechat, auth]
+    related_skills:
+      - wechat-publish
 ---
 
 # wechat-auth
+
+## When to use
+
+- 只要校验密钥/access_token，或排查 IP 白名单
+
+## When not to use
+
+- 实际发布文稿 → **`wechat-publish`**
 
 ```powershell
 npm run wechat:check-login

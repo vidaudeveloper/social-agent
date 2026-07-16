@@ -1,9 +1,12 @@
 ---
 name: yt-viral-research
 description: |
-  YouTube 爆款调研编排技能（v2）。串联 TubePilot MCP 发现 → score 分级 → extract 字幕 → script-analyze 沉淀。
-  产出 HTML 报告 + scripts_raw.json + 金句库.csv。当用户要求分析 YouTube 爆款并沉淀时触发。
+  YouTube 发前爆款调研编排（explore）。发现 → score → 字幕 → 脚本分析，落盘 HTML + scripts_raw.json + 金句库。
+  触发：「分析爆款并沉淀」「出调研报告」「金句库」「完整 YouTube 竞品调研」。
+  口语：爆款深度分析、调研报告落盘、竞品脚本拆解、写稿前 YouTube 参考。
 version: 2.0.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [youtube, explore, research, orchestrator]
@@ -11,10 +14,24 @@ metadata:
       - explore/youtube/yt-viral-discover
       - explore/youtube/yt-transcript-extract
       - explore/youtube/yt-script-analyze
+      - analytics/yt-post-analytics
       - create/pipeline-orchestrator
 ---
 
 # YouTube 爆款调研（编排 v2）
+
+## When to use
+
+- 发**之前**要做完整竞品/爆款调研，且必须**落盘**（HTML、`scripts_raw.json`、金句库）
+- 管线 Step 1 需要英文赛道参考，或用户明确要「调研报告 / 沉淀 / 金句库」
+- 典型说法：「分析 YouTube 爆款并出报告」「沉淀竞品脚本」「写稿前做 YouTube 调研」
+
+## When not to use
+
+- 只要 Top 列表/打分、不要完整报告 → **`yt-viral-discover`**
+- 查**自己频道**发后数据 → **`yt-post-analytics`**
+- 只上传视频不调研 → **`yt-publish`**
+- 单平台已有稿直接发布 → **`yt-publish`**，不要误进本技能
 
 ## 配置
 

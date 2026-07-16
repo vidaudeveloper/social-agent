@@ -1,21 +1,35 @@
 ---
 name: img-tokenware
 description: |
-  社媒配图生图 — 通过 tokenware.ai OpenAI 兼容 API 生成封面、卡片图、内插图。
-  当用户说「生图」「配图」「封面图」「出一张图」或流水线 Step 4c 配图时使用。
-  唯一生图路径：tokenware.ai gpt-image-2（本技能 CLI）。技能 name: img-tokenware。
+  Tokenware AI 生图（create/focused-task）。封面、卡片、内插图；非小红书主路径。
+  触发：「生图」「配图」「封面图」「出一张图」；小红书 pipeline 失败降级时。
+  口语：AI 配图、生成封面、tokenware 生图、公众号封面。
 version: 1.0.0
 author: vidau
 license: MIT
 metadata:
   hermes:
     tags: [image, tokenware, cover, illustration, social-media]
-    related_skills: [pipeline-orchestrator, img-skills]
+    related_skills:
+      - xhs-card-render
+      - pipeline-orchestrator
 ---
 
 # img-tokenware（Tokenware 生图）
 
 流水线 **Step 4c 配图** 技能。知乎/公众号/抖音/YouTube 封面，以及**小红书 pipeline 失败后的降级**。
+
+## When to use
+
+- 非小红书平台需要 AI 封面/配图
+- 小红书 **`pipeline:xhs` 已失败** 且用户确认 AI 降级风险
+- 典型说法：「生一张封面」「AI 配图」「公众号封面图」
+
+## When not to use
+
+- 小红书**首选**模板卡片 → **`xhs-card-render`** / `pipeline:xhs`（勿起手 tokenware）
+- 发布到任何平台 → 对应 **`{code}-publish`**
+- BMP/ffmpeg/execute_code 自造图 → **禁止**
 
 ## 小红书降级（仅 pipeline:xhs 失败后）
 

@@ -1,8 +1,11 @@
 # social-agent — 社媒运营老兵 Agent
 
-> **一条指令**：选题研判 → 适配矩阵 → 写稿润色 → 配图 → 多平台发布
+> **一条指令**：先识别意图 → 加载最小必要 skill → 选题/写稿/配图/发布/复盘（按需组合）
 
 8 年社媒运营老兵 Agent。深谙知乎/公众号/小红书/抖音与 YouTube/TikTok 等平台规则。
+
+**意图路由（Agent）**：[`workspace/references/skill-routing.md`](workspace/references/skill-routing.md) — 单平台发布、多平台流水线、发后分析、单点任务分流。  
+**路由回归**：`npm run skill-routing:eval`（见 [`skills/review/skill-routing-eval/SKILL.md`](skills/review/skill-routing-eval/SKILL.md)）
 
 **仓库**：[github.com/vidaudeveloper/social-agent](https://github.com/vidaudeveloper/social-agent)  
 **作者**：VidAU

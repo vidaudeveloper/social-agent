@@ -1,17 +1,34 @@
 ---
 name: yt-viral-discover
 description: |
-  YouTube 爆款发现技能。通过 TubePilot MCP 搜索/热点/详情，再用本地 score CLI 做 ER 分级与 Long-form 过滤。
-  当用户要求分析 YouTube 爆款、赛道 Top 视频、竞品频道视频数据时触发。
+  YouTube 发前爆款发现（explore）。TubePilot 搜索/热点 + score 分级，产出 Top 列表与 ER 分级。
+  触发：「YouTube 爆款 Top」「赛道热门」「竞品频道视频列表」「只要发现不要完整报告」。
+  口语：分析爆款视频列表、看哪些视频火、赛道 Top、竞品频道数据。
 version: 2.0.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [youtube, explore, viral, discover]
     related_skills:
       - explore/youtube/yt-viral-research
+      - analytics/yt-post-analytics
 ---
 
 # YouTube 爆款发现
+
+## When to use
+
+- 发**之前**看赛道/竞品哪些视频表现好，需要 Top 列表、ER 分级、Long-form 过滤
+- 用户只要「发现 / 列表 / 打分」，尚未要求 HTML 报告、金句库、完整沉淀
+- 典型说法：「YouTube 爆款 Top」「赛道热门视频」「竞品频道哪些视频火」
+
+## When not to use
+
+- 要完整调研报告 + `scripts_raw.json` + 金句库 → **`yt-viral-research`**
+- 查**自己频道**发后播放/Analytics → **`yt-post-analytics`**
+- 上传/发布 MP4 → **`yt-publish`**
+- 从选题到多平台发布 → **`pipeline-orchestrator`**（本技能只是其中 explore 一步）
 
 ## 配置
 

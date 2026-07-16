@@ -1,12 +1,29 @@
 ---
 name: yt-upload
 description: |
-  通过 social-auto-upload（sau）完成 YouTube 登录、cookie 校验、视频上传。
-  本项目 YouTube 唯一发布路径。遇 sau 报错或 check invalid 时先读 references/sau-runbook.md。
+  YouTube 上传契约参考（sau 登录/校验/上传的运行前提与故障索引，非独立执行入口）。
+  触发：排障时查阅；实际发布仍用 `yt-publish`，登录用 `yt-auth`。
+  口语：YouTube 上传报错、sau check invalid、上传前提检查。
 version: 2.0.0
+author: social-agent
+license: MIT
+metadata:
+  hermes:
+    tags: [youtube, upload, sau, reference]
+    related_skills:
+      - yt-publish
+      - yt-auth
 ---
 
 # YouTube 上传 Skill（yt-upload / sau）
+
+## When to use
+
+- 排障：sau 报错、check invalid、上传前提缺失时查本页
+
+## When not to use
+
+- 日常发布 → **`yt-publish`**；日常登录 → **`yt-auth`**（本技能是参考契约，不是执行入口）
 
 **唯一路径**。与抖音 / 小红书 SAU 上传模式一致。
 

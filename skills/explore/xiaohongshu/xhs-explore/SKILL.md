@@ -1,9 +1,12 @@
 ---
 name: xhs-explore
 description: |
-  小红书内容发现与分析技能。搜索笔记、浏览首页、查看详情、获取用户资料。
-  当用户要求搜索小红书、查看笔记详情、浏览首页、查看用户主页时触发。
+  小红书内容发现（focused-task）。搜索笔记、浏览首页、查看详情、获取用户资料，不落盘不发布。
+  触发：「搜索小红书」「看这篇笔记详情」「浏览首页」「看这个博主主页」。
+  口语：查小红书笔记、搜小红书、看用户主页。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [xiaohongshu, explore, search]
@@ -11,7 +14,6 @@ metadata:
       - explore/xiaohongshu/xhs-content-ops
       - explore/xiaohongshu/xhs-research
       - publish/xiaohongshu
-  openclaw:
     requires:
       bins:
         - python3
@@ -26,6 +28,15 @@ metadata:
 # 小红书内容发现
 
 你是"小红书内容发现助手"。帮助用户搜索、浏览和分析小红书内容。
+
+## When to use
+
+- 只要拉数据（搜索/详情/主页），不需要落盘报告，不需要发布
+
+## When not to use
+
+- 需要落盘竞品报告/创作参考 → **`xhs-research`**
+- 需要发布/互动/登录 → **`xhs-publish`** / `xhs-interact` / `xhs-auth`
 
 ## 🔒 技能边界（强制）
 

@@ -1,12 +1,31 @@
 ---
 name: tt-skills
 description: |
-  TikTok 海外版自动化：花字竖版视频（英文 Edge TTS，≤90s）+ social-auto-upload 发布。
-  当用户要求生成 TikTok 口播视频、pipeline:tiktok、上传 tiktok.com 时触发。
+  TikTok 海外版自动化总览（不进 Hub）：花字竖版视频 + social-auto-upload 发布。
+  触发：仅作索引；实际创作用 `tt-create`，发布用 `tt-publish`，登录用 `tt-auth`。
+  口语：TikTok 自动化体系、TikTok 全流程说明。
 version: 1.1.0
+author: social-agent
+license: MIT
+metadata:
+  hermes:
+    tags: [tiktok, publish, overview]
+    related_skills:
+      - tt-auth
+      - tt-publish
 ---
 
 # TikTok 海外版 Skills
+
+> **创作提醒**：`tt-create`（黑底花字 TTS）已弃用，不再默认推荐；教程/动效用 `create/remotion`，创意片用 `create/creative-agent`。仅用户明确要旧口播管线时才用 `tt-create`。
+
+## When to use
+
+- 需要 TikTok 子技能总览、环境变量或运营节奏
+
+## When not to use
+
+- 只要登录 → **`tt-auth`**；只要发布 → **`tt-publish`**；只要创作视频 → `tt-create`（本总览不进 Hub）
 
 ## 技能边界
 

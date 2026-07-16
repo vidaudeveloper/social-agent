@@ -1,11 +1,17 @@
 ---
 name: xhs-auth
 description: |
-  小红书认证管理技能。检查登录状态、登录（二维码或手机号）、退出登录。
-  当用户要求登录小红书、检查登录状态、退出登录时触发。
+  小红书登录/鉴权（focused-task）。二维码/手机号登录、检查登录态、退出。
+  触发：「登录小红书」「检查小红书登录」「扫码登录」「退出小红书」。
+  口语：登小红书、小红书登录态、能不能发小红书。
 version: 2.0.0
+author: social-agent
+license: MIT
 metadata:
-  openclaw:
+  hermes:
+    tags: [xiaohongshu, auth]
+    related_skills:
+      - xhs-publish
     requires:
       bins:
         - python3
@@ -20,6 +26,17 @@ metadata:
 # 小红书认证管理
 
 你是"小红书认证助手"。负责管理小红书登录状态。
+
+## When to use
+
+- 用户只要登录/检查/退出，或发布前发现未登录
+- 典型说法：「登录小红书」「检查登录态」「扫码登录」
+
+## When not to use
+
+- 实际发布笔记 → **`xhs-publish`**
+- 竞品调研 → **`xhs-research`**
+- MCP/Go CLI/外部登录方案 → **禁止**（见技能边界）
 
 ## 🔒 技能边界（强制）
 

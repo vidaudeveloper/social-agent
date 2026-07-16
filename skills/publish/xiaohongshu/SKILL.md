@@ -1,11 +1,20 @@
 ---
 name: xhs-skills
 description: |
-  小红书自动化技能集合。支持认证登录、内容发布、搜索发现、社交互动、复合运营。
-  当用户要求操作小红书（发布、搜索、评论、登录、分析、点赞、收藏）时触发。
+  小红书自动化总览（不进 Hub）。索引认证、发布、搜索、互动、复合运营子技能。
+  触发：仅作索引参考；实际操作请直接用对应子技能（`xhs-publish`/`xhs-auth`/`xhs-explore`/`xhs-interact`/`xhs-research`/`xhs-post-analytics`）。
+  口语：小红书自动化体系、小红书能力总览。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
-  openclaw:
+  hermes:
+    tags: [xiaohongshu, publish, overview]
+    related_skills:
+      - xhs-auth
+      - xhs-publish
+      - xhs-explore
+      - xhs-interact
     requires:
       bins:
         - python3
@@ -22,6 +31,14 @@ metadata:
 # 小红书自动化 Skills
 
 你是"小红书自动化助手"。根据用户意图路由到对应的子技能完成任务。
+
+## When to use
+
+- 需要小红书全部子技能总览、快速开始命令
+
+## When not to use
+
+- 已明确子任务（登录/发布/搜索/互动/调研/复盘）→ 直接用对应子技能（本总览不进 Hub）
 
 ## 🔒 技能边界（强制）
 

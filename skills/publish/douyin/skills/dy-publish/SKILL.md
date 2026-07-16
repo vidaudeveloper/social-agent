@@ -1,9 +1,12 @@
 ---
 name: dy-publish
 description: |
-  抖音视频发布（SAU + 系统 Chrome）。上传已有 MP4 到抖音。
-  当用户要求抖音上传、douyin:upload、发抖音视频时触发。
+  抖音单平台发布（publish-single，SAU + 系统 Chrome）。上传已有 MP4 到抖音。
+  触发：「只发抖音」「上传这个视频到抖音」「douyin:upload」。
+  口语：发抖音、抖音上传、把视频传到抖音。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [douyin, publish, sau]
@@ -14,6 +17,16 @@ metadata:
 ---
 
 # 抖音发布（dy-publish）
+
+## When to use
+
+- 已有 MP4，只发布到抖音；用户说「只发抖音」「上传这个视频」
+
+## When not to use
+
+- 需要先用 TTS/花字合成视频 → **`dy-create`**
+- 从选题写到多平台分发 → **`pipeline-orchestrator`**
+- 只检查登录态 → **`dy-auth`**
 
 ## 技能边界
 

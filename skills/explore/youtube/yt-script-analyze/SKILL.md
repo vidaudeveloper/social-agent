@@ -1,15 +1,30 @@
 ---
 name: yt-script-analyze
 description: |
-  YouTube 脚本分析与知识库沉淀（v2）。读 scripts_raw.json，提炼钩子/结构/金句与 #1 深拆，写回知识库。
-  当用户要求分析脚本结构、沉淀爆款钩子金句、补充复刻模板时触发。
+  YouTube 脚本深拆分析（focused-task，v2）。读 scripts_raw.json，提炼钩子/结构/金句，写回知识库。
+  触发：「分析脚本结构」「沉淀爆款钩子金句」「补充复刻模板」「#1 深拆」。
+  口语：拆解爆款脚本、金句库、结构分析。
 version: 2.0.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [youtube, explore, analyze, knowledge-base]
+    related_skills:
+      - yt-viral-research
+      - yt-transcript-extract
 ---
 
 # YouTube 脚本分析 + 知识库沉淀（v2）
+
+## When to use
+
+- 已有 `scripts_raw.json`，需要提炼钩子/结构/金句并写回知识库
+
+## When not to use
+
+- 尚未拉取字幕 → 先 **`yt-transcript-extract`**
+- 完整调研编排（发现→打分→字幕→分析） → **`yt-viral-research`**
 
 ## 输入
 

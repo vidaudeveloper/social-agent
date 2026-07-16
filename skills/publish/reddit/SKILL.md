@@ -1,14 +1,31 @@
 ---
 name: rd-skills
 description: |
-  Reddit 自动化技能（本仓库 name: rd-skills）。基于上游 1146345502/reddit-skills（Chrome 扩展桥 + Python CLI，安装于 tool/reddit-skills）。
-  当用户要求发布 Reddit 帖子、浏览 subreddit、搜索 Reddit 时触发。
+  Reddit 自动化总览（本仓库 name: rd-skills，不进 Hub）。基于上游 1146345502/reddit-skills（Chrome 扩展桥 + Python CLI）。
+  触发：仅作索引参考；实际发布/登录请直接用子技能 `rd-publish` / `rd-auth`。
+  口语：Reddit 自动化、Reddit 发帖体系。
 version: 1.1.0
+author: social-agent
+license: MIT
 metadata:
+  hermes:
+    tags: [reddit, publish, overview]
+    related_skills:
+      - rd-auth
+      - rd-publish
   source: https://github.com/1146345502/reddit-skills
 ---
 
 # Reddit Skills（rd-skills）
+
+## When to use
+
+- 需要总览 Reddit 子技能与运营节奏，或排障时查前置条件
+
+## When not to use
+
+- 只要登录检查 → **`rd-auth`**
+- 只要发帖 → **`rd-publish`**（本总览不进 Hub，勿作为直接执行入口）
 
 > **发布前质量规则**以 `skills/review/rules/reddit.yaml` 为准；等效 CLI：`npm run review:lint -- --platform reddit ...` 或 `npm run reddit:validate`。
 

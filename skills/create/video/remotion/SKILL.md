@@ -15,7 +15,6 @@ metadata:
     related_skills:
       - create/creative-agent
       - create/pipeline-orchestrator
-  tags: remotion, video, react, animation, composition, tutorial
 ---
 
 ## 对用户语言
@@ -25,6 +24,12 @@ metadata:
 ## When to use
 
 Use this skill whenever you are dealing with Remotion code, or when the user wants a **tutorial / how-to / configuration demo video** (not a black-screen caption口播片).
+
+## When not to use
+
+- Trend clips, product-URL one-click videos, MCP/Vision creative composition → **`creative-agent`**
+- Black-screen caption narration (deprecated) → do not use; prefer this skill or `creative-agent`
+- Only publishing an existing video, no composition needed → the platform's `{code}-publish`
 
 ## New project setup
 

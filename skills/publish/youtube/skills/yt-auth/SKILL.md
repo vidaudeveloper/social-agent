@@ -1,12 +1,31 @@
 ---
 name: yt-auth
 description: |
-  YouTube sau 认证技能。检查/引导 social-auto-upload 登录。
-  遇 check invalid 或 sau 报错时先读 references/sau-runbook.md。
+  YouTube 登录/鉴权（focused-task）。sau check-login / login，排查 cookie 失效。
+  触发：「YouTube 登录」「检查 YouTube 登录态」「cookie 失效」。
+  口语：登 YouTube、Studio 登录、检查能不能发 YouTube。
 version: 2.0.0
+author: social-agent
+license: MIT
+metadata:
+  hermes:
+    tags: [youtube, auth, sau]
+    related_skills:
+      - yt-publish
 ---
 
 # YouTube 认证（仅 sau）
+
+## When to use
+
+- 用户只要登录/检查登录态，或 publish 前 sau 明确提示 cookie 失效
+- 典型说法：「YouTube 登录」「检查能不能发」「cookie 过期了」
+
+## When not to use
+
+- 实际发布视频 → **`yt-publish`**（不要连跑 login + publish 除非用户确认）
+- publish 前**预防性** check-login → **禁止**（易触发风控，见技能边界）
+- Playwright/MCP 替代 sau → **禁止**
 
 ## 技能边界
 

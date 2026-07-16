@@ -1,18 +1,20 @@
 ---
 name: xhs-research
 description: |
-  小红书竞品/热点分析报告沉淀。拉数后写入知识库 HTML + 创作参考.md，供下次写稿引用。
-  当用户要求小红书竞品分析、热点分析、数据分析并留存报告，或「生成创作参考」时触发。
+  小红书发前竞品/热点调研（explore）。拉数后落盘 HTML + 创作参考.md，供写稿引用。
+  触发：「小红书竞品分析」「热点调研」「创作参考」「发前调研落盘」。
+  口语：看竞品怎么写、小红书热点、调研报告、写稿前参考。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [xiaohongshu, explore, research, knowledge-base]
     related_skills:
       - explore/xiaohongshu/xhs-explore
-      - explore/xiaohongshu/xhs-content-ops
+      - analytics/xhs-post-analytics
+      - xhs-publish
       - create/pipeline-orchestrator
-      - publish/xiaohongshu
-  openclaw:
     requires:
       bins:
         - node
@@ -29,6 +31,19 @@ metadata:
 你是「小红书调研沉淀助手」。在现有 `xhs-explore` 拉数能力之上，**必须把结果落盘**，并交付可复用的创作参考。
 
 配置速查：`workspace/references/xiaohongshu-research.md`（相对仓库根）
+
+## When to use
+
+- 发**之前**做竞品/热点分析，且必须落盘到知识库（HTML、`创作参考.md`）
+- 管线写小红书稿前需要结构/标签/角度参考
+- 典型说法：「小红书竞品分析」「热点调研并落盘」「生成创作参考」
+
+## When not to use
+
+- 查**自己已发笔记**的创作者中心数据 → **`xhs-post-analytics`**
+- 直接发布图文/视频 → **`xhs-publish`**
+- 只做配图卡片 → **`xhs-card-render`**
+- 只在对话里贴长报告不落盘 → **禁止**（须用本技能落盘）
 
 ## 技能边界（强制）
 

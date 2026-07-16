@@ -1,12 +1,31 @@
 ---
 name: dy-skills
 description: |
-  抖音自动化技能集合：黑底花字竖版视频（Edge TTS + ffmpeg ASS）、SAU 发布。
-  当用户要求生成抖音口播视频、花字短视频、pipeline:douyin 时触发。
+  抖音自动化总览（不进 Hub）：SAU 发布 + 黑底花字创作（已弃用体系，见下）。
+  触发：仅作索引；创作用 `dy-create`（已弃用），发布用 `dy-publish`，登录用 `dy-auth`。
+  口语：抖音自动化体系、抖音能力总览。
 version: 1.0.0
+author: social-agent
+license: MIT
+metadata:
+  hermes:
+    tags: [douyin, publish, overview]
+    related_skills:
+      - dy-auth
+      - dy-publish
 ---
 
 # 抖音自动化 Skills
+
+> **创作提醒**：`dy-create`（黑底花字 TTS）已弃用，不再默认推荐；教程/动效用 `create/remotion`，创意片用 `create/creative-agent`。仅用户明确要旧口播管线时才用 `dy-create`。
+
+## When to use
+
+- 需要抖音子技能总览、发布前置或渲染器说明
+
+## When not to use
+
+- 已明确子任务（登录/发布）→ 直接用 `dy-auth` / `dy-publish`（本总览不进 Hub）
 
 ## 技能边界
 

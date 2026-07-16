@@ -1,10 +1,30 @@
 ---
 name: tt-publish
-description: TikTok 海外版视频发布。当用户要上传 MP4 到 tiktok.com 时触发。
+description: |
+  TikTok 单平台发布（publish-single）。上传已有 MP4 到 tiktok.com。
+  触发：「只发 TikTok」「上传这个视频到 TikTok」「tiktok:publish」。
+  口语：发 TikTok、TikTok 上传、把视频传到 TikTok。
 version: 1.0.0
+author: social-agent
+license: MIT
+metadata:
+  hermes:
+    tags: [tiktok, publish, sau]
+    related_skills:
+      - tt-auth
+      - pipeline-orchestrator
 ---
 
 # TikTok 发布
+
+## When to use
+
+- 已有 MP4，只发布到 TikTok
+
+## When not to use
+
+- 从选题写到多平台分发 → **`pipeline-orchestrator`**
+- 只要登录检查 → **`tt-auth`**（禁止 publish 前先跑 check-login）
 
 ## 命令
 

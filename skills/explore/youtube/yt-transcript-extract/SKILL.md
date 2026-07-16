@@ -1,15 +1,30 @@
 ---
 name: yt-transcript-extract
 description: |
-  YouTube 字幕抽取技能（v2）。用 youtube-transcript-api 拉取字幕，按句重组 timed/sentences，合并进 scripts_raw.json。
-  当用户要求抽 YouTube 字幕、拉 transcript、批量提取口播稿时触发。
+  YouTube 字幕抽取（focused-task，v2）。拉字幕并按句重组，合并进 scripts_raw.json。
+  触发：「抽 YouTube 字幕」「拉 transcript」「批量提取口播稿」。
+  口语：拿字幕、下载 YouTube 字幕、视频转文字。
 version: 2.0.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [youtube, explore, transcript]
+    related_skills:
+      - yt-script-analyze
+      - yt-viral-research
 ---
 
 # YouTube 字幕抽取
+
+## When to use
+
+- 已有视频 ID/列表，需要拉字幕供后续分析
+
+## When not to use
+
+- 已有字幕要提炼钩子/金句 → **`yt-script-analyze`**
+- 完整调研编排 → **`yt-viral-research`**
 
 ## 配置
 

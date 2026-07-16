@@ -1,9 +1,30 @@
 ---
 name: x-auth
-description: X/Twitter 登录与环境检查（baoyu-post-to-x Chrome profile）
+description: |
+  X/Twitter 登录与环境检查（focused-task）。baoyu-post-to-x Chrome profile。
+  触发：「X 登录」「推特登录」「检查 X 登录态」「Twitter login」。
+  口语：登 X、检查能不能发推、推特账号登录。
+version: 1.0.0
+author: social-agent
+license: MIT
+metadata:
+  hermes:
+    tags: [x, twitter, auth]
+    related_skills:
+      - x-publish
 ---
 
 # x-auth
+
+## When to use
+
+- 用户只要 X 登录/环境检查，或 publish 前发现未登录
+- 典型说法：「X 登录」「检查推特登录」「baoyu 环境」
+
+## When not to use
+
+- 实际发帖 → **`x-publish`**
+- 多平台流水线 → **`pipeline-orchestrator`**
 
 ```powershell
 npm run x:login

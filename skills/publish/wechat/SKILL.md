@@ -1,13 +1,29 @@
 ---
 name: wechat-skills
 description: |
-  微信公众号发布。纯 Node 调用微信草稿/群发 API（零第三方依赖）。
-  默认 draft_only：自动进草稿箱，人工在公众平台群发。
-  当用户要求发公众号、微信草稿、wechat publish 时触发。
+  微信公众号自动化总览（不进 Hub）。纯 Node 调用微信草稿/群发 API。
+  触发：仅作索引；实际发布用 `wechat-publish`，验密钥用 `wechat-auth`。
+  口语：公众号自动化体系、公众号发布说明。
 version: 1.0.0
+author: social-agent
+license: MIT
+metadata:
+  hermes:
+    tags: [wechat, publish, overview]
+    related_skills:
+      - wechat-auth
+      - wechat-publish
 ---
 
 # 微信公众号 Skills
+
+## When to use
+
+- 需要公众号子技能总览或快速开始说明
+
+## When not to use
+
+- 只要验密钥 → **`wechat-auth`**；只要发布 → **`wechat-publish`**（本总览不进 Hub）
 
 通过微信开放平台 API 将 Markdown 文稿推入**草稿箱**（推荐），可选 `freepublish` 正式发布。
 

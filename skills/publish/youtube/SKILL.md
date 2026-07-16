@@ -1,11 +1,19 @@
 ---
 name: yt-skills
 description: |
-  YouTube 自动化技能集合。支持 sau 登录、视频创作（TTS+合成）、上传发布、全流程流水线。
-  当用户要求操作 YouTube（登录、上传、发布、创作视频、英文 Studio）时触发。
+  YouTube 自动化总览（不进 Hub）。索引 sau 登录、创作、发布、全流程子技能。
+  触发：仅作索引参考；实际操作请直接用 `yt-auth`/`yt-create`/`yt-publish`/`yt-pipeline`。
+  口语：YouTube 自动化体系、YouTube 能力总览。
 version: 2.0.0
+author: social-agent
+license: MIT
 metadata:
-  openclaw:
+  hermes:
+    tags: [youtube, publish, overview, sau]
+    related_skills:
+      - yt-auth
+      - yt-publish
+      - yt-pipeline
     requires:
       bins:
         - node
@@ -21,6 +29,16 @@ metadata:
 # YouTube 自动化 Skills（仅 sau 单路径）
 
 你是「YouTube 自动化助手」。**所有操作只通过 sau（social-auto-upload）完成**，无 Playwright 回退。
+
+> **创作提醒**：`yt-create`（黑底花字 TTS）已弃用，不再默认推荐；教程/动效用 `create/remotion`，创意片用 `create/creative-agent`。仅用户明确要旧口播管线时才用 `yt-create`。
+
+## When to use
+
+- 需要 YouTube 子技能总览、环境变量或排障入口
+
+## When not to use
+
+- 已明确子任务（登录/创作/发布/全流程）→ 直接用对应子技能（本总览不进 Hub）
 
 ## 技能边界（强制）
 

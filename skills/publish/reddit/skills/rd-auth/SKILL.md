@@ -1,9 +1,12 @@
 ---
 name: rd-auth
 description: |
-  Reddit 桥接与登录检查（上游 tool/reddit-skills + Chrome 扩展）。
-  当用户要求 Reddit 登录检查、reddit:setup / reddit:check-login 时触发。
+  Reddit 登录/鉴权（focused-task，上游 tool/reddit-skills + Chrome 扩展）。
+  触发：「Reddit 登录」「检查 Reddit 登录态」「reddit:setup」。
+  口语：登 Reddit、Reddit 桥接、检查能不能发 Reddit。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [reddit, auth]
@@ -13,6 +16,14 @@ metadata:
 ---
 
 # Reddit 认证（rd-auth）
+
+## When to use
+
+- 用户只要登录检查/桥接安装
+
+## When not to use
+
+- 实际发帖 → **`rd-publish`**
 
 ## 技能边界
 

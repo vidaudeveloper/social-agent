@@ -1,22 +1,38 @@
 ---
 name: yt-post-analytics
 description: |
-  YouTube 发布后作品/频道数据分析。基于 youtube-analytics-cli 拉取公开统计或 Analytics 报表。
-  当用户要求分析 YouTube 频道数据、视频播放/点赞、观看时长、自家频道复盘、YouTube Analytics 报表时触发。
+  YouTube 发后频道/作品数据分析（analytics）。基于 youtube-analytics-cli 拉公开统计或 Analytics 报表并落盘。
+  触发：「频道播放」「观看时长」「YouTube Analytics」「发后复盘」「上周数据」。
+  口语：我的频道表现、视频播放量、自家频道复盘、Analytics 报表。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [youtube, analytics, post-publish, report]
     related_skills:
-      - publish/youtube
+      - publish/youtube/skills/yt-publish
       - explore/youtube/yt-viral-research
+      - explore/youtube/yt-viral-discover
       - create/pipeline-orchestrator
 ---
 
 # YouTube 发布后数据分析（yt-post-analytics）
 
 发**之后**看频道与作品表现（官方 Data / Analytics API）。  
-（发**之前**的爆款调研请用 `explore/youtube/yt-viral-research`。）
+（发**之前**的爆款调研请用 `yt-viral-research` 或列表发现用 `yt-viral-discover`。）
+
+## When to use
+
+- 用户要查**自己已发布**频道/视频的播放、观看时长、互动、Analytics 报表
+- 需要落盘 HTML/JSON 复盘，或回答「上周表现怎么样」
+- 典型说法：「YouTube 频道数据」「观看时长报表」「发后复盘」「Analytics 报表」
+
+## When not to use
+
+- 竞品/赛道爆款发现 → **`yt-viral-discover`** / **`yt-viral-research`**
+- 上传/发布新视频 → **`yt-publish`**
+- 从选题写到多平台发布 → **`pipeline-orchestrator`**
 
 上游 CLI：[Bin-Huang/youtube-analytics-cli](https://github.com/Bin-Huang/youtube-analytics-cli)
 

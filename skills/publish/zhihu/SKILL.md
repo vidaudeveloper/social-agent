@@ -1,14 +1,30 @@
 ---
 name: zh-skills
 description: |
-  知乎长文发布（HTML 版）。将 .md 转为多段落 HTML，经 pyzhihu-cli API 直发，避免 zhihu article 单 <p> 导致整篇糊成一坨。
-  当用户要求发布知乎专栏、zhihu publish 时触发。
+  知乎长文发布总览（不进 Hub，HTML 版）。将 .md 转多段落 HTML，经 pyzhihu-cli API 直发。
+  触发：仅作索引；实际发布用 `zh-publish`，登录用 `zh-auth`。
+  口语：知乎发布体系、为何不用 zhihu article 直传。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
+  hermes:
+    tags: [zhihu, publish, overview]
+    related_skills:
+      - zh-auth
+      - zh-publish
   source: pyzhihu-cli + social-agent
 ---
 
 # 知乎 Skills（HTML 发布）
+
+## When to use
+
+- 需要知乎子技能总览、写稿建议或转换原理说明
+
+## When not to use
+
+- 只要登录 → **`zh-auth`**；只要发布 → **`zh-publish`**（本总览不进 Hub）
 
 > **写稿与格式规则**以 `skills/review/rules/zhihu.yaml` 为准；发布前建议 `npm run review:lint -- --platform zhihu --file <文稿>`。
 

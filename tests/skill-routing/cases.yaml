@@ -1,0 +1,279 @@
+# 技能路由评测用例
+
+# 运行：npm run skill-routing:eval
+# 每条：user 用户原话；expect_intent 四类意图；expect_skills 期望叶子 name 列表；
+#       forbid_skills 禁止误选；keywords 可选加分词（用于离线路由打分）
+
+- id: pipeline-full-1
+  user: 今日选题，帮我跑一篇内容发到各平台
+  expect_intent: content-pipeline
+  expect_skills: [pipeline-orchestrator]
+  forbid_skills: [xhs-publish, yt-publish, yt-post-analytics]
+
+- id: pipeline-full-2
+  user: 全自动流水线，从选题到分发
+  expect_intent: content-pipeline
+  expect_skills: [pipeline-orchestrator]
+  forbid_skills: [xhs-research]
+
+- id: pipeline-multi-platform
+  user: 这篇稿同时发小红书和知乎
+  expect_intent: content-pipeline
+  expect_skills: [pipeline-orchestrator]
+  forbid_skills: [xhs-publish]
+
+- id: publish-xhs-only
+  user: 只发小红书，图文已经准备好了
+  expect_intent: publish-single
+  expect_skills: [xhs-publish]
+  forbid_skills: [pipeline-orchestrator, xhs-research, xhs-post-analytics]
+
+- id: publish-xhs-upload
+  user: 把这个视频上传发布到小红书
+  expect_intent: publish-single
+  expect_skills: [xhs-publish]
+  forbid_skills: [pipeline-orchestrator, xhs-card-render]
+
+- id: publish-yt-only
+  user: 只发 YouTube，MP4 在这 D:\videos\demo.mp4
+  expect_intent: publish-single
+  expect_skills: [yt-publish]
+  forbid_skills: [pipeline-orchestrator, yt-viral-research, yt-post-analytics]
+
+- id: publish-yt-upload
+  user: 上传这个视频到 YouTube 频道
+  expect_intent: publish-single
+  expect_skills: [yt-publish]
+  forbid_skills: [yt-viral-discover]
+
+- id: publish-x-tweet
+  user: 发一条推，文案写好了
+  expect_intent: publish-single
+  expect_skills: [x-publish]
+  forbid_skills: [pipeline-orchestrator, x-auth]
+  keywords: [发推, 推特, tweet]
+
+- id: publish-x-twitter
+  user: post this to X / Twitter
+  expect_intent: publish-single
+  expect_skills: [x-publish]
+  forbid_skills: [pipeline-orchestrator]
+
+- id: publish-zhihu
+  user: 只发知乎，文章路径有了
+  expect_intent: publish-single
+  expect_skills: [zh-publish]
+  forbid_skills: [pipeline-orchestrator]
+
+- id: publish-reddit
+  user: 帮我把这篇发到 Reddit
+  expect_intent: publish-single
+  expect_skills: [rd-publish]
+  forbid_skills: [pipeline-orchestrator]
+
+- id: publish-wechat-draft
+  user: 公众号进草稿，不要直接发
+  expect_intent: publish-single
+  expect_skills: [wechat-publish]
+  forbid_skills: [pipeline-orchestrator]
+
+- id: publish-tt
+  user: 只发 TikTok 这个竖屏视频
+  expect_intent: publish-single
+  expect_skills: [tt-publish]
+  forbid_skills: [pipeline-orchestrator]
+
+- id: analytics-yt-channel
+  user: 看下我 YouTube 频道上周播放和观看时长
+  expect_intent: analytics-post
+  expect_skills: [yt-post-analytics]
+  forbid_skills: [yt-publish, yt-viral-research, pipeline-orchestrator]
+
+- id: analytics-yt-report
+  user: YouTube Analytics 报表落盘 HTML
+  expect_intent: analytics-post
+  expect_skills: [yt-post-analytics]
+  forbid_skills: [yt-viral-discover, yt-publish]
+
+- id: analytics-xhs-post
+  user: 小红书发后复盘，创作者中心导出的数据
+  expect_intent: analytics-post
+  expect_skills: [xhs-post-analytics]
+  forbid_skills: [xhs-research, xhs-publish, pipeline-orchestrator]
+
+- id: analytics-xhs-notes
+  user: 我发的笔记曝光点击怎么样
+  expect_intent: analytics-post
+  expect_skills: [xhs-post-analytics]
+  forbid_skills: [xhs-research]
+
+- id: analytics-linkedin
+  user: LinkedIn 帖子表现数据
+  expect_intent: analytics-post
+  expect_skills: [li-analytics]
+  forbid_skills: [li-publish, pipeline-orchestrator]
+
+- id: explore-yt-discover
+  user: YouTube 赛道 Top 爆款视频列表，只要发现不要完整报告
+  expect_intent: focused-task
+  expect_skills: [yt-viral-discover]
+  forbid_skills: [yt-post-analytics, yt-publish, yt-viral-research]
+
+- id: explore-yt-research
+  user: 分析 YouTube 爆款并沉淀报告和金句库
+  expect_intent: focused-task
+  expect_skills: [yt-viral-research]
+  forbid_skills: [yt-viral-discover, yt-post-analytics]
+
+- id: explore-yt-research-2
+  user: 写稿前做 YouTube 竞品调研，要落盘 HTML
+  expect_intent: focused-task
+  expect_skills: [yt-viral-research]
+  forbid_skills: [yt-post-analytics]
+
+- id: explore-xhs-research
+  user: 小红书竞品分析，生成创作参考并落盘
+  expect_intent: focused-task
+  expect_skills: [xhs-research]
+  forbid_skills: [xhs-post-analytics, xhs-publish]
+
+- id: explore-xhs-hot
+  user: 小红书热点调研，要留存报告
+  expect_intent: focused-task
+  expect_skills: [xhs-research]
+  forbid_skills: [pipeline-orchestrator]
+
+- id: focused-xhs-card
+  user: 给这篇小红书笔记做卡片配图 pipeline:xhs
+  expect_intent: focused-task
+  expect_skills: [xhs-card-render]
+  forbid_skills: [img-tokenware, xhs-publish]
+
+- id: focused-img-tokenware
+  user: 给公众号生一张 AI 封面图
+  expect_intent: focused-task
+  expect_skills: [img-tokenware]
+  forbid_skills: [xhs-card-render]
+
+- id: focused-img-not-xhs
+  user: 出一张 YouTube 视频封面，AI 生图
+  expect_intent: focused-task
+  expect_skills: [img-tokenware]
+  forbid_skills: [xhs-card-render]
+
+- id: focused-review
+  user: 发布前检查这篇小红书稿格式
+  expect_intent: focused-task
+  expect_skills: [review]
+  forbid_skills: [xhs-publish, xhs-auth]
+
+- id: focused-review-2
+  user: content review 知乎这篇
+  expect_intent: focused-task
+  expect_skills: [review]
+  forbid_skills: [pipeline-orchestrator]
+
+- id: auth-xhs
+  user: 登录小红书，扫码
+  expect_intent: focused-task
+  expect_skills: [xhs-auth]
+  forbid_skills: [xhs-publish, xhs-research]
+
+- id: auth-yt
+  user: YouTube cookie 失效了，要登录
+  expect_intent: focused-task
+  expect_skills: [yt-auth]
+  forbid_skills: [yt-publish, yt-viral-research]
+
+- id: auth-x
+  user: 检查 X 推特登录态
+  expect_intent: focused-task
+  expect_skills: [x-auth]
+  forbid_skills: [x-publish]
+
+- id: confuse-yt-viral-vs-analytics
+  user: 分析 YouTube 爆款视频数据
+  expect_intent: focused-task
+  expect_skills: [yt-viral-discover, yt-viral-research]
+  forbid_skills: [yt-post-analytics]
+  recall_any: true
+
+- id: confuse-yt-my-channel
+  user: 我的 YouTube 频道播放数据
+  expect_intent: analytics-post
+  expect_skills: [yt-post-analytics]
+  forbid_skills: [yt-viral-discover, yt-viral-research]
+
+- id: confuse-xhs-research-vs-analytics
+  user: 小红书竞品数据分析报告落盘
+  expect_intent: focused-task
+  expect_skills: [xhs-research, xhs-post-analytics]
+  forbid_skills: [pipeline-orchestrator]
+  recall_any: true
+
+- id: confuse-xhs-own-notes
+  user: 我自己发的小红书笔记数据复盘
+  expect_intent: analytics-post
+  expect_skills: [xhs-post-analytics]
+  forbid_skills: [xhs-research]
+
+- id: negative-pipeline-single
+  user: 只发小红书
+  expect_intent: publish-single
+  expect_skills: [xhs-publish]
+  forbid_skills: [pipeline-orchestrator]
+
+- id: negative-analytics-not-publish
+  user: 查 YouTube 观看时长，不要发布
+  expect_intent: analytics-post
+  expect_skills: [yt-post-analytics]
+  forbid_skills: [yt-publish, pipeline-orchestrator]
+
+- id: negative-research-not-analytics
+  user: 竞品小红书笔记怎么写，发前调研
+  expect_intent: focused-task
+  expect_skills: [xhs-research]
+  forbid_skills: [xhs-post-analytics]
+
+- id: remotion-focused
+  user: 做一个 Remotion 教程动效视频
+  expect_intent: focused-task
+  expect_skills: [remotion]
+  forbid_skills: [pipeline-orchestrator, creative-agent]
+
+- id: creative-focused
+  user: 商业创意宣传片，不用 Remotion 教程结构
+  expect_intent: focused-task
+  expect_skills: [creative-agent]
+  forbid_skills: [remotion]
+
+- id: img-fallback-xhs
+  user: pipeline:xhs 失败了，用户确认后用 AI 降级配图
+  expect_intent: focused-task
+  expect_skills: [img-tokenware]
+  forbid_skills: [xhs-card-render]
+
+- id: vague-need-platform
+  user: 帮我发一下
+  expect_intent: null
+  expect_skills: []
+  needs_clarification: [platform, material_path]
+
+- id: vague-analytics
+  user: 看下数据
+  expect_intent: null
+  expect_skills: []
+  needs_clarification: [platform]
+
+- id: distractor-mcp-xhs
+  user: 用 MCP 发小红书
+  expect_intent: publish-single
+  expect_skills: [xhs-publish]
+  forbid_skills: [pipeline-orchestrator]
+  forbid_actions: [mcp_browser, ad_hoc_script]
+
+- id: distractor-bare-npx-yt
+  user: npx youtube-analytics-cli 拉报表
+  expect_intent: analytics-post
+  expect_skills: [yt-post-analytics]
+  forbid_actions: [bare_npx]

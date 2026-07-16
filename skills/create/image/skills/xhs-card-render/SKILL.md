@@ -1,18 +1,36 @@
 ---
 name: xhs-card-render
 description: |
-  小红书图文卡片配图（非 AI）。配图 MD + YAML frontmatter → `npm run pipeline:xhs` → PNG 卡片。
-  Step 4c 小红书配图时使用。**必须先** pipeline:xhs；失败后再考虑 tokenware 降级（非并行二选一）。
+  小红书模板配图（create/focused-task）。配图 MD → pipeline:xhs → PNG 卡片，非 AI 生图。
+  触发：「小红书配图」「卡片图」「pipeline:xhs」「笔记配图」。
+  口语：小红书卡片、模板出图、笔记配图、小红书图文卡片。
 version: 1.0.0
 metadata:
   hermes:
     tags: [xiaohongshu, card, markdown, pipeline]
+    related_skills:
+      - img-tokenware
+      - xhs-publish
+      - create/pipeline-orchestrator
     homepage: https://github.com/comeonzhj/Auto-Redbook-Skills
 ---
 
 # 小红书卡片配图（xhs-card-render）
 
 **模板卡片出图，不是 AI 生图。** Agent 只需执行 `npm run pipeline:xhs`，勿单独操作浏览器截图或 HTML 渲染。
+
+## When to use
+
+- 小红书笔记需要**模板卡片**配图（Step 4c 或用户单独要配图）
+- 已有配图 Markdown + frontmatter，要出 1080×1440 PNG
+- 典型说法：「小红书配图」「跑 pipeline:xhs」「卡片出图」
+
+## When not to use
+
+- 知乎/公众号/YouTube 封面等 → **`img-tokenware`**
+- `pipeline:xhs` **失败后**的 AI 降级 → **`img-tokenware`**（须用户确认风险）
+- 直接发布笔记 → **`xhs-publish`**
+- execute_code / ffmpeg / BMP 自造图 → **禁止**
 
 ## 默认配置（已验证）
 

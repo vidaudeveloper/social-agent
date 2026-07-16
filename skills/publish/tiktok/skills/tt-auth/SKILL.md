@@ -1,12 +1,28 @@
 ---
 name: tt-auth
 description: |
-  TikTok 登录与会话校验（SAU + 系统 Chrome）。国内须配代理。
-  当用户要求 TikTok 登录、tiktok:login / check-login 时触发。
+  TikTok 登录/鉴权（focused-task，SAU + 系统 Chrome）。国内须配代理。
+  触发：「TikTok 登录」「检查 TikTok 登录态」「tiktok:login」。
+  口语：登 TikTok、检查能不能发 TikTok、TikTok 代理配置。
 version: 1.0.0
+author: social-agent
+license: MIT
+metadata:
+  hermes:
+    tags: [tiktok, auth, sau]
+    related_skills:
+      - tt-publish
 ---
 
 # TikTok 认证（tt-auth）
+
+## When to use
+
+- 用户只要登录/检查登录态，或代理配置问题
+
+## When not to use
+
+- 实际发布视频 → **`tt-publish`**（禁止 publish 前预防性 check-login）
 
 **前置**：`npm run overseas:install`
 

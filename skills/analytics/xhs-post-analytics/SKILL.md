@@ -5,6 +5,8 @@ description: |
   触发：「小红书发后数据」「笔记表现」「创作者中心导出」「账号复盘」。
   口语：我发的笔记数据、小红书复盘、发文后表现、曝光点击数据。
 version: 1.1.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
     tags: [xiaohongshu, analytics, post-publish, report, creator-export]

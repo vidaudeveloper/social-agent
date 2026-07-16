@@ -19,13 +19,19 @@ metadata:
 
 本 profile **不内置** creative-agent MCP；成片在独立 profile 完成。
 
-## 何时切换
+## When to use
 
 - 趋势短片、产品 URL 一键成片
 - 需要 Vision / MCP 创意编排
 - Remotion 教程结构不适用的商业创意片
 
 用户「做视频」时须先与 Remotion **二选一**；未选不准开工。
+
+## When not to use
+
+- 网站/软件操作教程、how-to、配置演示 → **`remotion`**
+- 黑底花字口播（已弃用） → 不使用；改用本技能或 `remotion`
+- 只发布已有视频不成片 → 对应平台 `{code}-publish`
 
 ## 操作步骤
 

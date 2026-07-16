@@ -1,19 +1,34 @@
 ---
 name: yt-create
 description: |
-  YouTube 视频创作技能。Edge TTS 配音 + ffmpeg 合成 1280x720 横版视频，不发布。
-  当用户要求生成口播视频、TTS 配音、合成 YouTube 视频素材时触发。
+  【已弃用体系子技能】YouTube 黑底花字 TTS 口播创作。父技能 tts-narration 已弃用，不再默认推荐。
+  教程/动效请用 create/remotion；创意片请用 create/creative-agent；仅用户明确要「旧口播管线」时才用本技能。
   Hermes 路径：create/video/tts-narration/yt-create（目录名与 skill name 一致；非 publish/youtube）。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
   hermes:
-    tags: [video, tts, youtube, create]
+    tags: [video, tts, youtube, create, deprecated]
     related_skills:
       - create/video/tts-narration
-      - publish/youtube
+      - create/remotion
+      - create/creative-agent
+      - yt-publish
 ---
 
-# YouTube 视频创作
+# YouTube 视频创作 — 已弃用体系
+
+**不再作为默认或推荐成片方式。** 教程/动效 → `remotion`；创意 → `creative-agent`。仅在用户明确要求「恢复旧口播管线」时使用。
+
+## When to use
+
+- 用户**明确**说「旧口播管线」「黑底花字」「edge-tts 老方式」
+
+## When not to use
+
+- 默认成片需求 → **`remotion`**（教程/动效）或 **`creative-agent`**（创意商业片）
+- 只发布已有视频 → **`yt-publish`**
 
 ## 技能边界
 

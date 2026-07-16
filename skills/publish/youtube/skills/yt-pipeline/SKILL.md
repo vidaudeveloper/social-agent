@@ -1,12 +1,32 @@
 ---
 name: yt-pipeline
 description: |
-  YouTube 全流程技能。读取用户画像，生成英文口播稿，创作视频并通过 sau 发布。
-  当用户要求一键发 YouTube、跑完整内容流水线时触发。
+  YouTube 单平台全流程（选题画像→口播稿→合成→sau 发布，均限定 YouTube 一个平台）。
+  触发：「一键发 YouTube」「YouTube 完整流水线」「只做 YouTube 全流程」。
+  口语：YouTube 一条龙、自动生成并发 YouTube。
 version: 2.0.0
+author: social-agent
+license: MIT
+metadata:
+  hermes:
+    tags: [youtube, pipeline, sau]
+    related_skills:
+      - yt-create
+      - yt-publish
+      - yt-auth
 ---
 
 # YouTube 全流程流水线
+
+## When to use
+
+- 用户只要 YouTube **单平台**的选题→稿→视频→发布，不涉及其它平台
+
+## When not to use
+
+- 需要多平台分发（YouTube + 其它） → **`pipeline-orchestrator`**
+- 已有 MP4 只发布 → **`yt-publish`**
+- 只要创作视频不发布 → **`yt-create`**
 
 ## 技能边界
 

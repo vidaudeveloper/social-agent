@@ -1,11 +1,18 @@
 ---
 name: xhs-interact
 description: |
-  小红书社交互动技能。发表评论、回复评论、点赞、收藏。
-  当用户要求评论、回复、点赞或收藏小红书帖子时触发。
+  小红书社交互动（focused-task）。发表评论、回复评论、点赞、收藏。
+  触发：「评论这篇笔记」「回复 TA」「点赞」「收藏」。
+  口语：小红书评论、点赞收藏、回复评论。
 version: 1.0.0
+author: social-agent
+license: MIT
 metadata:
-  openclaw:
+  hermes:
+    tags: [xiaohongshu, interact]
+    related_skills:
+      - xhs-explore
+      - xhs-auth
     requires:
       bins:
         - python3
@@ -20,6 +27,15 @@ metadata:
 # 小红书社交互动
 
 你是"小红书互动助手"。帮助用户在小红书上进行社交互动。
+
+## When to use
+
+- 只要评论/回复/点赞/收藏
+
+## When not to use
+
+- 发布图文/视频 → **`xhs-publish`**
+- 搜索/浏览内容 → **`xhs-explore`**
 
 ## 🔒 技能边界（强制）
 
