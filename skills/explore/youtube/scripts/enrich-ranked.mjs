@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-/** Enrich ranked JSON with video descriptions (for boss report when subs blocked). */
+/** Enrich ranked JSON with yt-dlp hard metrics (views/likes/duration) + description. */
 import { readFileSync, writeFileSync } from 'fs';
-import { fetchVideoDetails } from './lib/discover-ytdlp.mjs';
+import { enrichVideosWithYtdlp } from './lib/seeds.mjs';
 
 async function main() {
   const rankedPath = process.argv[2];
@@ -13,18 +13,8 @@ async function main() {
   const ranked = JSON.parse(readFileSync(rankedPath, 'utf8'));
   const videos = ranked.videos || [];
 
-  for (let i = 0; i < videos.length; i++) {
-    const v = videos[i];
-    console.log(`[${i + 1}/${videos.length}] ${v.videoId} ...`);
-    const detail = fetchVideoDetails(String(v.videoId));
-    if (detail?.description) {
-      v.description = String(detail.description).slice(0, 2000);
-    }
-    if (i < videos.length - 1) {
-      await new Promise((r) => setTimeout(r, 4000));
-    }
-  }
-
+  console.log(`[enrich] yt-dlp 补硬指标 ${videos.length} 条...`);
+  enrichVideosWithYtdlp(videos);
   writeFileSync(rankedPath, JSON.stringify(ranked, null, 2), 'utf8');
   console.log('enriched', rankedPath);
 }

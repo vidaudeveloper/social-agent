@@ -209,6 +209,73 @@ export function writeBossReportV2(meta, scriptsRaw, outPath) {
           .join('')}</ul></section>`
       : '';
 
+  const topicDirections = scriptsRaw
+    .slice(0, 5)
+    .map((e) => String(e.title || '').slice(0, 80))
+    .filter(Boolean);
+  const structureFormulas = scriptsRaw
+    .map((e) => {
+      const d = /** @type {Record<string, unknown>} */ (e.deep_dive || {});
+      const structure = /** @type {{ hook?: string }} */ (e.structure || {});
+      return String(d.template_outline || structure.hook || '').trim();
+    })
+    .filter(Boolean)
+    .slice(0, 5);
+  const visualPatterns = scriptsRaw
+    .map((e) => {
+      const d = /** @type {Record<string, unknown>} */ (e.deep_dive || {});
+      return String(d.visual_style_note || d.visual_timeline_note || '').trim();
+    })
+    .filter(Boolean)
+    .slice(0, 5);
+  const actionItems = scriptsRaw
+    .map((e) => {
+      const d = /** @type {Record<string, unknown>} */ (e.deep_dive || {});
+      return String(d.replicability || d.action_advice || '').trim();
+    })
+    .filter(Boolean)
+    .slice(0, 5);
+
+  const methodologyBlock = `
+    <section class="method-section">
+      <h2>爆款方法论（可执行）</h2>
+      <div class="method-grid">
+        <div>
+          <h3>选题方向</h3>
+          <ul>${
+            topicDirections.length
+              ? topicDirections.map((t) => `<li>${escapeHtml(t)}</li>`).join('')
+              : '<li class="muted">待 Agent 深拆后补充</li>'
+          }</ul>
+        </div>
+        <div>
+          <h3>结构公式</h3>
+          <ul>${
+            structureFormulas.length
+              ? structureFormulas.map((t) => `<li>${escapeHtml(t)}</li>`).join('')
+              : '<li class="muted">待补充 template_outline / 钩子结构</li>'
+          }</ul>
+        </div>
+        <div>
+          <h3>画面套路</h3>
+          <ul>${
+            visualPatterns.length
+              ? visualPatterns.map((t) => `<li>${escapeHtml(t)}</li>`).join('')
+              : '<li class="muted">待 TubePilot 抽帧 / deep_analyze 后补充</li>'
+          }</ul>
+        </div>
+        <div>
+          <h3>行动建议</h3>
+          <ul>${
+            actionItems.length
+              ? actionItems.map((t) => `<li>${escapeHtml(t)}</li>`).join('')
+              : '<li class="muted">待填写 replicability / 复刻建议</li>'
+          }</ul>
+        </div>
+      </div>
+    </section>`;
+
+
   const html = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -253,10 +320,14 @@ export function writeBossReportV2(meta, scriptsRaw, outPath) {
     .muted-sm { font-size:0.8rem; }
     .link { color: var(--accent); }
     .phrases-section ul, .bullet { padding-left:20px; }
+    .method-section { background: var(--card); border-radius: 12px; padding: 20px; margin-bottom: 28px; }
+    .method-grid { display:grid; grid-template-columns: repeat(2,1fr); gap:16px; }
+    .method-grid h3 { margin:0 0 8px; font-size:0.95rem; color: var(--accent); }
+    .method-grid ul { margin:0; padding-left:18px; font-size:0.88rem; }
     .script-list { margin:12px 0; padding-left:20px; }
     .script-list li { margin-bottom:8px; font-size:0.9rem; }
     details summary { cursor:pointer; color:var(--accent); margin:12px 0; }
-    @media (max-width: 800px) { .structure-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 800px) { .structure-grid, .method-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -277,6 +348,8 @@ export function writeBossReportV2(meta, scriptsRaw, outPath) {
       <thead><tr><th>#</th><th>等级</th><th>标题</th><th>播放</th><th>ER%</th><th>时长</th><th>频道</th></tr></thead>
       <tbody>${tableRows}</tbody>
     </table>
+
+    ${methodologyBlock}
 
     ${top1}
 

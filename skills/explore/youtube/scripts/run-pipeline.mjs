@@ -5,11 +5,15 @@
  *   node run-pipeline.mjs --topic tiktok-shop --keyword "TikTok Shop seller guide 2026" --top 5
  *   node run-pipeline.mjs --topic tiktok-shop --from content/知识库/youtube/tiktok-shop/raw.json
  *   node run-pipeline.mjs --topic tiktok-shop --keyword "..." --fallback   # yt-dlp discover
+ *   node run-pipeline.mjs --topic tiktok-shop --seeds config/seeds.example.json   # 免 API 种子发现
+ *   node run-pipeline.mjs --topic tiktok-shop --trending --region US --category all  # 免 API：InnerTube 热门榜
  */
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { spawnSync } from 'child_process';
 import { discoverToRaw } from './lib/discover-ytdlp.mjs';
+import { seedsToRaw } from './lib/seeds.mjs';
+import { discoverTrending } from './lib/discover-innertube.mjs';
 import { scoreVideos } from './lib/score.mjs';
 import { appendPhrasesFromScriptsRaw } from './lib/phrases-csv.mjs';
 import { buildReportFromScriptsRaw } from './lib/report-boss-html.mjs';
@@ -17,7 +21,9 @@ import {
   topicSlug,
   topicDir,
   rawPath,
+  seedsPath,
   rankedPath,
+  viralCandidatesPath,
   reportHtmlPath,
   scriptsRawPath,
   phrasesCsvPath,
@@ -47,6 +53,17 @@ function parseArgs(argv) {
     else if (a === '--from') opts.from = argv[++i] ?? '';
     else if (a === '--lang') opts.lang = argv[++i] ?? 'en,en-US';
     else if (a === '--fallback') opts.fallback = true;
+    else if (a === '--seeds') {
+      const n = argv[i + 1];
+      if (n && !n.startsWith('-')) {
+        opts.seeds = n;
+        i++;
+      } else {
+        opts.seeds = true;
+      }
+    } else if (a === '--trending') opts.trending = true;
+    else if (a === '--region') opts.region = argv[++i] ?? 'US';
+    else if (a === '--category') opts.category = argv[++i] ?? 'all';
     else if (a === '--min-duration') opts['min-duration'] = argv[++i] ?? '300';
     else if (a === '--max-duration') opts['max-duration'] = argv[++i] ?? '1200';
   }
@@ -106,6 +123,8 @@ const top = parseInt(String(opts.top), 10);
 const minDuration = parseInt(String(opts['min-duration'] || '300'), 10);
 const maxDuration = parseInt(String(opts['max-duration'] || '1200'), 10);
 const lang = String(opts.lang || 'en,en-US');
+const region = String(opts.region || 'US').toUpperCase();
+const category = String(opts.category || 'all').toLowerCase();
 const dir = topicDir(slug);
 
 mkdirSync(dir, { recursive: true });
@@ -135,11 +154,47 @@ if (!rawFile) {
     rawFile = defaultRaw;
     writeFileSync(rawFile, JSON.stringify({ ...raw, topic, keyword: opts.keyword }, null, 2), 'utf8');
     console.log(`  → ${rawFile} (${raw.videos?.length ?? 0} 条)`);
+  } else if (opts.seeds) {
+    const seedFile =
+      typeof opts.seeds === 'string' ? String(opts.seeds) : seedsPath(slug);
+    if (!existsSync(seedFile)) {
+      console.error(`未找到 seeds 文件: ${seedFile}`);
+      process.exit(1);
+    }
+    console.log('[1/5] 从 seeds 生成 raw（yt-dlp 硬指标，免 API）...');
+    dataSource = 'seeds.json + yt-dlp（免 API）';
+    const seeds = JSON.parse(readFileSync(seedFile, 'utf8'));
+    const rawObj = seedsToRaw(seeds);
+    rawFile = defaultRaw;
+    writeFileSync(
+      rawFile,
+      JSON.stringify({ ...rawObj, topic, keyword: 'seeds' }, null, 2),
+      'utf8',
+    );
+    console.log(`  → ${rawFile} (${rawObj.videos?.length ?? 0} 条)`);
+  } else if (opts.trending) {
+    console.log(
+      `[1/5] InnerTube browse trending（免 API，区域=${region} 分类=${category}）...`,
+    );
+    dataSource = `InnerTube trending(${region}/${category})`;
+    const rawObj = await discoverTrending({
+      region,
+      lang: 'en',
+      category,
+      enrichLimit: 25,
+    });
+    rawFile = defaultRaw;
+    writeFileSync(
+      rawFile,
+      JSON.stringify({ ...rawObj, topic, keyword: rawObj.keyword }, null, 2),
+      'utf8',
+    );
+    console.log(`  → ${rawFile} (${rawObj.videos?.length ?? 0} 条)`);
   } else {
     console.error(
       '未找到 raw.json。请先由 Agent 通过 TubePilot MCP 保存至：\n' +
         `  ${rawPath(slug)}\n` +
-        '或使用 --from <path> / --fallback --keyword "..."',
+        '或使用 --from <path> / --fallback --keyword "..." / --seeds <file> / --trending',
     );
     process.exit(1);
   }
@@ -161,7 +216,10 @@ const ranked = {
 };
 const rankedFile = rankedPath(slug);
 writeFileSync(rankedFile, JSON.stringify(ranked, null, 2), 'utf8');
+const viralFile = viralCandidatesPath(slug);
+writeFileSync(viralFile, JSON.stringify(ranked, null, 2), 'utf8');
 console.log(`  Top ${ranked.videos.length} → ${rankedFile}`);
+console.log(`  → ${viralFile}`);
 
 console.log('[3/5] 补充视频简介...');
 spawnSync('node', [join(scriptsDir, 'enrich-ranked.mjs'), rankedFile], {

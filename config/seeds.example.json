@@ -1,0 +1,22 @@
+[
+  {
+    "type": "channel",
+    "id": "UCxxxxxxxxxxxxxxxxxxxxxxxx",
+    "category": "AI工具"
+  },
+  {
+    "type": "video",
+    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "category": "爆款样本"
+  },
+  {
+    "type": "video",
+    "id": "dQw4w9WgXcQ",
+    "category": "样本"
+  },
+  {
+    "type": "channel",
+    "handle": "@example-channel",
+    "category": "竞品频道"
+  }
+]

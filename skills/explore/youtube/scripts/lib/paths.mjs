@@ -58,6 +58,22 @@ export function rawPath(slug) {
   return join(topicDir(slug), 'raw.json');
 }
 
+/**
+ * 运营种子（P0 免 API 发现入口）
+ * @param {string} slug
+ */
+export function seedsPath(slug) {
+  return join(topicDir(slug), 'seeds.json');
+}
+
+/**
+ * 筛出的爆款候选（score 同步写出，与 ranked 同内容别名）
+ * @param {string} slug
+ */
+export function viralCandidatesPath(slug) {
+  return join(topicDir(slug), 'viral_candidates.json');
+}
+
 /** 全库金句表 */
 export function phrasesCsvPath() {
   return join(knowledgeYoutubeDir, '金句库.csv');
