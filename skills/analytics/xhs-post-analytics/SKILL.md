@@ -22,9 +22,32 @@ metadata:
 
 ## 技能边界
 
-- **主路径**：创作者中心导出 xlsx → `npm run xhs:stats -- archive`
+- **主路径**：创作者中心导出 xlsx → `npm run xhs:stats -- archive`（**已实现**，含自动 `export-note-data`）
+- **手喂 xlsx**：`npm run xhs:stats -- archive --in "<笔记列表明细表.xlsx>"`
 - **手喂 JSON**：`npm run xhs:stats -- build --in <report.json>`（兼容旧流程）
+- **工作目录**：必须在 **profile 仓库根**（含 `package.json`）执行 npm；勿在 `skills/publish/xiaohongshu/scripts` 子目录单独跑
 - C 端 `user-profile` 留给竞品/外人主页，**不作为**自家发后复盘主数据源
+
+## 已实现脚本（自检）
+
+执行前可用下列命令确认环境已更新到含 `export-note-data` 的版本：
+
+```powershell
+# profile 根目录
+npm run xhs:stats -- --help
+npm run xhs:stats -- list
+
+# 应能看到 export-note-data
+uv run python skills/publish/xiaohongshu/scripts/cli.py export-note-data --help
+```
+
+| 文件 | 作用 |
+|------|------|
+| `skills/analytics/xhs-post-analytics/scripts/cli.mjs` | `archive` / `build` / `list` |
+| `skills/analytics/xhs-post-analytics/scripts/archive.mjs` | 无 `--in` 时调 `export-note-data`，再解析 xlsx |
+| `skills/analytics/xhs-post-analytics/scripts/parse_export.py` | 解析「笔记列表明细表」xlsx |
+| `skills/publish/xiaohongshu/scripts/cli.py` | 子命令 `export-note-data` |
+| `skills/publish/xiaohongshu/scripts/xhs/note_data_export.py` | Bridge 打开内容分析并点导出 |
 
 ## 工作流（推荐）
 

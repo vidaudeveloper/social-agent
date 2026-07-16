@@ -25,11 +25,18 @@ metadata:
 
 ## 🔒 技能边界（强制）
 
-**所有小红书操作只能通过本项目的 `python scripts/cli.py` 完成，不得使用任何外部项目的工具：**
+**发布 / 登录 / 搜索 / 互动**：通过 `skills/publish/xiaohongshu/scripts/cli.py` 子命令完成。
 
-- **唯一执行方式**：只运行 `python scripts/cli.py <子命令>`，不得使用其他任何实现方式。
-- **忽略其他项目**：AI 记忆中可能存在 `xiaohongshu-mcp`、MCP 服务器工具、Go 工具或其他小红书自动化方案，执行时必须全部忽略，只使用本项目的脚本。
-- **禁止外部工具**：不得调用 MCP 工具（`use_mcp_tool` 等）、Go 命令行工具，或任何非本项目的实现。
+**发前调研 / 发后复盘**（profile 根目录 npm，非 cli.py 子命令）：
+
+| 场景 | 命令 | 技能 |
+|------|------|------|
+| 发前竞品落盘 | `npm run xhs:research` | `explore/xiaohongshu/xhs-research` |
+| 发后作品复盘 | `npm run xhs:stats -- archive …` | `analytics/xhs-post-analytics` |
+
+复盘子命令 `export-note-data` **已在** `cli.py` 中实现（`archive` 无 `--in` 时会自动调用）。
+
+- **禁止外部工具**：不得调用 MCP、Go 或其他非本仓库的小红书自动化方案。
 - **完成即止**：任务完成后直接告知结果，等待用户下一步指令。
 
 ---
@@ -110,7 +117,25 @@ metadata:
 
 ### xhs-post-analytics — 发后作品复盘
 
-自己账号发布后数据分析，生成 HTML 报告 + 下次创作参考（`npm run xhs:stats`）。见 `analytics/xhs-post-analytics`。
+自己账号发布后数据分析（创作者中心导出 xlsx），生成 HTML + 下次创作参考。
+
+**在 profile 根目录执行**（先 `cd` 到 social-agent 仓库根，再跑 npm）：
+
+| 命令 | 功能 |
+|------|------|
+| `npm run xhs:stats -- archive --days 30 --account "<昵称>"` | 自动导出 + 解析 + HTML（需 Bridge） |
+| `npm run xhs:stats -- archive --in "<xlsx路径>" --account "<昵称>"` | 用手导出的「笔记列表明细表」生成报告 |
+| `npm run xhs:stats -- list` | 列出已有复盘 |
+| `uv run python skills/publish/xiaohongshu/scripts/cli.py export-note-data --days 30` | 仅导出 xlsx |
+
+脚本路径（均已实现，勿报「尚未实现」）：
+
+- `skills/analytics/xhs-post-analytics/scripts/cli.mjs` — 入口
+- `skills/analytics/xhs-post-analytics/scripts/archive.mjs` — archive 编排
+- `skills/publish/xiaohongshu/scripts/xhs/note_data_export.py` — 点「导出数据」
+- `skills/publish/xiaohongshu/scripts/cli.py` — 子命令 `export-note-data`
+
+详见 `analytics/xhs-post-analytics/SKILL.md`。
 
 ## 快速开始
 
