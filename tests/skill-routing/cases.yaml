@@ -277,3 +277,80 @@
   expect_intent: analytics-post
   expect_skills: [yt-post-analytics]
   forbid_actions: [bare_npx]
+
+# --- 二级业务场景 / capability gap（未实现能力） ---
+
+- id: gap-plan-calendar
+  user: 帮我排一周小红书发布计划，生成内容日历
+  expect_intent: null
+  expect_skills: []
+  capability_gap: true
+  forbid_skills: [pipeline-orchestrator, xhs-publish, xhs-research]
+  keywords: [排期, 日历, 计划]
+
+- id: gap-position-persona
+  user: 定位这个账号人设，写品牌运营方案
+  expect_intent: focused-task
+  expect_skills: []
+  capability_gap: true
+  forbid_skills: [pipeline-orchestrator, xhs-publish]
+  keywords: [定位, 人设, 品牌]
+
+- id: gap-campaign-growth
+  user: 策划一个涨粉活动，写转发抽奖文案
+  expect_intent: null
+  expect_skills: []
+  capability_gap: true
+  forbid_skills: [pipeline-orchestrator, xhs-publish]
+  keywords: [活动, 涨粉, 抽奖]
+
+- id: gap-platform-adapt
+  user: 把这篇长文改成小红书版，同一篇适配视频号
+  expect_intent: content-pipeline
+  expect_skills: []
+  capability_gap: true
+  forbid_skills: [xhs-publish]
+  keywords: [改成, 适配, 改写]
+
+# --- 上下文读取：单点任务不应误触知识库/爬数 ---
+
+- id: context-publish-no-research
+  user: 只发小红书，图文路径都有了，不要调研
+  expect_intent: publish-single
+  expect_skills: [xhs-publish]
+  forbid_skills: [xhs-research, xhs-post-analytics, pipeline-orchestrator]
+  forbid_context: [knowledge_base, live_crawl]
+
+- id: context-auth-no-kb
+  user: 登录小红书扫码，不要发布
+  expect_intent: focused-task
+  expect_skills: [xhs-auth]
+  forbid_skills: [xhs-publish, xhs-research, pipeline-orchestrator]
+  forbid_context: [knowledge_base]
+
+- id: context-review-no-publish
+  user: 审核这篇知乎稿格式，先别发
+  expect_intent: focused-task
+  expect_skills: [review]
+  forbid_skills: [zh-publish, pipeline-orchestrator]
+  forbid_context: [knowledge_base, live_crawl]
+
+- id: focused-xhs-interact
+  user: 回复这条小红书评论，内容我已经写好
+  expect_intent: focused-task
+  expect_skills: [xhs-interact]
+  forbid_skills: [xhs-publish, xhs-research, pipeline-orchestrator]
+
+- id: scene-topic-inspire
+  user: 今天有啥可蹭的热点，给我5个选题
+  expect_intent: content-pipeline
+  expect_skills: [pipeline-orchestrator]
+  forbid_skills: [xhs-publish, yt-publish]
+  keywords: [选题, 热点]
+
+- id: scene-write-xhs-copy
+  user: 写一篇小红书种草笔记，口语一点
+  expect_intent: content-pipeline
+  expect_skills: [pipeline-orchestrator]
+  forbid_skills: [xhs-publish]
+  keywords: [写, 种草]

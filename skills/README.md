@@ -22,7 +22,8 @@ explore → create → review → publish → analytics
 
 **单平台优先**：用户只提一个平台时，不要默认拉起完整编排器。
 
-路由回归：`npm run skill-routing:eval` · 说明见 `[review/skill-routing-eval/SKILL.md](review/skill-routing-eval/SKILL.md)`
+路由回归：`npm run skill-routing:eval` · 说明见 `[review/skill-routing-eval/SKILL.md](review/skill-routing-eval/SKILL.md)`  
+Reference 索引：`[workspace/references/README.md](../workspace/references/README.md)` · 路线图：`[docs/social-agent-roadmap.md](../docs/social-agent-roadmap.md)`
 
 ## 五层职责（按需组合）
 

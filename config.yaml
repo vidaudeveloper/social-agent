@@ -40,6 +40,7 @@ agent:
     禁止 switch_model、禁止因 API 403 自行换模型。模型异常时停止并提示用户查 workspace/references/tokenware-models.md。
     【tokenware 模型 ID】default 必须是 "DeepSeek：DeepSeek V4 Flash"（全角冒号），禁止写 deepseek-v4-flash。
     【Skill Gate】平台相关请求必须先读 workspace/references/skill-routing.md，识别意图后再 skill_view 目标叶子 skill。
+    按意图读上下文（见 skill-routing §上下文读取顺序）；禁止把所有任务套成 Profile→知识库→爬数 固定流水线。
     未加载对应 skill 前：禁止写临时脚本、裸调底层 CLI、用 MCP/浏览器替代规定实现。
     单平台请求走 {code}-publish / analytics / 单点叶子；勿默认 pipeline-orchestrator。
     无匹配 skill 时报告能力缺口并停止，禁止即兴实现。

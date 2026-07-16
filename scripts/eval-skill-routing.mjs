@@ -26,6 +26,13 @@ const INTENT_SIGNALS = {
     "同时发",
     "多平台",
     "pipeline-orchestrator",
+    "写一篇",
+    "写篇",
+    "种草",
+    "生成文案",
+    "改成",
+    "适配",
+    "改写",
   ],
   "publish-single": [
     "只发",
@@ -74,11 +81,16 @@ const INTENT_SIGNALS = {
     "content review",
     "检查这篇",
     "格式",
+    "回复",
+    "评论",
+    "点赞",
+    "定位",
+    "人设",
   ],
 };
 
 const PLATFORM_SKILL_HINTS = {
-  小红书: ["xhs-publish", "xhs-research", "xhs-post-analytics", "xhs-auth", "xhs-card-render"],
+  小红书: ["xhs-publish", "xhs-research", "xhs-post-analytics", "xhs-auth", "xhs-card-render", "xhs-interact"],
   youtube: ["yt-publish", "yt-post-analytics", "yt-viral-discover", "yt-viral-research", "yt-auth"],
   x: ["x-publish", "x-auth"],
   推特: ["x-publish", "x-auth"],
@@ -180,12 +192,13 @@ function parseCasesYaml(text) {
     const trimmed = block.trim();
     if (!trimmed.startsWith("- id:") && !trimmed.startsWith("id:")) continue;
     const lines = trimmed.split(/\r?\n/);
-    const item = { keywords: [], expect_skills: [], forbid_skills: [], forbid_actions: [], needs_clarification: [] };
+    const item = { keywords: [], expect_skills: [], forbid_skills: [], forbid_actions: [], needs_clarification: [], forbid_context: [] };
     for (const line of lines) {
       const idM = line.match(/^\s*-?\s*id:\s*(.+)$/);
       const userM = line.match(/^\s*user:\s*(.+)$/);
       const intentM = line.match(/^\s*expect_intent:\s*(.+)$/);
       const recallM = line.match(/^\s*recall_any:\s*(.+)$/);
+      const capGapM = line.match(/^\s*capability_gap:\s*(.+)$/);
       const arrM = line.match(/^\s*(\w+):\s*\[(.*)\]\s*$/);
       if (idM) item.id = idM[1].trim();
       else if (userM) item.user = userM[1].trim();
@@ -193,6 +206,7 @@ function parseCasesYaml(text) {
         const v = intentM[1].trim();
         item.expect_intent = v === "null" ? null : v;
       } else if (recallM) item.recall_any = recallM[1].trim() === "true";
+      else if (capGapM) item.capability_gap = capGapM[1].trim() === "true";
       else if (arrM) {
         const key = arrM[1];
         const vals = arrM[2]
@@ -217,11 +231,26 @@ function detectIntent(user) {
       if (lower.includes(sig.toLowerCase())) scores[intent] += 1;
     }
   }
-  if (/选题|流水线|跑一篇|各平台|矩阵|同时发|小红书和|和知乎|多平台/.test(user)) {
+  if (/选题|流水线|跑一篇|各平台|矩阵|同时发|小红书和|和知乎|多平台|写一篇|写篇|种草|改成|适配/.test(user)) {
     scores["content-pipeline"] += 3;
   }
+  if (/登录|扫码|check-login|cookie|鉴权/.test(user)) {
+    scores["focused-task"] += 5;
+  }
   if (/只发|仅发/.test(user)) scores["publish-single"] += 2;
-  if (/发后|我自己发|创作者中心|曝光|观看时长|不要发布/.test(user)) scores["analytics-post"] += 2;
+  if (/不要调研|不要爬/.test(user)) scores["focused-task"] += 1;
+  if (/发后|我自己发|创作者中心|曝光|观看时长/.test(user) && !/登录|扫码/.test(user)) {
+    scores["analytics-post"] += 2;
+  }
+  if (/不要发布|先别发/.test(user) && !/登录|扫码|审核|检查/.test(user)) {
+    scores["analytics-post"] += 2;
+  }
+  if (/排.*计划|内容日历|排期/.test(user) && !/只发|上传/.test(user)) {
+    scores["content-pipeline"] += 1;
+    scores["publish-single"] -= 2;
+  }
+  if (/定位|人设|品牌方案/.test(user)) scores["focused-task"] += 2;
+  if (/回复|评论|点赞|收藏/.test(user)) scores["focused-task"] += 4;
   if (/审核|content review|检查.*格式/.test(user)) scores["focused-task"] += 3;
   if (/post to|twitter/.test(lower)) scores["publish-single"] += 3;
   const ranked = Object.entries(scores).sort((a, b) => b[1] - a[1]);
@@ -269,6 +298,16 @@ function scoreSkills(user, skills, extraKeywords = []) {
       score += 14;
     }
     if (skill.name === "review" && wantsReview) score += 12;
+    if (skill.name === "xhs-interact" && /回复|评论|点赞|收藏/.test(user)) score += 14;
+    if (skill.name.endsWith("-auth") && /登录|扫码|cookie|鉴权|check-login/.test(user)) score += 12;
+    if (/排期|内容日历|发布计划/.test(user) && !/只发|上传|发到/.test(user)) {
+      if (skill.name.endsWith("-publish")) score -= 10;
+      if (skill.name === "pipeline-orchestrator") score -= 2;
+    }
+    if (/写一篇|写篇|种草|生成.*文案/.test(user) && !/只发|上传/.test(user)) {
+      if (skill.name === "pipeline-orchestrator") score += 10;
+      if (skill.name.includes("research") || skill.name.includes("analytics")) score -= 3;
+    }
     if (skill.name.endsWith("-publish") && hasPublish && !hasAnalytics && !wantsReview) score += 9;
     if (
       (skill.name.includes("analytics") || skill.name.includes("post-analytics")) &&
@@ -307,7 +346,11 @@ function evaluateCase(testCase, skills, k) {
   }
 
   let skillOk = false;
-  if (testCase.needs_clarification?.length) {
+  if (testCase.capability_gap) {
+    skillOk =
+      testCase.forbid_skills.every((s) => !topK.includes(s)) &&
+      (expected.length === 0 || !expected.some((s) => topK.includes(s)));
+  } else if (testCase.needs_clarification?.length) {
     skillOk = true;
   } else if (expected.length === 0) {
     skillOk = top1 === null || topK.every((s) => ranked.find((r) => r.name === s)?.score === 0);
@@ -335,6 +378,8 @@ function evaluateCase(testCase, skills, k) {
     falsePositive,
     miss,
     forbidActions: testCase.forbid_actions ?? [],
+    forbidContext: testCase.forbid_context ?? [],
+    capabilityGap: testCase.capability_gap ?? false,
   };
 }
 
@@ -352,6 +397,8 @@ function main() {
   const recallAtK = results.filter((r) => r.recallHit || (r.expected.length === 0 && r.skillOk)).length / total;
   const falsePosCases = results.filter((r) => r.falsePositive.length > 0);
   const missCases = results.filter((r) => r.miss.length > 0 && r.expected.length > 0);
+  const capGapCases = results.filter((r) => r.capabilityGap);
+  const capGapOk = capGapCases.filter((r) => r.skillOk).length;
 
   console.log("=== Skill Routing Eval (offline heuristic) ===");
   console.log(`Skills indexed: ${skills.length}`);
@@ -359,10 +406,11 @@ function main() {
   console.log(`Intent accuracy: ${(intentAcc * 100).toFixed(1)}%`);
   console.log(`Top-1 skill match: ${(top1Acc * 100).toFixed(1)}%`);
   console.log(`Recall@${opts.k}: ${(recallAtK * 100).toFixed(1)}%`);
+  console.log(`Capability-gap cases: ${capGapCases.length} (pass ${capGapOk}/${capGapCases.length})`);
   console.log(`False-positive cases (forbidden in top-K): ${falsePosCases.length}`);
   console.log(`Miss cases (expected not in top-K): ${missCases.length}`);
   console.log("");
-  console.log("Bypass guard (documented): forbid_actions in cases are policy checks for live Agent runs, not scored here.");
+  console.log("Bypass guard (documented): forbid_actions / forbid_context are policy checks for live Agent runs, not scored here.");
   console.log("");
 
   const failed = results.filter((r) => !r.skillOk || (!r.intentOk && r.expectIntent !== null));

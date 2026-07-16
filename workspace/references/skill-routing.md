@@ -125,4 +125,51 @@
 5. 汇报：意图 | 已加载 skill | 结果；卡住给 A/B
 ```
 
+---
+
+## 上下文读取顺序（按意图，非全局固定流水线）
+
+**禁止**把所有任务都套成「User Profile → Platform Status → 知识库 → Skill 参考 → 爬数 → 落盘」。  
+**统一前置**（所有意图）：识别意图 → 读本表 → `skill_view` 最小必要叶子。
+
+| 意图 | 读取顺序（叶子加载后） | 禁止默认加载 |
+|------|------------------------|--------------|
+| `content-pipeline` | 编排器 → `user-profile.md` → `platform-status.md` → 已有知识库/复盘（`LATEST.json`、创作参考）→ 叶子 reference → 必要时实时数据 → 落盘 → `review` → 发布确认 | 无关平台 publish；未确认就发布 |
+| `publish-single` | `{code}-publish` → 发布素材路径 → 必要时 `platform-status`（× 平台只归档）→ 登录/依赖**仅在报错或用户要求时** | 知识库；发前 explore；实时爬取 |
+| `analytics-post` | `{code}-analytics` → 账号/时间范围 → 数据源 CLI → 落盘复盘 | 创作/发布 skill；发前 research |
+| `focused-task` | 对应叶子 → **仅**该叶子写明的 reference | 完整管线；未经叶子要求的 Profile/知识库/爬数 |
+
+### 调研类 focused-task 附加规则
+
+仅 `xhs-research`、`yt-viral-*`、`xhs-content-ops`（竞品/热点）等：
+
+1. 已有报告优先（`LATEST.json` / `{slug}_创作参考.md` / 爆款 HTML）
+2. 7 天内同主题默认不重复全量爬，除非用户要求刷新
+3. 实时拉数 → 按叶子契约落盘知识库
+
+登录（`{code}-auth`）、审核（`review`）、配图（`xhs-card-render`）、单平台 publish **不**套用上述 1–3。
+
+**用户画像路径（唯一）**：仓库根 [`user-profile.md`](../user-profile.md)（运行时创建；与 `SOUL.md` Step 0 一致）。
+
+---
+
+## 二级业务场景（路线图对照）
+
+一级意图决定**执行范围**；下列八类为**业务动作**，映射到现有叶子或 capability gap：
+
+| 场景 | 典型说法 | 现有入口 | 缺口 |
+|------|----------|----------|------|
+| 内容创作 | 写一篇/生成文案 | `content-pipeline` / 编排器 Step 3 | — |
+| 选题灵感 | 热点/选题/方向 | Step 1 + explore 叶子 | 独立选题 skill |
+| 规划排期 | 内容日历/排期 | — | **capability gap** → 见 [`docs/social-agent-roadmap.md`](../../docs/social-agent-roadmap.md) |
+| 多平台改写 | 改成小红书版/拆短视频 | 编排器 Step 3 | `{code}-adapt` 未建 |
+| 数据复盘 | 复盘/月报/表现 | `{code}-post-analytics` / `li-analytics` | dy/tt/x/zh 等 analytics 未建 |
+| 账号定位 | 人设/品牌方案 | Step 0 画像 | `position-persona` 未建 |
+| 互动社群 | 回复评论/欢迎语 | `xhs-interact` | 其它平台 interact 未建 |
+| 活动增长 | 涨粉活动/直播脚本 | — | **capability gap** |
+
+**无匹配 skill 时**：报告 capability gap + 指向路线图；**禁止**即兴脚本或 MCP 替代。
+
+---
+
 评测：[`tests/skill-routing/cases.yaml`](../../tests/skill-routing/cases.yaml) · [`skill-routing-eval`](../../skills/review/skill-routing-eval/SKILL.md)

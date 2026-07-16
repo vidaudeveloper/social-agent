@@ -55,13 +55,13 @@ metadata:
 
 ## Step 0: 初始化用户画像
 
-读取 `workspace/user-profile.md`。不存在则一次性收集：
+读取仓库根目录 `user-profile.md`（与 [`SOUL.md`](../../../SOUL.md) 一致）。不存在则一次性收集：
 
 - 行业 / 平台开关 / API Key 是否已配置
 - **内容语言偏好**：`zh-CN` | `en-US` | `bilingual`
 - **发布语言策略**：全平台统一 | 按平台默认（国内中文、海外英文）
 
-写入 `user-profile.md` 后再进入 Step 1。
+写入 `user-profile.md`（仓库根）后再进入 Step 1。
 
 ## Step 1: 选题采集
 

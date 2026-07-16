@@ -34,7 +34,7 @@ metadata:
 | 路径 | 说明 |
 |------|------|
 | [`workspace/references/skill-routing.md`](../../../workspace/references/skill-routing.md) | 路由契约（被测对象） |
-| [`tests/skill-routing/cases.yaml`](../../../tests/skill-routing/cases.yaml) | 典型请求集（30+ 条） |
+| [`tests/skill-routing/cases.yaml`](../../../tests/skill-routing/cases.yaml) | 典型请求集（含 capability gap 用例） |
 | [`scripts/eval-skill-routing.mjs`](../../../scripts/eval-skill-routing.mjs) | 离线路由打分脚本 |
 
 ## 运行
@@ -58,6 +58,7 @@ npm run skill-routing:eval -- --k 5
 | Top-1 skill match | 第一名是否为期望叶子（或 `recall_any` 时任一期望在 Top-K） |
 | Recall@K | 期望 skill 是否出现在前 K |
 | False-positive cases | `forbid_skills` 误入 Top-K 的用例数 |
+| Capability-gap pass | 未实现能力未误触发 publish/编排器的用例数 |
 | Miss cases | 期望 skill 未进 Top-K |
 
 `forbid_actions`（如 `bare_npx`、`ad_hoc_script`）供**在线 Agent 轨迹**检查；离线路由脚本仅报告策略项，不模拟执行。

@@ -1,6 +1,16 @@
 # 依赖安装策略（按需 / hint-only）
 
-> Agent 缺依赖时**只报缺 + 给出 fix 命令 + 停止**，等用户确认后再执行安装。禁止自动 clone 其他仓库或使用 MCP/Playwright 浏览器替代本 profile CLI。
+> Agent 缺依赖时**只报缺 + 给出 fix 命令 + 停止**，等用户确认后再执行安装。
+
+## MCP 边界（必读）
+
+| 类型 | 允许 | 禁止 |
+|------|------|------|
+| **能力 MCP** | 叶子 Skill 明确指定的 MCP（如 YouTube 爆款：`TubePilot`，见 [`youtube-explore-setup.md`](youtube-explore-setup.md)） | 用 MCP 替代 publish/login CLI |
+| **浏览器 MCP** | — | 用 Cursor/MCP/Playwright 浏览器操作 YouTube Studio、小红书发布页等 |
+| **即兴 MCP** | — | 未在叶子 Skill 或本表列出的 MCP 自行接入 |
+
+**TubePilot** 仅用于 `yt-viral-discover` / `yt-viral-research` 的发前调研；配置与验证见 [`youtube-explore-setup.md`](youtube-explore-setup.md)，不在此重复。
 
 ## 按需安装映射
 
@@ -13,12 +23,20 @@
 | LinkedIn | `tool/linkedin-cli/dist/cli.js` | `npm run linkedin:setup` | 3–6 min |
 | 知乎 CLI | 系统 PATH 有 `zhihu` | `uv tool install pyzhihu-cli` | ~1 min |
 | 抖音 | `tool/social-auto-upload/sau_cli.py` | `npm run overseas:install` | 与 YouTube/TikTok 共用 SAU |
-| YouTube explore | `uv` + `youtube-transcript-api`；TubePilot MCP | `uv pip install youtube-transcript-api` + 配置 MCP | ~1 min |
+| YouTube explore | `uv` + `youtube-transcript-api`；TubePilot MCP（见上） | `uv pip install youtube-transcript-api` + 配置 MCP | ~1 min |
 | YouTube Analytics | `tool/youtube-analytics-cli/node_modules/youtube-analytics-cli/dist/index.js` | `npm run youtube:stats-setup` | ~1 min |
-| 公众号 | Node 内置 `fetch` + `.env` 密钥（无额外安装） | 配置 `WECHAT_APP_ID` / `WECHAT_APP_SECRET` + IP 白名单 | — |
+| 公众号 | Node 内置 `fetch` + `.env` 密钥 | 配置 `WECHAT_APP_ID` / `WECHAT_APP_SECRET` + IP 白名单 | — |
 
 检查命令：`npm run deps:check -- --platform xhs-card,youtube,tiktok,x,reddit,linkedin,zhihu,douyin,youtube-explore,youtube-analytics`  
 公众号验密钥：`npm run wechat:check-login`
+
+### YouTube explore 依赖检查
+
+| 项 | 检查方式 | 缺失时 |
+|----|----------|--------|
+| `youtube-transcript-api` | `uv pip show youtube-transcript-api` 或 `npm run youtube:extract -- --help` | `uv pip install youtube-transcript-api` |
+| TubePilot MCP | MCP 客户端可见 `tubepilot` 且 `YOUTUBE_API_KEY` 已配置 | 见 [`youtube-explore-setup.md`](youtube-explore-setup.md) §1–2 |
+| 无 MCP 降级 | — | `npm run youtube:explore-full`（yt-dlp 补位，见 setup 文档） |
 
 ## Playwright 使用范围
 
@@ -40,7 +58,7 @@
 ## Agent 禁止行为（缺依赖时）
 
 1. 禁止 clone 其他 GitHub 项目替代上表指定工具
-2. 禁止用 Cursor/MCP/Playwright 浏览器代替平台 CLI
+2. 禁止用 Cursor/MCP/Playwright 浏览器代替平台 **publish/login** CLI
 3. 禁止起手 tokenware 替代 xhs-card-render
 4. 禁止裸 `python` / 裸 `npx` 绕过 profile 包装脚本（如 `run-tiktok.mjs`）
 
@@ -55,3 +73,4 @@
 
 - 平台状态：[`platform-status.md`](platform-status.md)
 - 登录速查：[`platform-login-quickstart.md`](platform-login-quickstart.md)
+- Reference 索引：[`README.md`](README.md)

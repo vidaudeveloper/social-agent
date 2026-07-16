@@ -79,14 +79,14 @@ npm run deps:check -- --platform xhs-card,youtube,x
 
 | 类型 | 技能 | 说明 |
 |------|------|------|
-| TTS 口播 | `create/tts-narration` | 默认；`pipeline:douyin` / `pipeline:tiktok` |
-| Remotion | `create/remotion` | React 程序化动效、多场景、品牌模板 |
+| Remotion | `create/remotion` | **默认推荐**；教程 / 动效 / 多场景 |
 | 创意商业片 | `create/creative-agent` | 切换 [creative-agent](https://github.com/vidaudeveloper/creative-agent) profile |
+| ~~TTS 口播~~ | `create/video/tts-narration` | **已弃用**；仅旧口播管线兼容 |
 
 #### Remotion 使用说明
 
 **适用**：培训片、产品宣传片、带转场/字幕动画/图表的竖版或横版视频。  
-**不适用**：纯口播黑底花字（请用 `tts-narration`）。
+**不适用**：纯口播黑底花字（已弃用；见 `create/video/tts-narration`，新需求用 Remotion 或 creative-agent）。
 
 **技能路径**：[`skills/create/video/remotion/SKILL.md`](skills/create/video/remotion/SKILL.md)（含 30+ 条 `rules/` 子规则，源自 [remotion-dev/skills](https://github.com/remotion-dev/skills)）。
 
@@ -129,7 +129,9 @@ npm run remotion:check
 | `workspace/references/dependency-policy.md` | 按需安装与 Agent 约束 |
 | `workspace/references/platform-login-quickstart.md` | 各平台登录操作速查 |
 | `workspace/references/publish-confirm-paths.md` | 发布前确认绝对路径规范 |
-| `workspace/references/youtube-explore-setup.md` | YouTube 爆款调研（TubePilot MCP + 字幕 API） |
+| `workspace/references/skill-routing.md` | 意图路由与上下文读取顺序 |
+| `workspace/references/README.md` | Reference 索引与同步门禁 |
+| `docs/social-agent-roadmap.md` | 能力路线图与 capability gap |
 | `skills/README.md` | Skills 五层索引 |
 
 ## 目录结构

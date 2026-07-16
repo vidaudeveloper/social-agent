@@ -17,10 +17,11 @@
 **路由表（必读）**：[`workspace/references/skill-routing.md`](workspace/references/skill-routing.md)
 
 1. 平台相关请求 → 先对照路由表识别四类意图之一：`content-pipeline` / `publish-single` / `analytics-post` / `focused-task`
-2. **单平台优先**：用户只提一个平台时，走该平台叶子 skill；只有「多平台 / 分发 / 矩阵 / 列出 ≥2 平台 / 全自动流水线」才进 `pipeline-orchestrator`
-3. **先 `skill_view` 再执行**：未加载目标叶子 skill 前，禁止写临时脚本、裸调底层 CLI、用 MCP/浏览器替代规定实现
-4. **无匹配则停手**：报告能力缺口，禁止即兴实现
-5. 五层 `explore → create → review → publish → analytics` 是**按需组合**的能力层，不是每次必跑的固定流程：
+2. **按意图读上下文**（见路由表 §上下文读取顺序）；禁止把所有任务套成「Profile → 状态 → 知识库 → 爬数」固定流水线
+3. **单平台优先**：用户只提一个平台时，走该平台叶子 skill；只有「多平台 / 分发 / 矩阵 / 列出 ≥2 平台 / 全自动流水线」才进 `pipeline-orchestrator`
+4. **先 `skill_view` 再执行**：未加载目标叶子 skill 前，禁止写临时脚本、裸调底层 CLI、用 MCP/浏览器替代规定实现
+5. **无匹配则停手**：报告能力缺口（见 [`docs/social-agent-roadmap.md`](docs/social-agent-roadmap.md)），禁止即兴实现
+6. 五层 `explore → create → review → publish → analytics` 是**按需组合**的能力层，不是每次必跑的固定流程：
    - 完整生产：可按层串联（`content-pipeline`）
    - 单平台发布：只走 publish（必要时 review）
    - 数据复盘：只走 analytics
