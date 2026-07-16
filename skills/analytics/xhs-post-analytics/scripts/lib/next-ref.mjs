@@ -63,7 +63,7 @@ export function writeNextCreativeRef(opts) {
   lines.push('## 近期作品快览', '');
   for (const [i, p] of posts.entries()) {
     lines.push(
-      `${i + 1}. ${p.title || '无标题'} · ${p.publishedAt || '—'} · 赞${p.likedCount ?? 0}/藏${p.collectedCount ?? 0}/评${p.commentCount ?? 0}`,
+      `${i + 1}. ${p.title || '无标题'} · ${p.publishedAt || '—'} · 曝光${p.impressions ?? '—'}/观看${p.views ?? '—'} · 赞${p.likedCount ?? 0}/藏${p.collectedCount ?? 0}/评${p.commentCount ?? 0}`,
     );
   }
   lines.push('');

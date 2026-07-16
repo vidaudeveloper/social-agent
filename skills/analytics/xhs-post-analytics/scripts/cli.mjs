@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * 小红书「发布后」作品复盘 — 把已分析好的 JSON 落成 HTML + 下次创作参考.md
+ * 小红书「发布后」作品复盘 CLI
  *
  * 命令:
- *   build --in <report.json> [--account <昵称>] [--date YYYY-MM-DD]
+ *   archive [--in <xlsx>] [--account <昵称>] [--days 30] [--date YYYY-MM-DD]
+ *   build   --in <report.json> [--account <昵称>] [--date YYYY-MM-DD]
  *   list
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync } from 'fs';
@@ -21,11 +22,15 @@ import {
 } from './lib/paths.mjs';
 import { writePostPublishReportHtml } from './lib/report-html.mjs';
 import { writeNextCreativeRef } from './lib/next-ref.mjs';
+import { runArchive } from './archive.mjs';
 
 const USAGE = `Xiaohongshu Post-publish Analytics CLI
 
 命令:
-  build  --in <report.json> [--account <昵称>] [--date YYYY-MM-DD]
+  archive [--in <笔记列表明细表.xlsx>] [--account <昵称>] [--days 30]
+          [--start-date] [--end-date] [--date YYYY-MM-DD]
+          无 --in 时自动打开创作者中心点「导出数据」
+  build   --in <report.json> [--account <昵称>] [--date YYYY-MM-DD]
   list
 
 report.json 结构见 skills/analytics/xhs-post-analytics/references/report-schema.md
@@ -86,6 +91,10 @@ function cmdBuild(opts) {
 
   report.generatedAt = report.generatedAt || formatBeijingTime();
   report.title = report.title || '小红书账号作品数据全分析';
+  if (!report.dataNote) {
+    report.dataNote =
+      '注：互动与曝光等数据来源于创作者中心「内容分析 → 导出数据」xlsx';
+  }
 
   const htmlOut = reportHtmlPath(slug, dateKey);
   const jsonOut = reportJsonPath(slug, dateKey);
@@ -156,6 +165,14 @@ function main() {
   }
   const opts = parseArgs(rest);
   switch (cmd) {
+    case 'archive':
+      try {
+        runArchive(rest);
+      } catch (e) {
+        console.error(String(/** @type {Error} */ (e).message || e));
+        process.exit(2);
+      }
+      break;
     case 'build':
       cmdBuild(opts);
       break;

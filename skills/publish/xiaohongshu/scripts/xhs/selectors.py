@@ -104,3 +104,8 @@ SIDEBAR_PROFILE = "div.main-container li.user.side-bar-component a.link-wrapper 
 USER_PROFILE_NAV_LINK = ".main-container .user .link-wrapper a.link-wrapper"
 # 个人主页真实昵称
 USER_NICKNAME = ".user-name"
+
+# ========== 创作者中心 · 内容分析 ==========
+# 「导出数据」按钮文案（DOM 选择器易变，优先按文本点）
+EXPORT_NOTE_DATA_BUTTON_TEXT = "导出数据"
+CONTENT_ANALYSIS_PAGE_HINT = "内容分析"

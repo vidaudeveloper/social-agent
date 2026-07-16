@@ -221,6 +221,11 @@ class BridgePage:
         abs_paths = [os.path.abspath(path) for path in files]
         self._call("set_file_input", {"selector": selector, "files": abs_paths})
 
+    def set_download_behavior(self, download_path: str) -> Any:
+        """通过 CDP Browser.setDownloadBehavior 指定下载目录。"""
+        abs_path = os.path.abspath(download_path)
+        return self._call("set_download_behavior", {"downloadPath": abs_path})
+
     # ─── 截图 ────────────────────────────────────────────────────
 
     def screenshot_element(self, selector: str, padding: int = 0) -> bytes:

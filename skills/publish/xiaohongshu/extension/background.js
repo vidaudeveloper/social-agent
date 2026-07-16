@@ -147,6 +147,9 @@ async function handleCommand(msg) {
     case "set_file_input":
       return await cmdSetFileInputViaDebugger(params);
 
+    case "set_download_behavior":
+      return await cmdSetDownloadBehavior(params);
+
     case "click_element":
     case "click_nth_element":
     case "click_element_by_text":
@@ -883,6 +886,38 @@ async function cmdClickViaDebugger(method, { selector, index, text }) {
     await chrome.debugger.detach(target).catch(() => {});
   }
   return null;
+}
+
+/** 指定 Chrome 下载目录（创作者中心「导出数据」用） */
+async function cmdSetDownloadBehavior({ downloadPath }) {
+  if (!downloadPath) throw new Error("缺少 downloadPath");
+  const tab = await getOrOpenXhsTab();
+  const target = { tabId: tab.id };
+  await chrome.debugger.detach(target).catch(() => {});
+  await chrome.debugger.attach(target, "1.3");
+  try {
+    try {
+      await chrome.debugger.sendCommand(target, "Browser.setDownloadBehavior", {
+        behavior: "allowAndName",
+        downloadPath,
+        eventsEnabled: true,
+      });
+      return { ok: true, method: "Browser.setDownloadBehavior", downloadPath };
+    } catch (e1) {
+      await chrome.debugger.sendCommand(target, "Page.setDownloadBehavior", {
+        behavior: "allow",
+        downloadPath,
+      });
+      return {
+        ok: true,
+        method: "Page.setDownloadBehavior",
+        downloadPath,
+        fallbackFrom: String(e1?.message || e1),
+      };
+    }
+  } finally {
+    await chrome.debugger.detach(target).catch(() => {});
+  }
 }
 
 // ─────── 真实键盘（chrome.debugger + CDP Input.dispatchKeyEvent） ──────

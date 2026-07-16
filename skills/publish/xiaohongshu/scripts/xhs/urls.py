@@ -8,6 +8,10 @@ HOME_URL = "https://www.xiaohongshu.com"
 PUBLISH_URL = "https://creator.xiaohongshu.com/publish/publish?source=official"
 CREATOR_HOME_URL = "https://creator.xiaohongshu.com/new/home?source=official"
 NOTE_MANAGE_URL = "https://creator.xiaohongshu.com/new/note-manager"
+# 数据洞察 → 内容分析（笔记数据 / 导出数据）
+CONTENT_ANALYSIS_URL = (
+    "https://creator.xiaohongshu.com/statistics/data-analysis?source=official"
+)
 
 
 def make_feed_detail_url(feed_id: str, xsec_token: str) -> str:

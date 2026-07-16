@@ -652,6 +652,26 @@ def cmd_get_feed_detail(args: argparse.Namespace) -> None:
         browser.close()
 
 
+def cmd_export_note_data(args: argparse.Namespace) -> None:
+    """创作者中心「内容分析 → 导出数据」→ 本地 xlsx。"""
+    from xhs.note_data_export import export_note_data
+
+    browser, page = _connect(args)
+    try:
+        result = export_note_data(
+            page,
+            days=getattr(args, "days", 30),
+            start_date=getattr(args, "start_date", None),
+            end_date=getattr(args, "end_date", None),
+            out_dir=getattr(args, "out_dir", None),
+            timeout=float(getattr(args, "timeout", 90.0)),
+        )
+        exit_code = 0 if result.get("ok") else 2
+        _output(result, exit_code=exit_code)
+    finally:
+        browser.close()
+
+
 def cmd_user_profile(args: argparse.Namespace) -> None:
     """获取用户主页。"""
     from xhs.user_profile import get_user_profile
@@ -1312,6 +1332,22 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_argument("--scroll-speed", default="normal", help="slow|normal|fast")
     sub.add_argument("--keyword", default="篮球", help="风控重试时的搜索关键词")
     sub.set_defaults(func=cmd_get_feed_detail)
+
+    # export-note-data
+    sub = subparsers.add_parser(
+        "export-note-data",
+        help="创作者中心内容分析：导出笔记列表明细表 xlsx",
+    )
+    sub.add_argument("--days", type=int, default=30, help="近 N 天（默认 30）")
+    sub.add_argument("--start-date", dest="start_date", help="开始日期 YYYY-MM-DD")
+    sub.add_argument("--end-date", dest="end_date", help="结束日期 YYYY-MM-DD")
+    sub.add_argument(
+        "--out-dir",
+        default=r"D:\tmp\xhs-creator-exports",
+        help="下载目录（默认 D:\\tmp\\xhs-creator-exports）",
+    )
+    sub.add_argument("--timeout", type=float, default=90.0, help="等待下载秒数")
+    sub.set_defaults(func=cmd_export_note_data)
 
     # user-profile
     sub = subparsers.add_parser("user-profile", help="获取用户主页")

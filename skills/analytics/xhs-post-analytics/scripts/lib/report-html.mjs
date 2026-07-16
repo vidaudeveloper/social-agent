@@ -38,8 +38,19 @@ export function writePostPublishReportHtml(opts) {
   const title = String(report.title || '小红书账号作品数据全分析');
   const generatedAt = String(report.generatedAt || formatBeijingTime());
   const dataNote = String(
-    report.dataNote || '注：互动数据来源于小红书实时的搜索结果和详情页',
+    report.dataNote ||
+      '注：互动与曝光等数据来源于创作者中心「内容分析 → 导出数据」xlsx',
   );
+
+  const summary = /** @type {Record<string, unknown>} */ (report.summary || {});
+  const summaryBits = [
+    summary.postCount != null ? `笔记 ${summary.postCount}` : '',
+    summary.impressions != null ? `曝光合计 ${formatNum(summary.impressions)}` : '',
+    summary.views != null ? `观看合计 ${formatNum(summary.views)}` : '',
+  ].filter(Boolean);
+  const summaryLine = summaryBits.length
+    ? `<tr><th>区间汇总</th><td>${summaryBits.join(' · ')}</td></tr>`
+    : '';
 
   const accountRows = [
     ['昵称', account.nickname],
@@ -55,27 +66,46 @@ export function writePostPublishReportHtml(opts) {
       ([k, v]) =>
         `<tr><th>${escapeHtml(String(k))}</th><td>${escapeHtml(String(v))}</td></tr>`,
     )
-    .join('\n');
+    .join('\n') + summaryLine;
 
   const postRows = posts
     .map((p, i) => {
       const row = /** @type {Record<string, unknown>} */ (p);
+      const ctr =
+        row.coverCtr != null && row.coverCtr !== ''
+          ? `${Number(row.coverCtr).toFixed(1)}%`
+          : '—';
+      const dur =
+        row.avgWatchDurationSec != null && row.avgWatchDurationSec !== ''
+          ? `${Number(row.avgWatchDurationSec)}s`
+          : '—';
       return `<tr>
         <td>${i + 1}</td>
         <td class="title">${escapeHtml(String(row.title || ''))}</td>
         <td>${escapeHtml(String(row.publishedAt || '—'))}</td>
+        <td>${escapeHtml(String(row.genre || '—'))}</td>
+        <td>${formatNum(row.impressions)}</td>
+        <td>${formatNum(row.views)}</td>
+        <td>${escapeHtml(ctr)}</td>
         <td>${formatNum(row.likedCount)}</td>
         <td>${formatNum(row.collectedCount)}</td>
         <td>${formatNum(row.commentCount)}</td>
+        <td>${formatNum(row.fanGrowth)}</td>
         <td>${formatNum(row.sharedCount)}</td>
-        <td>${formatNum(row.imageCount)}</td>
+        <td>${escapeHtml(dur)}</td>
       </tr>`;
     })
     .join('\n');
 
+  const impressionData = posts.map((p) =>
+    Number(/** @type {any} */ (p).impressions || 0),
+  );
+  const viewData = posts.map((p) => Number(/** @type {any} */ (p).views || 0));
   const likeData = posts.map((p) => Number(/** @type {any} */ (p).likedCount || 0));
-  const collectData = posts.map((p) => Number(/** @type {any} */ (p).collectedCount || 0));
-  const labels = posts.map((p, i) => `${i + 1}.${String(/** @type {any} */ (p).title || '').slice(0, 12)}`);
+  const ctrData = posts.map((p) => Number(/** @type {any} */ (p).coverCtr || 0));
+  const labels = posts.map((p, i) =>
+    `${i + 1}.${String(/** @type {any} */ (p).title || '').slice(0, 12)}`,
+  );
 
   const bestReasons = Array.isArray(best.reasons)
     ? best.reasons.map((r) => `<li>${escapeHtml(String(r))}</li>`).join('')
@@ -212,8 +242,12 @@ export function writePostPublishReportHtml(opts) {
     </section>
 
     <div class="charts">
+      <div class="chart-box"><h2>曝光对比</h2><canvas id="impressions" height="160"></canvas></div>
+      <div class="chart-box"><h2>观看对比</h2><canvas id="views" height="160"></canvas></div>
+    </div>
+    <div class="charts">
       <div class="chart-box"><h2>点赞对比</h2><canvas id="likes" height="160"></canvas></div>
-      <div class="chart-box"><h2>收藏对比</h2><canvas id="collects" height="160"></canvas></div>
+      <div class="chart-box"><h2>封面点击率(%)</h2><canvas id="ctr" height="160"></canvas></div>
     </div>
 
     <section>
@@ -222,8 +256,9 @@ export function writePostPublishReportHtml(opts) {
         <table>
           <thead>
             <tr>
-              <th>#</th><th>标题</th><th>发布时间</th>
-              <th>点赞</th><th>收藏</th><th>评论</th><th>分享</th><th>图片数</th>
+              <th>#</th><th>标题</th><th>发布时间</th><th>体裁</th>
+              <th>曝光</th><th>观看</th><th>封面CTR</th>
+              <th>点赞</th><th>收藏</th><th>评论</th><th>涨粉</th><th>分享</th><th>人均观看</th>
             </tr>
           </thead>
           <tbody>${postRows}</tbody>
@@ -259,21 +294,33 @@ export function writePostPublishReportHtml(opts) {
   </div>
   <script>
     const labels = ${JSON.stringify(labels)};
+    const impressions = ${JSON.stringify(impressionData)};
+    const views = ${JSON.stringify(viewData)};
     const likes = ${JSON.stringify(likeData)};
-    const collects = ${JSON.stringify(collectData)};
+    const ctrs = ${JSON.stringify(ctrData)};
     const common = {
       responsive: true,
       plugins: { legend: { display: false } },
       scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
     };
+    new Chart(document.getElementById('impressions'), {
+      type: 'bar',
+      data: { labels, datasets: [{ data: impressions, backgroundColor: '#5b8ff9' }] },
+      options: common
+    });
+    new Chart(document.getElementById('views'), {
+      type: 'bar',
+      data: { labels, datasets: [{ data: views, backgroundColor: '#5ad8a6' }] },
+      options: common
+    });
     new Chart(document.getElementById('likes'), {
       type: 'bar',
       data: { labels, datasets: [{ data: likes, backgroundColor: '#ff6b81' }] },
       options: common
     });
-    new Chart(document.getElementById('collects'), {
+    new Chart(document.getElementById('ctr'), {
       type: 'bar',
-      data: { labels, datasets: [{ data: collects, backgroundColor: '#ff8f1f' }] },
+      data: { labels, datasets: [{ data: ctrs, backgroundColor: '#ff8f1f' }] },
       options: common
     });
   </script>

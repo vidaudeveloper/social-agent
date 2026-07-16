@@ -1,12 +1,13 @@
 ---
 name: xhs-post-analytics
 description: |
-  小红书发布后作品复盘。把账号概况、作品互动、关键发现与优化建议落成 HTML + 下次创作参考。
+  小红书发布后作品复盘。从创作者中心「内容分析 → 导出数据」xlsx 解析曝光/观看/CTR 等，
+  自动生成关键发现与建议，落成 HTML + 下次创作参考。
   当用户要求分析已发布小红书作品数据、账号复盘、发文后数据报告并生成 HTML 时触发。
-version: 1.0.0
+version: 1.1.0
 metadata:
   hermes:
-    tags: [xiaohongshu, analytics, post-publish, report]
+    tags: [xiaohongshu, analytics, post-publish, report, creator-export]
     related_skills:
       - publish/xiaohongshu
       - explore/xiaohongshu/xhs-explore
@@ -21,22 +22,30 @@ metadata:
 
 ## 技能边界
 
-- **拉数**：`python skills/publish/xiaohongshu/scripts/cli.py user-profile` + 必要时 `get-feed-detail` / `search-feeds`
-- **出报告**：`npm run xhs:stats -- build --in <report.json>`
-- 分析结论由 Agent 整理进 `report.json` 后**必须** build；禁止只聊不落盘
+- **主路径**：创作者中心导出 xlsx → `npm run xhs:stats -- archive`
+- **手喂 JSON**：`npm run xhs:stats -- build --in <report.json>`（兼容旧流程）
+- C 端 `user-profile` 留给竞品/外人主页，**不作为**自家发后复盘主数据源
 
-## 工作流
+## 工作流（推荐）
 
-1. 拉账号主页：`user-profile --user-id ... --xsec-token ...`
-2. 汇总近 N 篇作品互动（赞/藏/评/分享/图数/发布时间）
-3. 写出 `report.json`（schema 见 `references/report-schema.md`）
-4. 生成报告：
+1. 确认 Chrome 已登录小红书 + XHS Bridge 可用（与发布同一套）
+2. 一键复盘：
 
 ```powershell
-npm run xhs:stats -- build --in D:\tmp\xhs-post-report.json --account "TK广告运营"
+# 自动打开内容分析 → 导出 → 解析 → HTML
+npm run xhs:stats -- archive --days 30 --account "TK广告运营"
+
+# 或用手点导出的本地文件（确认格式为 xlsx）
+npm run xhs:stats -- archive --in "D:\GoogleDownload\笔记列表明细表.xlsx" --account "TK广告运营"
 ```
 
-5. 对话交付：HTML 路径 + 下次创作参考路径 + 1–2 句结论（勿贴长文）
+3. 对话交付：HTML 路径 + 下次创作参考路径 + 1–2 句结论
+
+单独只导出文件：
+
+```powershell
+uv run python skills/publish/xiaohongshu/scripts/cli.py export-note-data --days 30
+```
 
 ## 产出路径
 
@@ -62,4 +71,5 @@ $HERMES_ROOT/知识库/xiaohongshu/发布复盘/LATEST.json
 |--|--------------|------------------------------|
 | 时机 | 发之前 | 发之后 |
 | 对象 | 竞品/热点 | 自己账号作品 |
-| 命令 | `npm run xhs:research` | `npm run xhs:stats` |
+| 数据 | C 端公开页 | 创作者中心导出 xlsx |
+| 命令 | `npm run xhs:research` | `npm run xhs:stats -- archive` |
