@@ -1,4 +1,12 @@
-# TikTok 认证
+---
+name: tt-auth
+description: |
+  TikTok 登录与会话校验（SAU + 系统 Chrome）。国内须配代理。
+  当用户要求 TikTok 登录、tiktok:login / check-login 时触发。
+version: 1.0.0
+---
+
+# TikTok 认证（tt-auth）
 
 **前置**：`npm run overseas:install`
 

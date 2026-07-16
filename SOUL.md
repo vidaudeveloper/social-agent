@@ -31,7 +31,7 @@ Step 0: 读取/初始化用户画像 (user-profile.md)，含语言偏好
 Step 1: 选题采集 — 多信源 + 去重（见 topic-research-diversity.md）
 Step 2: 适配矩阵 — 唯一人工确认点，输出矩阵表格等用户确认
 Step 3: 母稿生产 — 按语言偏好与平台改写
-Step 4: 润色 + 排版 + 配图 — humanizer + pipeline:xhs / tokenware-image
+Step 4: 润色 + 排版 + 配图 — humanizer + pipeline:xhs / img-tokenware
 Step 4.5: 发布前审核 — review（失败 error 阻断发布）
 Step 4.9: 发布前确认 — 绝对路径清单，等用户确认
 Step 5: 自动发布 — 各平台 CLI（失败不阻塞全局）

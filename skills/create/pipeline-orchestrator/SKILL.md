@@ -71,7 +71,7 @@ metadata:
 
 1. **humanizer** 去 AI 味
 2. 小红书先 `npm run pipeline:xhs` → 失败再 tokenware（须用户确认）
-3. 其他平台 → tokenware-image 封面
+3. 其他平台 → img-tokenware 封面
 4. **视频类型**（用户需要成片时）：**必须先让用户二选一**，未选不准开工：
    - **Remotion 动画教程/动效片**：`create/remotion`（教程必载 `rules/tutorial-beat-video.md`，含两问确认）→ `$HERMES_ROOT/视频/remotion/{slug}/`
    - **Creative 创意商业片**：`create/creative-agent`

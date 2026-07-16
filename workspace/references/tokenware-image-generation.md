@@ -1,7 +1,7 @@
 # Tokenware AI 生图
 
-> 配图请加载 **`tokenware-image`** 技能（`skills/create/image/skills/tokenware-image/SKILL.md`）。  
-> 本文件为 API 速查；完整流程见子技能文档。
+> 配图请加载 **`img-tokenware`** 技能（`skills/create/image/skills/img-tokenware/SKILL.md`）。  
+> 本文件为 Tokenware API 速查；完整流程见子技能文档。
 
 ## 调用地址
 

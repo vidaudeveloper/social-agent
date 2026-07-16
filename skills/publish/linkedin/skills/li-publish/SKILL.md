@@ -1,4 +1,12 @@
-# LinkedIn 发布（Posts API）
+---
+name: li-publish
+description: |
+  LinkedIn 个人号 Posts API 发帖。终端确认后才调用上游 CLI。
+  当用户要求 LinkedIn 发帖、linkedin:publish 时触发。
+version: 1.0.0
+---
+
+# LinkedIn 发布（li-publish / Posts API）
 
 ```powershell
 npm run linkedin:publish -- --file "$HERMES_ROOT/文章/LinkedIn/xxx.md"

@@ -2,11 +2,13 @@
 
 发之后：统计、复盘、报表。
 
-| 路径 | 说明 |
-|------|------|
-| [`linkedin/`](linkedin/) | `npm run linkedin:stats` |
-| [`xhs-post-analytics/`](xhs-post-analytics/) | `npm run xhs:stats` — 发布后作品复盘 HTML + 下次创作参考 |
-| [`yt-post-analytics/`](yt-post-analytics/) | `npm run youtube:stats -- archive` — Analytics 报表落盘 HTML + JSON |
+命名规范见 [`skills/README.md`](../README.md)。叶子目录名 = `name:`。
+
+| 路径 | name | 说明 |
+|------|------|------|
+| [`li-analytics/`](li-analytics/) | `li-analytics` | `npm run linkedin:stats` |
+| [`xhs-post-analytics/`](xhs-post-analytics/) | `xhs-post-analytics` | `npm run xhs:stats` — 发布后作品复盘 HTML + 下次创作参考 |
+| [`yt-post-analytics/`](yt-post-analytics/) | `yt-post-analytics` | `npm run youtube:stats -- archive` — Analytics 报表落盘 HTML + JSON |
 
 说明：
 

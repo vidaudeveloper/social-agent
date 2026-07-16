@@ -38,7 +38,7 @@
 | 模式 | pipeline:xhs 失败后 |
 |------|---------------------|
 | **交互（手动）** | 停止 → 询问用户是否改用 tokenware AI 生图 → **须告知 AI 标记风险** → 用户确认后才执行 |
-| **定时（Cron）** | 自动降级 `tokenware-image` CLI，**无需用户确认**（日志记录风险） |
+| **定时（Cron）** | 自动降级 `img-tokenware` CLI，**无需用户确认**（日志记录风险） |
 
 **发布后验收（默认开启）**：`publish` / `click-publish` 自动跳转创作中心首页 `.../new/home?source=official` 匹配标题；成功告知用户；未匹配则 `user_decision` 询问是否成功/是否重发；浏览器保持打开。
 
@@ -138,7 +138,7 @@ recover 仍失败后：
 
 ```
 小红书配图：必须先 npm run pipeline:xhs -- -Slug {slug}（模版卡片）。
-若 pipeline 失败：自动降级 tokenware-image 生图（记录 AI 标记风险，无需再问用户）。
+若 pipeline 失败：自动降级 img-tokenware 生图（记录 AI 标记风险，无需再问用户）。
 禁止并行二选一、禁止 BMP/ffmpeg/execute_code 自造图。
 发布：官方格式 png/jpg/jpeg/webp，单张≤32MB；图片就绪后 publish。
 发布后或 CLI 报错：先 wait 3min + verify-publish；仅验收失败才 save-draft → 右侧草稿 → 再发一次。

@@ -25,7 +25,7 @@ explore → create → review → publish → analytics
 | create | `create/pipeline-orchestrator`、`create/tts-narration`、`create/remotion` |
 | review | `review` |
 | publish | `publish/xiaohongshu`、`publish/youtube` |
-| analytics | `analytics/linkedin`、`analytics/xhs-post-analytics`、`analytics/yt-post-analytics` |
+| analytics | `analytics/li-analytics`、`analytics/xhs-post-analytics`、`analytics/yt-post-analytics` |
 
 ## 技能命名规范（必读）
 
@@ -81,6 +81,42 @@ skills/publish/{platform}/
 
 实现可以不同；缺叶子时先补薄 `SKILL.md`（指向现有 `npm run`），不要先大搬脚本。
 
+### explore / create / analytics 骨架
+
+```text
+skills/explore/{platform}/          # 中层可读名，如 xiaohongshu、youtube
+  {code}-explore/SKILL.md
+  {code}-research/SKILL.md
+  …
+
+skills/create/image/                # 中层
+  SKILL.md                          # name: img-skills（总览，不进 Hub）
+  skills/
+    xhs-card-render/SKILL.md
+    img-tokenware/SKILL.md
+
+skills/create/video/tts-narration/
+  {code}-create/SKILL.md            # dy-create / tt-create / yt-create
+
+skills/analytics/
+  li-analytics/SKILL.md
+  xhs-post-analytics/SKILL.md
+  yt-post-analytics/SKILL.md
+```
+
+### 非平台技能例外
+
+下列**不是**「平台码-能力」，可用产品/工具名（仍须全局唯一，且目录名 = `name:`）：
+
+| name | 说明 |
+|------|------|
+| `pipeline-orchestrator` | 主编排 |
+| `remotion` / `creative-agent` | 视频工具链 |
+| `tts-narration` | 口播总览（已弃用，不进 Hub） |
+| `review` | 发布前审核 |
+| `img-skills` | 配图总览（不进 Hub） |
+| `img-tokenware` | Tokenware 生图叶子 |
+
 ### Hub 规则
 
 1. **叶子目录名 = `SKILL.md` 的 `name:`**
@@ -94,6 +130,8 @@ skills/publish/{platform}/
 skills/create/video/tts-narration/dy-create
 skills/create/video/tts-narration/tt-create
 skills/create/video/tts-narration/yt-create
+skills/create/image/skills/img-tokenware
+skills/analytics/li-analytics
 skills/analytics/xhs-post-analytics
 skills/analytics/yt-post-analytics
 skills/publish/wechat/skills/wechat-publish
@@ -109,7 +147,8 @@ skills/publish/douyin/skills/dy-publish
 | 只改 `name:` 不改目录名 | Hub 仍按目录末段安装 |
 | 装父路径留下残影又不删 | 同名 `name:` 双份 → Ambiguous |
 
-publish 落地表见 [`publish/README.md`](publish/README.md)。
+publish 落地表见 [`publish/README.md`](publish/README.md)。  
+analytics 见 [`analytics/README.md`](analytics/README.md)；create 见 [`create/README.md`](create/README.md)；explore 见 [`explore/README.md`](explore/README.md)。
 
 ## 平台状态与依赖
 

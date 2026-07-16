@@ -34,7 +34,7 @@
 | 方案 | 类型 | 优先级 |
 |------|------|--------|
 | xhs-card-render（Auto-Redbook） | 模板 MD→PNG | **默认首选** |
-| tokenware-image | AI 生图 | `pipeline:xhs` 失败且**用户确认**后降级 |
+| img-tokenware | AI 生图（Tokenware） | `pipeline:xhs` 失败且**用户确认**后降级 |
 | baoyu | — | **本 profile 未接入**小红书卡片 |
 
 ## Agent 禁止行为（缺依赖时）

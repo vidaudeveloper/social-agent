@@ -1,19 +1,19 @@
 ---
-name: tokenware-image
+name: img-tokenware
 description: |
   社媒配图生图 — 通过 tokenware.ai OpenAI 兼容 API 生成封面、卡片图、内插图。
   当用户说「生图」「配图」「封面图」「出一张图」或流水线 Step 4c 配图时使用。
-  唯一生图路径：tokenware.ai gpt-image-2（本技能 CLI）。
+  唯一生图路径：tokenware.ai gpt-image-2（本技能 CLI）。技能 name: img-tokenware。
 version: 1.0.0
 author: vidau
 license: MIT
 metadata:
   hermes:
     tags: [image, tokenware, cover, illustration, social-media]
-    related_skills: [pipeline-orchestrator]
+    related_skills: [pipeline-orchestrator, img-skills]
 ---
 
-# tokenware 生图
+# img-tokenware（Tokenware 生图）
 
 流水线 **Step 4c 配图** 技能。知乎/公众号/抖音/YouTube 封面，以及**小红书 pipeline 失败后的降级**。
 

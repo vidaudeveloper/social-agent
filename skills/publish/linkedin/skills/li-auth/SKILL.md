@@ -1,4 +1,12 @@
-# LinkedIn 认证（OAuth）
+---
+name: li-auth
+description: |
+  LinkedIn OAuth 登录与校验。打开授权页后须用户手动登录授权。
+  当用户要求 LinkedIn 登录、linkedin:login / check-login 时触发。
+version: 1.0.0
+---
+
+# LinkedIn 认证（li-auth / OAuth）
 
 ```powershell
 $env:OVERSEAS_ALLOW_AUTOMATION = "true"

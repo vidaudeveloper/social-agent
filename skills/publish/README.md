@@ -39,4 +39,7 @@
 | X | `x-auth` | `x-publish` | |
 | 微信 | `wechat-auth` | `wechat-publish` | |
 
+配图（create 层，非 publish）：`img-skills` 总览；叶子 `xhs-card-render`、`img-tokenware`。  
+发后复盘（analytics）：`li-analytics`、`xhs-post-analytics`、`yt-post-analytics`。
+
 登录速查：[`workspace/references/platform-login-quickstart.md`](../../workspace/references/platform-login-quickstart.md)

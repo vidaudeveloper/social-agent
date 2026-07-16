@@ -123,20 +123,20 @@ npm run tool:install   # 含 Auto-Redbook 与 Python 渲染环境，Agent 勿逐
 
 出图失败且提示缺少环境时，再执行一次 `npm run tool:install`。
 
-## 与 tokenware-image 分工
+## 与 img-tokenware 分工
 
-| 平台 | 配图方式 |
-|------|----------|
+| 场景 | 技能 |
+|------|------|
 | **小红书正文卡片** | **本技能**（xhs-card-render） |
-| 知乎封面 | tokenware-image |
-| 公众号封面 | tokenware-image |
-| 抖音/YouTube 封面 | tokenware-image |
+| 知乎封面 | img-tokenware |
+| 公众号封面 | img-tokenware |
+| 抖音/YouTube 封面 | img-tokenware |
 
 ## 配图失败
 
-**禁止**起手 tokenware 或并行「xhs-card-render 或 tokenware」。按 `skills/publish/xiaohongshu/references/xhs-cron-runbook.md`：
+**禁止**起手 img-tokenware 或并行「xhs-card-render 或 img-tokenware」。按 `skills/publish/xiaohongshu/references/xhs-cron-runbook.md`：
 
-- **交互**：A) `tool:install` 后重试 pipeline:xhs；B) 用户确认后 tokenware（附 AI 标记风险）；C) 跳过配图；D) 放弃
-- **Cron**：A) 重试 pipeline:xhs；B) 自动 tokenware；C) 跳过并记录
+- **交互**：A) `tool:install` 后重试 pipeline:xhs；B) 用户确认后 img-tokenware（附 AI 标记风险）；C) 跳过配图；D) 放弃
+- **Cron**：A) 重试 pipeline:xhs；B) 自动 img-tokenware；C) 跳过并记录
 
 不要 BMP/ffmpeg/execute_code 自造图。
