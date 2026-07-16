@@ -47,7 +47,7 @@ metadata:
 
 ## 下游
 
-写 YouTube 口播稿时读 `scripts_raw.json` 或 HTML 报告 → `create/tts-narration/youtube` → `review:lint` → publish
+写 YouTube 口播稿时读 `scripts_raw.json` 或 HTML 报告 → `create/tts-narration/yt-create` → `review:lint` → publish
 
 ## 对话交付
 

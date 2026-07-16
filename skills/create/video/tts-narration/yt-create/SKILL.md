@@ -3,7 +3,7 @@ name: yt-create
 description: |
   YouTube 视频创作技能。Edge TTS 配音 + ffmpeg 合成 1280x720 横版视频，不发布。
   当用户要求生成口播视频、TTS 配音、合成 YouTube 视频素材时触发。
-  Hermes 路径：create/video/tts-narration/youtube（非 publish/youtube/yt-create）。
+  Hermes 路径：create/video/tts-narration/yt-create（目录名与 skill name 一致；非 publish/youtube）。
 version: 1.0.0
 metadata:
   hermes:

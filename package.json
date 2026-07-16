@@ -52,7 +52,7 @@
     "youtube:stats": "node scripts/run-youtube-analytics.mjs",
     "youtube:oauth": "node scripts/youtube-oauth-login.mjs",
     "xhs:research": "node skills/explore/xiaohongshu/scripts/cli.mjs",
-    "xhs:stats": "node skills/analytics/xiaohongshu/scripts/cli.mjs",
+    "xhs:stats": "node skills/analytics/xhs-post-analytics/scripts/cli.mjs",
     "pipeline:douyin": "node skills/publish/douyin/scripts/cli.mjs create-video",
     "douyin:voices": "node skills/publish/douyin/scripts/cli.mjs list-voices",
     "douyin:login": "node scripts/run-douyin.mjs login",

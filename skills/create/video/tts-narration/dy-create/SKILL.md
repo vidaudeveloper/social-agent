@@ -2,7 +2,7 @@
 name: dy-create
 description: |
   抖音竖版视频创作：黑底花字 + Edge TTS + ffmpeg 合成 1080x1920，不发布。FFCreator 已不推荐。
-  Hermes 路径：create/video/tts-narration/douyin。
+  Hermes 路径：create/video/tts-narration/dy-create（目录名与 skill name 一致，避免 Hub 末段撞名）。
 version: 1.0.0
 metadata:
   hermes:

@@ -25,9 +25,9 @@ metadata:
 
 | 平台 | 子技能 | 画幅 | 口播语言 | 命令入口 |
 |------|--------|------|----------|----------|
-| 抖音 | [douyin/SKILL.md](douyin/SKILL.md) | 1080×1920 竖版 | 中文 | `npm run pipeline:douyin` |
-| TikTok | [tiktok/SKILL.md](tiktok/SKILL.md) | 1080×1920 竖版 | **英文** | `npm run pipeline:tiktok` |
-| YouTube | [youtube/SKILL.md](youtube/SKILL.md) | 1280×720 横版 | 英文为主 | `node skills/publish/youtube/scripts/cli.mjs create-video` |
+| 抖音 | [dy-create/SKILL.md](dy-create/SKILL.md) | 1080×1920 竖版 | 中文 | `npm run pipeline:douyin` |
+| TikTok | [tt-create/SKILL.md](tt-create/SKILL.md) | 1080×1920 竖版 | **英文** | `npm run pipeline:tiktok` |
+| YouTube | [yt-create/SKILL.md](yt-create/SKILL.md) | 1280×720 横版 | 英文为主 | `node skills/publish/youtube/scripts/cli.mjs create-video` |
 
 ## 依赖
 

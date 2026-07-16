@@ -28,7 +28,7 @@ const USAGE = `Xiaohongshu Post-publish Analytics CLI
   build  --in <report.json> [--account <昵称>] [--date YYYY-MM-DD]
   list
 
-report.json 结构见 skills/analytics/xiaohongshu/references/report-schema.md
+report.json 结构见 skills/analytics/xhs-post-analytics/references/report-schema.md
 `;
 
 /**

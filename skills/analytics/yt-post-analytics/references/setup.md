@@ -105,7 +105,7 @@ npm run youtube:stats -- report `
 
 ## 与 explore 的区别
 
-| | `explore/youtube` | `analytics/youtube`（本技能） |
+| | `explore/youtube` | `analytics/yt-post-analytics`（本技能） |
 |--|-------------------|------------------------------|
 | 时机 | 发之前 | 发之后 / 自家账号复盘 |
 | 对象 | 赛道爆款、竞品脚本 | 频道/作品统计与 Analytics 报表 |

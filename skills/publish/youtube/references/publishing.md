@@ -45,7 +45,7 @@ skills/publish/youtube/
 └── references/publishing.md
 
 # TTS 口播创作（create 层，不在本目录）：
-#   skills/create/video/tts-narration/youtube/SKILL.md  (name: yt-create)
+#   skills/create/video/tts-narration/yt-create/SKILL.md  (name: yt-create)
 
 tool/social-auto-upload/
 ├── sau_cli.py

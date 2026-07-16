@@ -10,7 +10,7 @@ import { existsSync, readFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { ensureDeps } from './lib/ensure-deps.mjs';
-import { runArchive } from '../skills/analytics/youtube/scripts/archive.mjs';
+import { runArchive } from '../skills/analytics/yt-post-analytics/scripts/archive.mjs';
 
 const profileRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const cliRoot = resolve(
@@ -96,7 +96,7 @@ archive 会拉取自家频道 + Analytics，落盘 HTML/JSON 到:
   $HERMES_ROOT/知识库/youtube/发布复盘/{channelSlug}/{date}_作品复盘.html
 
 安装: npm run youtube:stats-setup
-文档: skills/analytics/youtube/
+文档: skills/analytics/yt-post-analytics/
 凭据: YOUTUBE_API_KEY（公开数据）；报表需 OAuth 见 references/setup.md`);
 }
 
@@ -118,7 +118,7 @@ function ensureCredentialsForArgs(args) {
     console.error(
       '[error] 该命令需要 OAuth：请在 .env 配置 YOUTUBE_CLIENT_ID / YOUTUBE_CLIENT_SECRET / YOUTUBE_REFRESH_TOKEN',
     );
-    console.error('见 skills/analytics/youtube/references/setup.md');
+    console.error('见 skills/analytics/yt-post-analytics/references/setup.md');
     process.exit(2);
   }
   if (!needsOauth && !hasApiKey && !hasOauth) {

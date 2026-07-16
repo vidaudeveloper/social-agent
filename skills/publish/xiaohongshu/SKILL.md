@@ -44,7 +44,7 @@ metadata:
 4. **社交互动**（"评论 / 回复 / 点赞 / 收藏"）→ `xhs-interact`（`publish/xiaohongshu/skills/xhs-interact`）。
 5. **复合运营**（"竞品分析 / 热点追踪 / 批量互动 / 一键创作"）→ `xhs-content-ops`（`explore/xiaohongshu/xhs-content-ops`）。
 6. **发前调研落盘**（"竞品报告 / 热点报告 / 生成创作参考"）→ `xhs-research`（`explore/xiaohongshu/xhs-research`），`npm run xhs:research`。
-7. **发后作品复盘**（"发布后数据分析 / 账号作品复盘 / 生成 HTML 报告"）→ `xhs-post-analytics`（`analytics/xiaohongshu`），`npm run xhs:stats`。
+7. **发后作品复盘**（"发布后数据分析 / 账号作品复盘 / 生成 HTML 报告"）→ `xhs-post-analytics`（`analytics/xhs-post-analytics`），`npm run xhs:stats`。
 
 ## 全局约束
 
@@ -110,7 +110,7 @@ metadata:
 
 ### xhs-post-analytics — 发后作品复盘
 
-自己账号发布后数据分析，生成 HTML 报告 + 下次创作参考（`npm run xhs:stats`）。见 `analytics/xiaohongshu`。
+自己账号发布后数据分析，生成 HTML 报告 + 下次创作参考（`npm run xhs:stats`）。见 `analytics/xhs-post-analytics`。
 
 ## 快速开始
 

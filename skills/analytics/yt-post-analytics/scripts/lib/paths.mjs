@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 
 const scriptsDir = dirname(fileURLToPath(import.meta.url));
 
-/** skills/analytics/youtube */
+/** skills/analytics/yt-post-analytics */
 export const skillRoot = join(scriptsDir, '../..');
 
 /** social-agent profile 仓库根 */

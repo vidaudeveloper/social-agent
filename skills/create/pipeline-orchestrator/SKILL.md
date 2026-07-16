@@ -63,7 +63,7 @@ metadata:
 
 按 Step 0 语言偏好决定母稿与改写语言。写入 `$HERMES_ROOT/文章/{平台}/{日期}_{slug}.md`
 
-**小红书图文**：若存在 `$HERMES_ROOT/知识库/xiaohongshu/{slug}/` 下的 `{slug}_创作参考.md` 或 `LATEST.json` 指向的报告，优先作标题/结构/标签参考（见 `explore/xiaohongshu/xhs-research`）。若存在 `知识库/xiaohongshu/发布复盘/LATEST.json`（自己账号发后复盘），叠加读 `{date}_下次创作参考.md`（见 `analytics/xiaohongshu`）。
+**小红书图文**：若存在 `$HERMES_ROOT/知识库/xiaohongshu/{slug}/` 下的 `{slug}_创作参考.md` 或 `LATEST.json` 指向的报告，优先作标题/结构/标签参考（见 `explore/xiaohongshu/xhs-research`）。若存在 `知识库/xiaohongshu/发布复盘/LATEST.json`（自己账号发后复盘），叠加读 `{date}_下次创作参考.md`（见 `analytics/xhs-post-analytics`）。
 
 **YouTube 口播稿**：若存在 `$HERMES_ROOT/知识库/youtube/{slug}/scripts_raw.json` 或 `{slug}_爆款报告.html`，优先作结构/钩子参考（见 `explore/youtube/yt-script-analyze`）。
 

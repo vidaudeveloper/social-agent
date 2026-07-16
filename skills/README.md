@@ -25,7 +25,26 @@ explore → create → review → publish → analytics
 | create | `create/pipeline-orchestrator`、`create/tts-narration`、`create/remotion` |
 | review | `review` |
 | publish | `publish/xiaohongshu`、`publish/youtube` |
-| analytics | `analytics/linkedin`、`analytics/xiaohongshu`、`analytics/youtube` |
+| analytics | `analytics/linkedin`、`analytics/xhs-post-analytics`、`analytics/yt-post-analytics` |
+
+## 目录命名约定（VidAU Hub 必遵）
+
+Hub 用路径**最后一段**作为安装目录名。为避免 `Skill name collision` / `Unknown skill(s)`：
+
+1. **叶子目录名 = `SKILL.md` 的 `name:`**（全局唯一），例如 `dy-create/`、`yt-post-analytics/`
+2. **禁止**用平台通用词当地目录：`douyin`、`tiktok`、`youtube`、`xiaohongshu`（会与其它层撞末段）
+3. Hub `paths` **只列叶子**，不要列父目录（如不要 `skills/create/video/tts-narration`）
+4. 新增技能前：全库搜一遍同名目录 / 同名 `name:`
+
+推荐 Hub 叶子路径示例：
+
+```text
+skills/create/video/tts-narration/dy-create
+skills/create/video/tts-narration/tt-create
+skills/create/video/tts-narration/yt-create
+skills/analytics/xhs-post-analytics
+skills/analytics/yt-post-analytics
+```
 
 ## 平台状态与依赖
 
