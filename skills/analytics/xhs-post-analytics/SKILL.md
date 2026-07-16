@@ -1,24 +1,34 @@
 ---
 name: xhs-post-analytics
 description: |
-  小红书发布后作品复盘。从创作者中心「内容分析 → 导出数据」xlsx 解析曝光/观看/CTR 等，
-  自动生成关键发现与建议，落成 HTML + 下次创作参考。
-  当用户要求分析已发布小红书作品数据、账号复盘、发文后数据报告并生成 HTML 时触发。
+  小红书发后作品复盘（analytics）。创作者中心导出 xlsx → HTML + 下次创作参考。
+  触发：「小红书发后数据」「笔记表现」「创作者中心导出」「账号复盘」。
+  口语：我发的笔记数据、小红书复盘、发文后表现、曝光点击数据。
 version: 1.1.0
 metadata:
   hermes:
     tags: [xiaohongshu, analytics, post-publish, report, creator-export]
     related_skills:
-      - publish/xiaohongshu
-      - explore/xiaohongshu/xhs-explore
-      - explore/xiaohongshu/xhs-research
+      - xhs-publish
+      - xhs-research
       - create/pipeline-orchestrator
 ---
 
 # 小红书发布后作品复盘（xhs-post-analytics）
 
 发**之后**看自己的号与作品表现，并落盘 HTML。  
-（发**之前**的竞品调研请用 `explore/xiaohongshu/xhs-research`。）
+（发**之前**的竞品调研请用 `xhs-research`。）
+
+## When to use
+
+- 用户要查**自己已发布笔记**的曝光、观看、CTR 等，并生成复盘 HTML
+- 典型说法：「小红书发后数据」「笔记表现怎么样」「创作者中心导出分析」
+
+## When not to use
+
+- 发前竞品/热点调研 → **`xhs-research`**
+- 发布新笔记 → **`xhs-publish`**
+- 多平台完整生产 → **`pipeline-orchestrator`**
 
 ## 技能边界
 
@@ -27,6 +37,19 @@ metadata:
 - **手喂 JSON**：`npm run xhs:stats -- build --in <report.json>`（兼容旧流程）
 - **工作目录**：必须在 **profile 仓库根**（含 `package.json`）执行 npm；勿在 `skills/publish/xiaohongshu/scripts` 子目录单独跑
 - C 端 `user-profile` 留给竞品/外人主页，**不作为**自家发后复盘主数据源
+
+## 强制执行规则
+
+用户要求发后复盘或创作者中心导出时，**必须先直接执行下面的命令**，不得先用浏览器、MCP、DOM/JS 探查来手工寻找「内容分析」或「导出数据」按钮：
+
+```powershell
+# 在 profile 仓库根目录执行；无 --in 时脚本会自行导航、定位、下载并解析
+npm run xhs:stats -- archive --days 30 --account "账号昵称"
+```
+
+- `archive` 会调用 `cli.py export-note-data`；定位按钮、设置下载目录、等待 xlsx 都由脚本完成。
+- 若命令返回失败 JSON，直接向用户报告 `error` 和 `debug` 字段；**不要**擅自改用浏览器手工探查或声称功能尚未实现。
+- 只有用户明确要求排查脚本故障时，才可检查页面/选择器并修复脚本。
 
 ## 已实现脚本（自检）
 
