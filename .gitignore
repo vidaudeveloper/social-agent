@@ -78,3 +78,7 @@ errors.log
 
 # Local-only bug log — do not push
 docs/BUG.md
+
+# Skill usage telemetry (local)
+skills/.usage.json
+skills/.usage.json.lock
