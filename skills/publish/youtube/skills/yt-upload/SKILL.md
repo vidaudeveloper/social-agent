@@ -1,14 +1,14 @@
 ---
-name: youtube-upload
+name: yt-upload
 description: |
   通过 social-auto-upload（sau）完成 YouTube 登录、cookie 校验、视频上传。
   本项目 YouTube 唯一发布路径。遇 sau 报错或 check invalid 时先读 references/sau-runbook.md。
 version: 2.0.0
 ---
 
-# YouTube 上传 Skill（social-auto-upload / sau）
+# YouTube 上传 Skill（yt-upload / sau）
 
-**唯一路径**。与 `douyin-upload` / `xiaohongshu-upload` 模式一致。
+**唯一路径**。与抖音 / 小红书 SAU 上传模式一致。
 
 ## 功能概览
 

@@ -1,5 +1,5 @@
 ---
-name: linkedin-skills
+name: li-skills
 description: |
   LinkedIn 个人号官方 API 发帖（gxbvc/linkedin-cli · OAuth + Posts API）。打开授权页后须用户手动登录授权，终端确认后再发布。
   公司主页预留。当用户要求 LinkedIn API 发帖时触发。
@@ -46,3 +46,10 @@ npm run linkedin:stats
 ## 公司主页
 
 预留 `w_organization_social`，见 [references/company-page.md](./references/company-page.md)
+
+## 子技能
+
+| 子技能 | 说明 |
+|--------|------|
+| `li-auth`（`skills/publish/linkedin/skills/li-auth`） | OAuth 登录 |
+| `li-publish`（`skills/publish/linkedin/skills/li-publish`） | API 发帖 |

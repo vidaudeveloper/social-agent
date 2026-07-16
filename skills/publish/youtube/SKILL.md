@@ -1,5 +1,5 @@
 ---
-name: youtube-skills
+name: yt-skills
 description: |
   YouTube 自动化技能集合。支持 sau 登录、视频创作（TTS+合成）、上传发布、全流程流水线。
   当用户要求操作 YouTube（登录、上传、发布、创作视频、英文 Studio）时触发。
@@ -88,4 +88,4 @@ npm run youtube:publish -- --video "$HERMES_ROOT/视频/xxx.mp4" --title "标题
 | `create/video/tts-narration/yt-create`（name: `yt-create`） | `skills/create/video/tts-narration/yt-create/SKILL.md` | create-video（TTS 口播） |
 | `publish/youtube/yt-publish` | `skills/publish/youtube/skills/yt-publish/SKILL.md` | publish |
 | `publish/youtube/yt-pipeline` | `skills/publish/youtube/skills/yt-pipeline/SKILL.md` | pipeline 全流程 |
-| `publish/youtube/youtube-upload` | `skills/publish/youtube/skills/youtube-upload/SKILL.md` | 上传契约与运行前提 |
+| `publish/youtube/yt-upload` | `skills/publish/youtube/skills/yt-upload/SKILL.md` | 上传契约与运行前提 |

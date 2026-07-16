@@ -1,14 +1,14 @@
 ---
-name: reddit-skills
+name: rd-skills
 description: |
-  Reddit 自动化技能。基于 1146345502/reddit-skills（Chrome 扩展桥 + Python CLI）。
+  Reddit 自动化技能（本仓库 name: rd-skills）。基于上游 1146345502/reddit-skills（Chrome 扩展桥 + Python CLI，安装于 tool/reddit-skills）。
   当用户要求发布 Reddit 帖子、浏览 subreddit、搜索 Reddit 时触发。
 version: 1.1.0
 metadata:
   source: https://github.com/1146345502/reddit-skills
 ---
 
-# Reddit Skills
+# Reddit Skills（rd-skills）
 
 > **发布前质量规则**以 `skills/review/rules/reddit.yaml` 为准；等效 CLI：`npm run review:lint -- --platform reddit ...` 或 `npm run reddit:validate`。
 
@@ -16,7 +16,7 @@ metadata:
 
 ## 前置条件（必读）
 
-1. 执行 `npm run reddit:setup` 安装上游 `reddit-skills` 与 Chrome 扩展
+1. 执行 `npm run reddit:setup` 安装上游工具到 `tool/reddit-skills` 与 Chrome 扩展
 2. Chrome 中 **Reddit 界面语言必须为 English**（设置 → Display language）
 3. 桥接地址默认 `ws://localhost:9334`
 
@@ -62,6 +62,12 @@ npm run reddit:validate -- --subreddit TikTokshop --title-file ... --body-file .
 npm run reddit:publish -- --subreddit TikTokshop --title-file ... --body-file ...
 ```
 
+## 子技能
+
+| 子技能 | 说明 |
+|--------|------|
+| `rd-auth`（`skills/publish/reddit/skills/rd-auth`） | setup / check-login |
+| `rd-publish`（`skills/publish/reddit/skills/rd-publish`） | validate + publish |
 ## 运营节奏（2026-06-30 实测）
 
 - 新号先 **评论养 Karma**，勿连发

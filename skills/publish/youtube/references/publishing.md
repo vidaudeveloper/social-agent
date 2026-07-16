@@ -39,7 +39,7 @@ YT_PROXY = "http://127.0.0.1:7890"  # 改成你的代理端口
 ```
 skills/publish/youtube/
 ├── SKILL.md
-├── skills/yt-auth|yt-publish|yt-pipeline|youtube-upload/
+├── skills/yt-auth|yt-publish|yt-pipeline|yt-upload/
 ├── scripts/cli.mjs
 ├── scripts/commands/     # auth.mjs, publish.mjs, pipeline.mjs
 └── references/publishing.md

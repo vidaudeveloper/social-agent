@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * reddit-skills (1146345502) CLI 封装
+ * 上游 reddit-skills (1146345502) CLI 封装 — 本仓库技能名为 rd-skills
  */
 import { execSync } from 'child_process';
 import { existsSync } from 'fs';
@@ -21,7 +21,7 @@ export function redditAvailable() {
 export function runRedditCli(args) {
   const root = redditRoot();
   if (!redditAvailable()) {
-    console.error(`reddit-skills 未安装: ${root}`);
+    console.error(`上游 reddit-skills 未安装: ${root}（本仓库技能: rd-skills）`);
     console.error('请先执行: npm run reddit:setup');
     process.exit(1);
   }

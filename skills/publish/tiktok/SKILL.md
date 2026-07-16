@@ -1,5 +1,5 @@
 ---
-name: tiktok-skills
+name: tt-skills
 description: |
   TikTok 海外版自动化：花字竖版视频（英文 Edge TTS，≤90s）+ social-auto-upload 发布。
   当用户要求生成 TikTok 口播视频、pipeline:tiktok、上传 tiktok.com 时触发。

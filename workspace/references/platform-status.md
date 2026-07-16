@@ -16,7 +16,7 @@
 |------|------|------|------|
 | 知乎 | pyzhihu-cli + HTML 发布 | √ | — |
 | 小红书 | XHS Bridge + `pipeline:xhs` | √ | 卡片配图按需 `npm run tool:install` |
-| Reddit | reddit-skills 扩展桥 | √ | ⚠️ Chrome 中 Reddit 界面须 English |
+| Reddit | rd-skills（上游 tool/reddit-skills 扩展桥） | √ | ⚠️ Chrome 中 Reddit 界面须 English |
 | YouTube | social-auto-upload | √ | 按需 `npm run overseas:install` |
 | TikTok | SAU tk_uploader | √ | ⚠️ 国内需 `TK_PROXY`；按需 overseas:install |
 | X (Twitter) | baoyu-post-to-x | √ | ⚠️ 部分账号被平台限发（非 CLI 故障） |

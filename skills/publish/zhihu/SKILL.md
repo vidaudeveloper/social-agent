@@ -1,5 +1,5 @@
 ---
-name: zhihu-skills
+name: zh-skills
 description: |
   知乎长文发布（HTML 版）。将 .md 转为多段落 HTML，经 pyzhihu-cli API 直发，避免 zhihu article 单 <p> 导致整篇糊成一坨。
   当用户要求发布知乎专栏、zhihu publish 时触发。
@@ -47,6 +47,13 @@ npm run zhihu:publish -- --title "标题" --content-file "xxx.md" --dry-run
 ```
 
 转换后的 HTML 默认与源文件同目录：`xxx.md` → `xxx.html`
+
+## 子技能
+
+| 子技能 | 说明 |
+|--------|------|
+| `zh-auth`（`skills/publish/zhihu/skills/zh-auth`） | login / check-login |
+| `zh-publish`（`skills/publish/zhihu/skills/zh-publish`） | convert + publish |
 
 ## 文稿归档
 

@@ -1,5 +1,5 @@
 {
-  "name": "douyin-skills",
+  "name": "dy-skills",
   "version": "1.0.0",
   "private": true,
   "description": "Douyin vertical fancy-text video (Edge TTS + ffmpeg ASS). Optional FFCreator on Linux/macOS.",

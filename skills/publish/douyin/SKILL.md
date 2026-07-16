@@ -1,5 +1,5 @@
 ---
-name: douyin-skills
+name: dy-skills
 description: |
   抖音自动化技能集合：黑底花字竖版视频（Edge TTS + ffmpeg ASS）、SAU 发布。
   当用户要求生成抖音口播视频、花字短视频、pipeline:douyin 时触发。
@@ -35,7 +35,9 @@ version: 1.0.0
 
 | 子技能 | 说明 |
 |--------|------|
-| dy-create（路径 `create/video/tts-narration/dy-create`） | 口播 MD → 1080×1920 MP4 |
+| `dy-auth`（`skills/publish/douyin/skills/dy-auth`） | 登录 / check |
+| `dy-publish`（`skills/publish/douyin/skills/dy-publish`） | SAU 上传已有 MP4 |
+| `dy-create`（`create/video/tts-narration/dy-create`） | 口播 MD → 1080×1920 MP4（create 层） |
 
 ## 渲染器
 

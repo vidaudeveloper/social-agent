@@ -7,7 +7,7 @@
 | 组件 | 路径 | 上游来源 | 许可证 |
 |------|------|----------|--------|
 | 小红书自动化 | `skills/publish/xiaohongshu/` | [xpzouying/skills/xiaohongshu](https://github.com/xpzouying/skills/xiaohongshu) | MIT |
-| Reddit | `skills/publish/reddit/` | [1146345502/reddit-skills](https://github.com/1146345502/reddit-skills) | 见上游仓库 |
+| Reddit | `skills/publish/reddit/`（技能 `rd-skills`） | [1146345502/reddit-skills](https://github.com/1146345502/reddit-skills) | 见上游仓库 |
 | X (Twitter) | `skills/publish/x/` | [JimLiu/baoyu-skills](https://github.com/JimLiu/baoyu-skills/tree/main/skills/baoyu-post-to-x) | 见上游仓库 |
 | Remotion Agent Skills | `skills/create/video/remotion/rules/` | [remotion-dev/skills](https://github.com/remotion-dev/skills) | 见上游仓库 |
 
@@ -18,7 +18,7 @@
 | Auto-Redbook-Skills | 小红书 MD→卡片 PNG | [comeonzhj/Auto-Redbook-Skills](https://github.com/comeonzhj/Auto-Redbook-Skills) |
 | social-auto-upload | YouTube / TikTok / **抖音** 上传 | [dreammis/social-auto-upload](https://github.com/dreammis/social-auto-upload) |
 | gxbvc/linkedin-cli | LinkedIn OAuth 发帖 | [gxbvc/linkedin-cli](https://github.com/gxbvc/linkedin-cli) |
-| reddit-skills | Reddit 扩展桥 | [1146345502/reddit-skills](https://github.com/1146345502/reddit-skills) |
+| reddit-skills（上游） | Reddit 扩展桥，装到 `tool/reddit-skills`；本仓库技能名 `rd-skills` | [1146345502/reddit-skills](https://github.com/1146345502/reddit-skills) |
 | pyzhihu-cli | 知乎发布 | 见 `skills/publish/zhihu/` |
 | tubepilot (npm MCP) | YouTube explore 爆款发现 | [ixex/tubepilot](https://github.com/ixex/tubepilot) |
 | youtube-transcript-api | YouTube explore 字幕抽取 | [jdepoix/youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) |

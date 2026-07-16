@@ -48,7 +48,7 @@ export const DEP_CHECKS = {
     fix: 'npm run x:setup',
   },
   reddit: {
-    label: 'Reddit (reddit-skills)',
+    label: 'Reddit (rd-skills / 上游 tool/reddit-skills)',
     check: () =>
       existsSync(
         join(

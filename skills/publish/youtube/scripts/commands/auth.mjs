@@ -41,7 +41,7 @@ export async function cmdCheckLogin() {
 export async function cmdLogin() {
   if (!sauAvailable()) {
     console.error('请先安装 social-auto-upload: npm run overseas:install');
-    console.error('文档: skills/publish/youtube/skills/publish/youtube-upload/references/runtime-requirements.md');
+    console.error('文档: skills/publish/youtube/skills/yt-upload/references/runtime-requirements.md');
     process.exit(1);
   }
 

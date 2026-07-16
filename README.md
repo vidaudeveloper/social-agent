@@ -26,8 +26,9 @@ cd social-agent
 
 将克隆目录配置为 VidAU 的 profile 路径即可。
 
-> **Agent 禁止修改** `config.yaml` 的 model 段；详见 `workspace/references/agent-config-guardrails.md`。
+> **新增 / 改名 skill**：必读 [`skills/README.md`](skills/README.md)「技能命名规范」（叶子 = `{平台码}-{能力}`，Hub 只装叶子）。publish 清单见 [`skills/publish/README.md`](skills/publish/README.md)。
 
+> **Agent 禁止修改** `config.yaml` 的 model 段；详见 `workspace/references/agent-config-guardrails.md`。
 ## 使用
 
 在 VidAU 中与 social-agent profile 对话，例如：

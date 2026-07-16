@@ -219,7 +219,7 @@ npm run youtube:publish -- `
 
 ## 相关文档
 
-- CLI 契约：`skills/publish/youtube/skills/publish/youtube-upload/references/cli-contract.md`
-- 运行前提：`skills/publish/youtube/skills/publish/youtube-upload/references/runtime-requirements.md`
+- CLI 契约：`skills/publish/youtube/skills/yt-upload/references/cli-contract.md`
+- 运行前提：`skills/publish/youtube/skills/yt-upload/references/runtime-requirements.md`
 - 海外自动化门禁：`references/overseas-automation-rules.md`
 - Bug 记录：`BUGS.md`（搜索「sau check invalid」）
