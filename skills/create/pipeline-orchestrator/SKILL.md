@@ -97,20 +97,20 @@ metadata:
    - **Creative 创意商业片**：**`skill_view("creative-agent")`**
    - ~~TTS 黑底花字口播~~：不再作为默认或推荐
 
-## Step 4.5: 发布前审核
+## Step 5: 发布前审核
 
-**`skill_view("review")`** → 按该技能执行 `npm run review:lint`；存在 error 阻断 Step 5。
+**`skill_view("review")`** → 按该技能执行 `npm run review:lint`；存在 error 阻断 Step 7。
 
-## Step 4.9: 发布前确认（须绝对路径）
+## Step 6: 发布前确认（须绝对路径）
 
-见 `workspace/references/publish-confirm-paths.md`，**等待用户确认**后再 Step 5。
+见 [`../../../workspace/references/publish-confirm-paths.md`](../../../workspace/references/publish-confirm-paths.md)，**等待用户确认**后再 Step 7。
 
-## Step 5: 发布
+## Step 7: 发布
 
 发布前：
 
-1. 对照 `platform-login-quickstart.md`；登录问题再 **`skill_view("{code}-auth")`**
-2. `npm run deps:check -- --platform ...`（缺依赖则停止，见 `dependency-policy.md`）
+1. 对照 [`platform-login-quickstart.md`](../../../workspace/references/platform-login-quickstart.md)；登录问题再 **`skill_view("{code}-auth")`**
+2. `npm run deps:check -- --platform ...`（缺依赖则停止，见 [`dependency-policy.md`](../../../workspace/references/dependency-policy.md)）
 3. 每个平台：**`skill_view("{code}-publish")`** → 仅用该叶子允许的命令
 
 **√ 可自动发布**：知乎、小红书、Reddit、YouTube、TikTok、X、公众号（默认草稿）。  

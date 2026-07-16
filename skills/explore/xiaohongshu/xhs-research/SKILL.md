@@ -1,4 +1,5 @@
 ---
+
 name: xhs-research
 description: |
   小红书发前竞品/热点调研（explore）。拉数后落盘 HTML + 创作参考.md，供写稿引用。
@@ -15,14 +16,6 @@ metadata:
       - analytics/xhs-post-analytics
       - xhs-publish
       - create/pipeline-orchestrator
-    requires:
-      bins:
-        - node
-        - python3
-    emoji: "\U0001F4C8"
-    os:
-      - darwin
-      - linux
       - windows
 ---
 

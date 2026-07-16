@@ -1,4 +1,5 @@
 ---
+
 name: xhs-content-ops
 description: |
   小红书复合运营编排（focused-task）。组合搜索、详情、发布、互动完成多步运营工作流。
@@ -14,14 +15,6 @@ metadata:
       - explore/xiaohongshu/xhs-explore
       - explore/xiaohongshu/xhs-research
       - publish/xiaohongshu
-    requires:
-      bins:
-        - python3
-        - uv
-    emoji: "\U0001F4CA"
-    os:
-      - darwin
-      - linux
       - windows
 ---
 

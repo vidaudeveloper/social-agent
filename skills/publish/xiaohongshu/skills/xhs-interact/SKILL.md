@@ -1,4 +1,5 @@
 ---
+
 name: xhs-interact
 description: |
   小红书社交互动（focused-task）。发表评论、回复评论、点赞、收藏。
@@ -13,14 +14,6 @@ metadata:
     related_skills:
       - xhs-explore
       - xhs-auth
-    requires:
-      bins:
-        - python3
-        - uv
-    emoji: "\U0001F4AC"
-    os:
-      - darwin
-      - linux
       - windows
 ---
 

@@ -1,4 +1,5 @@
 ---
+
 name: yt-skills
 description: |
   YouTube 自动化总览（不进 Hub）。索引 sau 登录、创作、发布、全流程子技能。
@@ -14,15 +15,6 @@ metadata:
       - yt-auth
       - yt-publish
       - yt-pipeline
-    requires:
-      bins:
-        - node
-        - ffmpeg
-        - uv
-    emoji: "\U0001F3AC"
-    os:
-      - darwin
-      - linux
       - win32
 ---
 

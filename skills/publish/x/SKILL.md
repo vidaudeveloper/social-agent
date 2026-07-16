@@ -13,7 +13,6 @@ metadata:
     related_skills:
       - x-auth
       - x-publish
-  source: https://github.com/JimLiu/baoyu-skills/tree/main/skills/baoyu-post-to-x
 ---
 
 # X (Twitter) Skills

@@ -1,4 +1,5 @@
 ---
+
 name: xhs-explore
 description: |
   小红书内容发现（focused-task）。搜索笔记、浏览首页、查看详情、获取用户资料，不落盘不发布。
@@ -14,14 +15,6 @@ metadata:
       - explore/xiaohongshu/xhs-content-ops
       - explore/xiaohongshu/xhs-research
       - publish/xiaohongshu
-    requires:
-      bins:
-        - python3
-        - uv
-    emoji: "\U0001F50D"
-    os:
-      - darwin
-      - linux
       - windows
 ---
 

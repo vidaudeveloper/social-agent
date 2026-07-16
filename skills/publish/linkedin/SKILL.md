@@ -1,11 +1,11 @@
 ---
+
 name: li-skills
 description: |
   LinkedIn 个人号官方 API 发帖（gxbvc/linkedin-cli · OAuth + Posts API）。打开授权页后须用户手动登录授权，终端确认后再发布。
   公司主页预留。当用户要求 LinkedIn API 发帖时触发。
 version: 3.0.0
 metadata:
-  source: https://github.com/gxbvc/linkedin-cli
   status: untested
 ---
 

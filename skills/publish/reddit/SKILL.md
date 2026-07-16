@@ -13,7 +13,6 @@ metadata:
     related_skills:
       - rd-auth
       - rd-publish
-  source: https://github.com/1146345502/reddit-skills
 ---
 
 # Reddit Skills（rd-skills）
@@ -27,7 +26,7 @@ metadata:
 - 只要登录检查 → **`rd-auth`**
 - 只要发帖 → **`rd-publish`**（本总览不进 Hub，勿作为直接执行入口）
 
-> **发布前质量规则**以 `skills/review/rules/reddit.yaml` 为准；等效 CLI：`npm run review:lint -- --platform reddit ...` 或 `npm run reddit:validate`。
+> **发布前质量规则**以 [`../../review/rules/reddit.yaml`](../../review/rules/reddit.yaml) 为准；等效 CLI：`npm run review:lint -- --platform reddit ...` 或 `npm run reddit:validate`。
 
 通过 **Reddit Bridge** Chrome 扩展 + 本地 WebSocket 桥，在已登录 Chrome 中操作 Reddit（非 CDP，非官方 API）。
 

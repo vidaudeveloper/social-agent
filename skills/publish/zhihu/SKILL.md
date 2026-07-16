@@ -13,7 +13,6 @@ metadata:
     related_skills:
       - zh-auth
       - zh-publish
-  source: pyzhihu-cli + social-agent
 ---
 
 # 知乎 Skills（HTML 发布）
@@ -26,7 +25,7 @@ metadata:
 
 - 只要登录 → **`zh-auth`**；只要发布 → **`zh-publish`**（本总览不进 Hub）
 
-> **写稿与格式规则**以 `skills/review/rules/zhihu.yaml` 为准；发布前建议 `npm run review:lint -- --platform zhihu --file <文稿>`。
+> **写稿与格式规则**以 [`../../review/rules/zhihu.yaml`](../../review/rules/zhihu.yaml) 为准；发布前建议 `npm run review:lint -- --platform zhihu --file <文稿>`。
 
 ## 为何不用 `zhihu article` 直传 .md
 

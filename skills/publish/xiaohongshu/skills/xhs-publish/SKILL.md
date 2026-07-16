@@ -1,4 +1,5 @@
 ---
+
 name: xhs-publish
 description: |
   小红书单平台发布（publish-single）。图文/视频/长文发布、定时、标签与可见性。
@@ -16,20 +17,12 @@ metadata:
       - review
       - xhs-post-analytics
       - pipeline-orchestrator
-    requires:
-      bins:
-        - python3
-        - uv
-    emoji: "\U0001F4DD"
-    os:
-      - darwin
-      - linux
       - windows
 ---
 
 # 小红书内容发布
 
-> **格式与发布前审核**：标题字数、标签位置、图片规格等规则以 `skills/review/rules/xiaohongshu.yaml` 为准；发布前建议 `npm run review:lint -- --platform xiaohongshu --file <文稿>`。
+> **格式与发布前审核**：标题字数、标签位置、图片规格等规则以 [`../../../../review/rules/xiaohongshu.yaml`](../../../../review/rules/xiaohongshu.yaml) 为准；发布前建议 `npm run review:lint -- --platform xiaohongshu --file <文稿>`。
 
 你是"小红书发布助手"。目标是在用户确认后，调用脚本完成内容发布。
 
@@ -93,7 +86,7 @@ metadata:
 - **推荐使用分步发布**：先 fill → 用户确认 → 再 click-publish。
 - 图文发布时，没有图片不得发布。
 - 视频发布时，没有视频不得发布。图片和视频不可混合（二选一）。
-- 标题长度不超过 20（UTF-16 字节数向上取整除以 2：汉字/全角符号计 1，英文/数字/半角符号每 **2 个**计 1）。例："hello"= 3，"你好hello" = 4，勿用"每个字符计 1"估算。
+- 标题长度：见下方「标题检查」（UTF-16 规则，≤20）；勿在本文件其它处重复写一遍。
 - 如果使用文件路径，必须使用绝对路径，禁止相对路径。
 - 需要先有运行中的 Chrome，且已登录。
 
@@ -123,7 +116,7 @@ metadata:
 ### Step A.2: 内容检查
 
 #### 标题检查
-标题长度必须 ≤ 20（UTF-16 字节数向上取整除以 2）。规则：汉字/全角符号计 1，英文/数字/半角符号每 2 个计 1（单个也算 1）。
+标题长度必须 ≤ 20（UTF-16 字节数向上取整除以 2）。规则：汉字/全角符号计 1，英文/数字/半角符号每 2 个计 1（单个也算 1）。例："hello"= 3，"你好hello" = 4，勿用「每个字符计 1」估算。
 
 **超长时的处理（禁止机械截断）：**
 1. 计算当前标题长度，如果超过 20，**目标是生成一个恰好 20 单位的新标题**。
@@ -146,7 +139,7 @@ metadata:
 
 ### Step A.3: 用户确认
 
-通过 `AskUserQuestion` 展示即将发布的内容，**必须包含绝对路径**（见 `workspace/references/publish-confirm-paths.md`）：
+通过 `AskUserQuestion` 展示即将发布的内容，**必须包含绝对路径**（见 [`../../../../../workspace/references/publish-confirm-paths.md`](../../../../../workspace/references/publish-confirm-paths.md)）：
 
 - 标题（含字数校验）
 - 正文文件绝对路径
@@ -180,10 +173,10 @@ metadata:
 
 #### 分步发布（推荐）
 
-先填写表单，让用户在浏览器中确认预览后再发布：
+先填写表单，让用户在浏览器中确认预览后再发布。图文与视频流程相同：`fill-*` → 用户确认 → `click-publish`；**取消必须 `save-draft`**。
 
 ```bash
-# 步骤 1: 填写图文表单（不发布）
+# 图文：填写表单（不发布）
 python scripts/cli.py fill-publish \
   --title-file /tmp/xhs_title.txt \
   --content-file /tmp/xhs_content.txt \
@@ -192,25 +185,7 @@ python scripts/cli.py fill-publish \
   [--schedule-at "2026-03-10T12:00:00"] \
   [--original] [--visibility "公开可见"]
 
-# 步骤 2: 通过 AskUserQuestion 让用户确认浏览器中的预览
-
-# 步骤 3a: 用户确认发布（默认发布后会跳创作中心首页验收并停留）
-python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt
-
-# 跳过首页验收（不推荐）
-python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt --no-verify
-
-# 步骤 3b: 用户取消 → 必须先保存草稿！
-python scripts/cli.py save-draft --title-file /tmp/xhs_title.txt
-```
-
-> ⚠️ **用户取消时必须调用 `save-draft`**，不得直接关闭 tab 或结束流程。
-> 直接关闭 tab 会导致内容丢失，草稿不会保存到小红书草稿箱。
-
-视频分步发布：
-
-```bash
-# 步骤 1: 填写视频表单（不发布）
+# 视频：填写表单（不发布）
 python scripts/cli.py fill-publish-video \
   --title-file /tmp/xhs_title.txt \
   --content-file /tmp/xhs_content.txt \
@@ -218,19 +193,14 @@ python scripts/cli.py fill-publish-video \
   [--tags "标签1" "标签2"] \
   [--visibility "公开可见"]
 
-# 步骤 2: 用户确认
-
-# 步骤 3a: 用户确认发布（默认发布后会跳创作中心首页验收并停留）
+# 用户确认预览后发布（默认跳创作中心首页验收）
 python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt
 
-# 跳过首页验收（不推荐）
-python scripts/cli.py click-publish --title-file /tmp/xhs_title.txt --no-verify
-
-# 步骤 3b: 用户取消 → 必须先保存草稿！
+# 用户取消 → 必须先保存草稿（图文/视频相同）
 python scripts/cli.py save-draft --title-file /tmp/xhs_title.txt
 ```
 
-> ⚠️ **用户取消时必须调用 `save-draft`**，不得直接关闭 tab 或结束流程。
+> ⚠️ **用户取消时必须调用 `save-draft`**，不得直接关闭 tab 或结束流程。直接关闭会导致内容丢失。
 
 #### 一步到位发布（快捷方式）
 

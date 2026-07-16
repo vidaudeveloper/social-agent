@@ -35,4 +35,4 @@ npm run reddit:validate -- --subreddit TikTokshop --title-file D:\tmp\title.txt 
 npm run reddit:publish -- --subreddit TikTokshop --title-file ... --body-file ...
 ```
 
-禁止测试帖；规则见总览 [`rd-skills`](../../SKILL.md) 与 `skills/review/rules/reddit.yaml`。
+禁止测试帖；规则见总览 [`rd-skills`](../../SKILL.md) 与 [`../../../../review/rules/reddit.yaml`](../../../../review/rules/reddit.yaml)。

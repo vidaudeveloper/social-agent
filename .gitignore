@@ -82,3 +82,6 @@ docs/BUG.md
 # Skill usage telemetry (local)
 skills/.usage.json
 skills/.usage.json.lock
+
+# Local agent tooling (skill-creator etc.) — install under D:\test\tool
+.agents/

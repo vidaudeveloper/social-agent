@@ -12,7 +12,6 @@ metadata:
       - img-tokenware
       - xhs-publish
       - create/pipeline-orchestrator
-    homepage: https://github.com/comeonzhj/Auto-Redbook-Skills
 ---
 
 # 小红书卡片配图（xhs-card-render）

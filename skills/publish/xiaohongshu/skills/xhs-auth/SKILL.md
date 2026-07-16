@@ -1,4 +1,5 @@
 ---
+
 name: xhs-auth
 description: |
   小红书登录/鉴权（focused-task）。二维码/手机号登录、检查登录态、退出。
@@ -12,14 +13,6 @@ metadata:
     tags: [xiaohongshu, auth]
     related_skills:
       - xhs-publish
-    requires:
-      bins:
-        - python3
-        - uv
-    emoji: "\U0001F510"
-    os:
-      - darwin
-      - linux
       - windows
 ---
 

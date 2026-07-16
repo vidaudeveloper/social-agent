@@ -1,7 +1,7 @@
 ---
 name: review
 description: |
-  发布前内容审核（focused-task / 管线 Step 4.5）。对照平台发布标准做格式/合规软审核。
+  发布前内容审核（focused-task / 管线 Step 5）。对照平台发布标准做格式/合规软审核。
   触发：「审核这篇稿」「发布前检查」「content review」「过一遍格式」。
   口语：审核文稿、发布前检查、格式合规、小红书稿检查。
 version: 1.0.0
@@ -15,7 +15,7 @@ metadata:
       - skill-routing-eval
 ---
 
-# gaiyi发布前内容审核（review）
+# 发布前内容审核（review）
 
 **触发条件**：「审核」「发布前检查」「content review」「帮我过一遍格式」「检查这篇小红书稿」  
 **不要用于**：登录态检查（→ `{code}-auth`）/ 配图生成（→ `xhs-card-render` / `img-tokenware`）/ 实际发布（→ `{code}-publish`）/ 选题研判（→ explore / `pipeline-orchestrator`）
@@ -108,7 +108,7 @@ npm run review:lint -- --platform <platform> --file "<content_file>" [--carrier 
 
 ## 与管线的关系
 
-`pipeline-orchestrator`（`skills/create/pipeline-orchestrator/`）在 Step 4 与 Step 5 之间可选调用本技能（Step 4.5）。管线内仅引用技能名，**不重复**手册条文。
+`pipeline-orchestrator` 在 Step 5（发布前审核）调用本技能。管线内仅引用技能名，**不重复**手册条文。
 
 ## 常见陷阱
 
