@@ -29,13 +29,16 @@ engagement:
   er: number
   view_velocity: number
 
-# HTML #1 深拆（Agent 填写）
+# HTML #1 深拆（Agent 填写；画面主路径 = crv）
 deep_dive:
-  viral_points: string[]       # 爆点总结
-  visual_style_note: string    # 画面与风格（缩略图/标题推断）
-  replicability: string        # 能否复刻 / 怎么复刻
-  suggested_owners: string[]   # 建议负责人
-  template_outline: string     # 可提炼模板（节拍公式）
+  viral_points: string[]         # 爆点总结（含画面爆点）
+  visual_style_note: string      # 画面与风格（须来自 crv，勿仅靠缩略图臆测）
+  visual_timeline_note: string   # 画面时序 / 节拍要点（crv）
+  replicability: string          # 能否复刻 / 怎么复刻
+  suggested_owners: string[]     # 建议负责人
+  template_outline: string       # 可提炼模板（节拍公式）
+  action_advice: string          # 可选：行动建议（进报告「行动建议」栏）
+  crv_output_dir: string         # 可选：本机 Temp 下 crv 输出路径
 
 source:
   videoId: string

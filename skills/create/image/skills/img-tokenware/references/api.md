@@ -8,7 +8,7 @@ Authorization: Bearer {OPENAI_API_KEY}
 Content-Type: application/json
 ```
 
-Key 与 tokenware 聊天 API 共用，写入 Hermes `.env` 的 `OPENAI_API_KEY`。
+Key 与 tokenware 聊天 API 共用，写入 项目 `.env` 的 `OPENAI_API_KEY`。
 
 ## 推荐模型
 

@@ -8,7 +8,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [wechat, publish, overview]
     related_skills:
       - wechat-auth
@@ -49,7 +49,7 @@ node skills/publish/wechat/scripts/cli.mjs <command>
 # .env 配置 WECHAT_APP_ID / WECHAT_APP_SECRET，并在公众平台加 IP 白名单
 npm run wechat:check-login
 
-npm run wechat:publish -- --file "$HERMES_ROOT/文章/公众号/article.md" --mode draft_only
+npm run wechat:publish -- --file "$CONTENT_ROOT/文章/公众号/article.md" --mode draft_only
 ```
 
 文稿须含 frontmatter：`title`、`summary`；封面为同目录 `cover.png` 或 `--cover` / frontmatter `cover`。

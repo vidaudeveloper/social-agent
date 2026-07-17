@@ -3,7 +3,7 @@ import { join } from 'path';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { hermesRoot } from '../lib/paths.mjs';
+import { contentRoot } from '../lib/paths.mjs';
 import { loadUserProfile } from '../lib/profile.mjs';
 import { createVideoFromScript } from '../lib/video-create.mjs';
 
@@ -77,8 +77,8 @@ export async function cmdCreateVideo(argv) {
     text = DEFAULT_SCRIPT;
   }
 
-  const scriptDir = join(hermesRoot, '文章', 'YouTube');
-  const videoDir = join(hermesRoot, '视频');
+  const scriptDir = join(contentRoot, '文章', 'YouTube');
+  const videoDir = join(contentRoot, '视频');
   mkdirSync(scriptDir, { recursive: true });
 
   if (!scriptPath) {
@@ -112,8 +112,8 @@ export async function cmdPipeline() {
 Channel: ${profile.channelId}`;
   const text = process.env.VIDEO_SCRIPT || DEFAULT_SCRIPT;
 
-  const scriptDir = join(hermesRoot, '文章', 'YouTube');
-  const videoDir = join(hermesRoot, '视频');
+  const scriptDir = join(contentRoot, '文章', 'YouTube');
+  const videoDir = join(contentRoot, '视频');
   mkdirSync(scriptDir, { recursive: true });
 
   const scriptPath = join(scriptDir, `${ts}_${slug}.md`);
@@ -147,7 +147,7 @@ Channel: ${profile.channelId}`;
     process.exit(r.status ?? 1);
   }
 
-  const reportPath = join(hermesRoot, `${ts}_youtube发布报告.md`);
+  const reportPath = join(contentRoot, `${ts}_youtube发布报告.md`);
   writeFileSync(
     reportPath,
     `# YouTube 发布报告 - ${ts}\n\n| 项目 | 值 |\n|------|-----|\n| 标题 | ${title} |\n| 视频 | ${videoPath} |\n| 脚本 | ${scriptPath} |\n| 可见性 | ${profile.privacy} |\n| 频道 | ${profile.channelId} |\n`,

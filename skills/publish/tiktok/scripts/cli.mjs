@@ -13,12 +13,12 @@ Commands:
 
 Options (create-video):
   --file, -f <path>   Script markdown absolute path
-  --slug, -s <slug>   Slug under HERMES_ROOT/文章/TikTok/
+  --slug, -s <slug>   Slug under CONTENT_ROOT/文章/TikTok/
   --out, -o <dir>     Output directory
   --voice, -v <id>    us-male / us-female / en-US-JennyNeural ...
 
 Env:
-  HERMES_ROOT              Default ./content
+  CONTENT_ROOT              Default ./content
   TIKTOK_MAX_DURATION_SEC  Max video length (default 90)
   TIKTOK_TTS_VOICE         Override voice preset
   TIKTOK_TTS_RATE          e.g. +50%

@@ -8,7 +8,7 @@ version: 2.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [youtube, auth, sau]
     related_skills:
       - yt-publish

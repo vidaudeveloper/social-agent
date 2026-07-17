@@ -44,7 +44,7 @@ Reference 速查：[`../workspace/references/README.md`](../workspace/references
 
 链接一律用相对路径（从本文件出发），勿写仓库根 `skills/...`。
 
-## Hermes 前缀示例
+## 技能前缀示例
 
 | 层 | 示例 |
 |----|------|

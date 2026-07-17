@@ -10,7 +10,7 @@ export const repoRoot = join(skillRoot, '../..');
 export const profilePath =
   process.env.USER_PROFILE_PATH || join(repoRoot, 'user-profile.md');
 
-export const hermesRoot = process.env.HERMES_ROOT || './content';
+export const contentRoot = process.env.CONTENT_ROOT || './content';
 
 export const defaultBgImage = join(skillRoot, 'assets/default-bg.jpg');
 

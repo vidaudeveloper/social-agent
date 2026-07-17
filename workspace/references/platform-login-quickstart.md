@@ -50,11 +50,11 @@ npm run zhihu:check-login
 
 ## 公众号
 
-在 Hermes `.env` 配置服务号 `WECHAT_APP_ID` / `WECHAT_APP_SECRET`，并在公众平台把本机出口 IP 加入白名单。
+在 项目 `.env` 配置服务号 `WECHAT_APP_ID` / `WECHAT_APP_SECRET`，并在公众平台把本机出口 IP 加入白名单。
 
 ```powershell
 npm run wechat:check-login
-npm run wechat:publish -- --file "$HERMES_ROOT/文章/公众号/xxx.md" --mode draft_only
+npm run wechat:publish -- --file "$CONTENT_ROOT/文章/公众号/xxx.md" --mode draft_only
 ```
 
 发布走 API 进**草稿箱**，你在 [微信公众平台](https://mp.weixin.qq.com/) 后台审阅后群发。`--mode full_publish` 仅测试用（API 成功 ≠ 后台手动发布首页行为）。

@@ -6,7 +6,7 @@ description: |
   口语：小红书卡片、模板出图、笔记配图、小红书图文卡片。
 version: 1.0.0
 metadata:
-  hermes:
+  vidau:
     tags: [xiaohongshu, card, markdown, pipeline]
     related_skills:
       - img-tokenware
@@ -95,11 +95,11 @@ date: "2026-06-29"
 | `playful-geometric` | 活泼几何 | Memphis 紫粉渐变 | 已 patch 防拆页 |
 | `neo-brutalism` | 新粗野主义 | 粗框强对比红黄 | 已 patch 防拆页 |
 
-预览样例：`$HERMES_ROOT/图片/小红书/preview-20260629/themes-preview/{主题名}/`
+预览样例：`$CONTENT_ROOT/图片/小红书/preview-20260629/themes-preview/{主题名}/`
 
 ## 自定义主题
 
-**可以。** 主题 = CSS 文件，控制卡片内层排版。在 `assets/xhs-themes/` 新建 `my-brand.css`，`npm run tool:install` 同步后 `-Theme my-brand` 即可。示例：`hermes-crossborder`（海军蓝 + 橙）。详见 `assets/xhs-themes/README.md`。
+**可以。** 主题 = CSS 文件，控制卡片内层排版。在 `assets/xhs-themes/` 新建 `my-brand.css`，`npm run tool:install` 同步后 `-Theme my-brand` 即可。示例：`vidau-crossborder`（海军蓝 + 橙）。详见 `assets/xhs-themes/README.md`。
 
 ## 命令
 
@@ -110,7 +110,7 @@ date: "2026-06-29"
 npm run pipeline:xhs -- -Slug "preview-20260629-tk-gmvmax"
 
 # 或指定 MD 路径
-npm run pipeline:xhs -- -File "$HERMES_ROOT/文章/小红书/xxx.md" -Theme professional
+npm run pipeline:xhs -- -File "$CONTENT_ROOT/文章/小红书/xxx.md" -Theme professional
 ```
 
 输出：`cover.png` + `card_*.png` + `manifest.json`（供 Step 5 发布取图路径）。
@@ -119,8 +119,8 @@ npm run pipeline:xhs -- -File "$HERMES_ROOT/文章/小红书/xxx.md" -Theme prof
 
 ```powershell
 npm run xhs:card-render -- `
-  -File "$HERMES_ROOT/文章/小红书/xxx.md" `
-  -Out "$HERMES_ROOT/图片/小红书/xxx"
+  -File "$CONTENT_ROOT/文章/小红书/xxx.md" `
+  -Out "$CONTENT_ROOT/图片/小红书/xxx"
 ```
 
 可选参数：`--theme professional`（默认）、`--mode auto-split`（默认）、`--mode separator`（严格按 `---` 一页一节）。

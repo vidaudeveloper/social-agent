@@ -8,7 +8,7 @@ version: 2.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [youtube, pipeline, sau]
     related_skills:
       - yt-create
@@ -42,10 +42,10 @@ metadata:
 
 ```
 user-profile.md
-  → 生成口播稿（HERMES_ROOT/文章/YouTube/）
+  → 生成口播稿（CONTENT_ROOT/文章/YouTube/）
   → TTS + ffmpeg 合成 MP4
   → sau youtube upload-video
-  → 发布报告（HERMES_ROOT/*_youtube发布报告.md）
+  → 发布报告（CONTENT_ROOT/*_youtube发布报告.md）
 ```
 
 ## 命令
@@ -60,4 +60,4 @@ node skills/publish/youtube/scripts/cli.mjs pipeline
 |----------|------|
 | `VIDEO_TITLE` | 覆盖默认标题 |
 | `VIDEO_SCRIPT` | 覆盖口播正文 |
-| `HERMES_ROOT` | 归档目录 |
+| `CONTENT_ROOT` | 归档目录 |

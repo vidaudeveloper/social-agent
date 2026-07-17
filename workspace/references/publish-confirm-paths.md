@@ -4,7 +4,7 @@
 
 ## 必须先报
 
-1. **`HERMES_ROOT` 实际值**（解析后的绝对路径，不是 `$HERMES_ROOT` 占位符）
+1. **`CONTENT_ROOT` 实际值**（解析后的绝对路径，不是 `$CONTENT_ROOT` 占位符）
 2. **每个待发布平台**的文稿、配图/视频绝对路径
 3. 缺失项及原因（如「知乎无封面：未配置 TOKENWARE_API_KEY」）
 
@@ -23,7 +23,7 @@
 ### Windows
 
 ```
-HERMES_ROOT: D:\test\agent\hermes\social-agent-profile\content
+CONTENT_ROOT: D:\test\agent\hermes\social-agent-profile\content
 
 小红书
 - 标题: TK广告账户被封的5大原因
@@ -40,7 +40,7 @@ HERMES_ROOT: D:\test\agent\hermes\social-agent-profile\content
 ### macOS
 
 ```
-HERMES_ROOT: /Users/you/projects/social-agent/content
+CONTENT_ROOT: /Users/you/projects/social-agent/content
 
 小红书
 - 标题: TK广告账户被封的5大原因
@@ -56,7 +56,7 @@ HERMES_ROOT: /Users/you/projects/social-agent/content
 
 ## 禁止
 
-- 只用 `$HERMES_ROOT/文章/...` 占位符
+- 只用 `$CONTENT_ROOT/文章/...` 占位符
 - 只写风格/张数/格式，不给路径
 - 知乎确认时只给 `.md` 不给 `.html`
 

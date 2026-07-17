@@ -3,12 +3,12 @@ name: dy-create
 description: |
   【已弃用体系子技能】抖音黑底花字 + Edge TTS 创作。父技能 tts-narration 已弃用。FFCreator 已不推荐。
   教程/动效请用 create/remotion；创意片请用 create/creative-agent；仅用户明确要「旧口播管线」时才用本技能。
-  Hermes 路径：create/video/tts-narration/dy-create（目录名与 skill name 一致，避免 Hub 末段撞名）。
+  Skill 路径：create/video/tts-narration/dy-create（目录名与 skill name 一致，避免 Hub 末段撞名）。
 version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [video, tts, douyin, create, deprecated]
     related_skills:
       - create/video/tts-narration
@@ -36,8 +36,8 @@ metadata:
 
 ## 产出
 
-- 口播稿 → `HERMES_ROOT/文章/抖音/`
-- MP4 → `HERMES_ROOT/视频/{slug}/`
+- 口播稿 → `CONTENT_ROOT/文章/抖音/`
+- MP4 → `CONTENT_ROOT/视频/{slug}/`
 - manifest.json → 标题、路径、时长、音色
 
 ## 依赖
@@ -51,7 +51,7 @@ metadata:
 ```powershell
 npm run douyin:voices
 npm run pipeline:douyin -- -Slug "{slug}"
-npm run pipeline:douyin -- -File "$HERMES_ROOT/文章/抖音/xxx.md"
+npm run pipeline:douyin -- -File "$CONTENT_ROOT/文章/抖音/xxx.md"
 npm run douyin:create-video -- --voice cn-female -f "D:/path/script.md"
 ```
 

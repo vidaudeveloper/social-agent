@@ -8,7 +8,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [linkedin, analytics, post-publish]
     related_skills:
       - li-skills

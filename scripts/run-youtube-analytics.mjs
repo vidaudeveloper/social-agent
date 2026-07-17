@@ -2,10 +2,10 @@
 /**
  * YouTube Analytics CLI 包装 — Bin-Huang/youtube-analytics-cli
  *
- * 凭据从 Hermes/.env 或 profile .env 注入（不打印密钥）。
+ * 凭据从 项目 .env 或 profile .env 注入（不打印密钥）。
  * 本地 CLI：tool/youtube-analytics-cli；缺失时提示 npm run youtube:stats-setup。
  */
-import { execSync, spawnSync } from 'child_process';
+import { spawnSync } from 'child_process';
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
@@ -44,25 +44,16 @@ function loadEnvFile(filePath, override = false) {
   }
 }
 
-function resolveHermesEnvPath() {
-  if (process.env.HERMES_ENV_PATH?.trim()) {
-    return process.env.HERMES_ENV_PATH.trim();
-  }
-  try {
-    const out = execSync('hermes config env-path', {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore'],
-    }).trim();
-    if (out && existsSync(out)) return out;
-  } catch {
-    // hermes CLI not available
+function resolveContentEnvPath() {
+  if (process.env.CONTENT_ENV_PATH?.trim()) {
+    return process.env.CONTENT_ENV_PATH.trim();
   }
   return null;
 }
 
 function loadYoutubeEnv() {
   const candidates = [
-    resolveHermesEnvPath(),
+    resolveContentEnvPath(),
     join(profileRoot, '.env'),
     join(cliRoot, '.env'),
   ].filter(Boolean);
@@ -93,7 +84,7 @@ function printUsage() {
   npm run youtube:stats -- report --metrics views,likes --start-date YYYY-MM-DD --end-date YYYY-MM-DD --dimensions day
 
 archive 会拉取自家频道 + Analytics，落盘 HTML/JSON 到:
-  $HERMES_ROOT/知识库/youtube/发布复盘/{channelSlug}/{date}_作品复盘.html
+  $CONTENT_ROOT/知识库/youtube/发布复盘/{channelSlug}/{date}_作品复盘.html
 
 安装: npm run youtube:stats-setup
 文档: skills/analytics/yt-post-analytics/

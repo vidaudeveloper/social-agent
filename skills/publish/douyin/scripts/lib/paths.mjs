@@ -9,13 +9,13 @@ export const scriptsRoot = join(skillRoot, 'scripts');
 export const profilePath =
   process.env.USER_PROFILE_PATH || join(repoRoot, 'user-profile.md');
 
-export const hermesRoot = process.env.HERMES_ROOT || './content';
+export const contentRoot = process.env.CONTENT_ROOT || './content';
 
 export const stylePath = join(scriptsRoot, 'templates/scene-style.json');
 
 export const defaultBgmPath = join(skillRoot, 'assets/default-bgm.mp3');
 
-export const hermesBgmPath = join(hermesRoot, '音频/douyin-bgm.mp3');
+export const contentBgmPath = join(contentRoot, '音频/douyin-bgm.mp3');
 
 /** @returns {string | null} */
 export function resolveBgmPath(customPath) {
@@ -23,7 +23,7 @@ export function resolveBgmPath(customPath) {
   if (process.env.DOUYIN_BGM && existsSync(process.env.DOUYIN_BGM)) {
     return process.env.DOUYIN_BGM;
   }
-  if (existsSync(hermesBgmPath)) return hermesBgmPath;
+  if (existsSync(contentBgmPath)) return contentBgmPath;
   if (existsSync(defaultBgmPath)) return defaultBgmPath;
   return null;
 }

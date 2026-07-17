@@ -1,4 +1,4 @@
-# YouTube / sau 问题排查 Runbook（Hermes Agent 参考）
+# YouTube / sau 问题排查 Runbook（Agent 参考）
 
 > **适用场景**：YouTube 发布失败、sau 命令报错、check 返回 invalid、ModuleNotFoundError、误删 `sau_cli.py` 等。  
 > **原则**：仅 sau 单路径；禁止 Playwright 回退；禁止 Agent 连跑 login/check。
@@ -181,7 +181,7 @@ tool/social-auto-upload/cookies/youtube_<account>.json
 # 已 login 一次的前提下，日常只需：
 $env:OVERSEAS_ALLOW_AUTOMATION = "true"
 npm run youtube:publish -- `
-  --video "$HERMES_ROOT/视频/xxx.mp4" `
+  --video "$CONTENT_ROOT/视频/xxx.mp4" `
   --title "标题" `
   --privacy unlisted
 ```
@@ -202,7 +202,7 @@ npm run youtube:publish -- `
 
 ---
 
-## Hermes Agent 执行清单（遇到 YouTube 问题时）
+## Agent 执行清单（遇到 YouTube 问题时）
 
 按顺序勾选，完成一步再下一步：
 

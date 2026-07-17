@@ -15,4 +15,4 @@ npm run xhs:stats -- build --in D:\tmp\xhs-post-report.json --account "账号昵
 npm run xhs:stats -- list
 ```
 
-产出：`$HERMES_ROOT/知识库/xiaohongshu/发布复盘/{accountSlug}/{date}_作品复盘.html`
+产出：`$CONTENT_ROOT/知识库/xiaohongshu/发布复盘/{accountSlug}/{date}_作品复盘.html`

@@ -30,17 +30,17 @@ def repo_root() -> Path:
     return Path(__file__).resolve().parents[3]
 
 
-def hermes_root() -> Path:
-    return Path(os.environ.get("HERMES_ROOT", "./content"))
+def content_root() -> Path:
+    return Path(os.environ.get("CONTENT_ROOT", "./content"))
 
 
 def resolve_env_path() -> Path | None:
-    explicit = os.environ.get("HERMES_ENV_PATH")
+    explicit = os.environ.get("CONTENT_ENV_PATH")
     if explicit:
         path = Path(explicit)
         if path.is_file():
             return path
-    default = Path.home() / ".hermes" / ".env"
+    default = repo_root() / ".env"
     if default.is_file():
         return default
     return None
@@ -167,7 +167,7 @@ def default_out_path(platform: str) -> Path:
         "youtube": "YouTube",
     }
     folder = folder_map.get(platform, "通用")
-    return hermes_root() / "图片" / folder / f"{ts}.png"
+    return content_root() / "图片" / folder / f"{ts}.png"
 
 
 def cmd_presets() -> int:

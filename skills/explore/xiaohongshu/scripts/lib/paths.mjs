@@ -9,9 +9,9 @@ export const skillRoot = join(scriptsDir, '../..');
 /** social-agent profile 仓库根 */
 export const repoRoot = join(skillRoot, '../../..');
 
-export const hermesRoot = resolve(repoRoot, process.env.HERMES_ROOT || 'content');
+export const contentRoot = resolve(repoRoot, process.env.CONTENT_ROOT || 'content');
 
-export const knowledgeXhsDir = join(hermesRoot, '知识库', 'xiaohongshu');
+export const knowledgeXhsDir = join(contentRoot, '知识库', 'xiaohongshu');
 
 /**
  * @param {string} slug

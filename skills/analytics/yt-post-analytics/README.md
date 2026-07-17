@@ -10,7 +10,7 @@ npm run youtube:oauth
 npm run youtube:stats -- archive
 ```
 
-产出：`$HERMES_ROOT/知识库/youtube/发布复盘/{channel}/{date}_作品复盘.html`  
+产出：`$CONTENT_ROOT/知识库/youtube/发布复盘/{channel}/{date}_作品复盘.html`  
 （含关键发现 / 问题诊断 / 优化建议，另有 `_下次创作参考.md`）
 
 凭据与 OAuth：[`references/setup.md`](references/setup.md)  

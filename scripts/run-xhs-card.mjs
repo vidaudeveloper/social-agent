@@ -5,14 +5,14 @@
 import { existsSync } from 'fs';
 import { join, resolve } from 'path';
 import { spawnSync } from 'child_process';
-import { hermesRoot, profileRoot, redbookRoot } from './lib/hermes-paths.mjs';
+import { contentRoot, profileRoot, redbookRoot } from './lib/content-paths.mjs';
 import { ensureDeps } from './lib/ensure-deps.mjs';
 
 function usage() {
   console.error(`用法: node scripts/run-xhs-card.mjs -File <md绝对路径> [-Out <输出目录>] [-Theme professional] [-Mode auto-split]
 
 环境变量:
-  HERMES_ROOT          内容根目录（默认 ./content）
+  CONTENT_ROOT          内容根目录（默认 ./content）
   AUTO_REDBOOK_ROOT    Auto-Redbook 路径（默认 tool/Auto-Redbook-Skills）
 
 先执行: npm run tool:install`);
@@ -72,7 +72,7 @@ if (!existsSync(renderPy)) {
 }
 
 const baseName = mdPath.split(/[/\\]/).pop().replace(/\.md$/i, '');
-const outDir = resolve(opts.out || join(hermesRoot, '图片', '小红书', baseName));
+const outDir = resolve(opts.out || join(contentRoot, '图片', '小红书', baseName));
 
 const args = [
   renderPy,
@@ -105,7 +105,7 @@ console.log(
       theme: opts.theme,
       mode: opts.mode,
       profileRoot,
-      hermesRoot: resolve(hermesRoot),
+      contentRoot: resolve(contentRoot),
     },
     null,
     2,

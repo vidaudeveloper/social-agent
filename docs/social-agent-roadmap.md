@@ -77,7 +77,7 @@
 初步方向（未实施）：
 
 - Campaign 存 VI、产品、案例、参考素材（人可见上下文）
-- `$HERMES_ROOT` 存正式成稿、图片、视频、报告
+- `$CONTENT_ROOT` 存正式成稿、图片、视频、报告
 - VidAU **计划**触发意图请求 → social-agent Skill Gate → 叶子执行
 - 不把 cron、资产库、全部状态塞进 `pipeline-orchestrator`
 - 本轮：不设计数据模型、不实现同步、**不修改 VidAU 配置**

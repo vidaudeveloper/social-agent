@@ -8,7 +8,7 @@ version: 1.0.0
 author: vidau
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [image, tokenware, cover, illustration, social-media]
     related_skills:
       - xhs-card-render
@@ -41,8 +41,8 @@ metadata:
 
 ## 前置条件
 
-- Hermes `.env` 已配置 `OPENAI_API_KEY`（tokenware API Key）
-- 查看路径：`hermes config env-path`
+- 项目 `.env` 已配置 `OPENAI_API_KEY`（tokenware API Key）
+- 查看路径：`项目 .env 路径`
 
 验证：
 
@@ -70,29 +70,29 @@ npm run image:check-key
 npm run image:generate -- `
   --platform zhihu `
   --prompt "TK小店选品趋势信息图，现代扁平风，中文标题" `
-  --out "$HERMES_ROOT/图片/知乎/20260630_cover.png"
+  --out "$CONTENT_ROOT/图片/知乎/20260630_cover.png"
 
 # 小红书卡片
 npm run image:generate -- `
   --platform xiaohongshu `
   --prompt "竖版知识卡片，3条选品技巧，简洁配色" `
-  --out "$HERMES_ROOT/图片/小红书/card1.jpg"
+  --out "$CONTENT_ROOT/图片/小红书/card1.jpg"
 ```
 
-默认模型：`gpt-image-2`。未指定 `--out` 时保存到 `HERMES_ROOT/图片/{平台}/`（默认 `$HERMES_ROOT`）。
+默认模型：`gpt-image-2`。未指定 `--out` 时保存到 `CONTENT_ROOT/图片/{平台}/`（默认 `$CONTENT_ROOT`）。
 
 ## Agent 执行规则
 
 1. **只走 tokenware**：调用本技能 CLI 或 `references/api.md` 中的 API。
 2. **提示词**：写清主题、风格、是否含文字；中英混合描述效果更好。
-3. **保存**：URL 有时效，生成后立即下载到 `$HERMES_ROOT/图片/{平台}/`。
+3. **保存**：URL 有时效，生成后立即下载到 `$CONTENT_ROOT/图片/{平台}/`。
 4. **失败一次即汇报**（非小红书主路径）：不要反复换工具。小红书主路径见 xhs-cron-runbook。
 
 ## 配图失败处理
 
 ```
 配图失败，原因：[API 返回信息]
-可选：A) 检查 Hermes .env 中 OPENAI_API_KEY 后重试
+可选：A) 检查 项目 .env 中 OPENAI_API_KEY 后重试
       B) 跳过配图，先发布文字版
 ```
 

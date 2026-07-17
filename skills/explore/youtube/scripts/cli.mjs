@@ -1,39 +1,39 @@
 #!/usr/bin/env node
 /**
  * YouTube explore CLI — score | extract | research
- * Discover 由 TubePilot MCP 完成；yt-dlp 仅 --fallback（见 run-pipeline.mjs）
+ * 字幕链：youtube-transcript-api → yt-dlp → faster-whisper / whisper CLI
+ * HTML 仅由 research / explore 管线的 report-boss-html 生成（禁止 Agent 手写）
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { spawnSync } from 'child_process';
 import { scoreVideos } from './lib/score.mjs';
 import { extractSubtitlesYtdlp } from './lib/extract-ytdlp.mjs';
+import { extractTranscriptWhisper } from './lib/extract-whisper.mjs';
 import { rebuildFromSegments } from './lib/sentence-rebuild.mjs';
 import { buildScriptsRaw, writeScriptsRaw } from './lib/scripts-raw.mjs';
 import { appendPhrasesFromScriptsRaw } from './lib/phrases-csv.mjs';
 import { buildReportFromScriptsRaw } from './lib/report-boss-html.mjs';
 import {
   extractScriptPath,
-  hermesRoot,
+  contentRoot,
   topicSlug,
-  topicDir,
   rankedPath,
-  rawPath,
   reportHtmlPath,
   scriptsRawPath,
   phrasesCsvPath,
 } from './lib/paths.mjs';
 
-const USAGE = `YouTube Explore CLI (v2)
+const USAGE = `YouTube Explore CLI (v2.2)
 
 命令:
-  score       对 TubePilot 输出的 raw JSON 做 ER 分级与 Long-form 过滤
-  extract     用 youtube-transcript-api 抽取字幕并按句重组（timed + sentences）
-  research    从 ranked 批量 extract + 生成 scripts_raw + HTML 报告
+  score       对 raw JSON 做 ER 分级与 Long-form 过滤
+  extract     字幕：youtube-transcript-api → yt-dlp → whisper；按句重组
+  research    从 ranked 批量 extract + 生成 scripts_raw + HTML 报告（唯一合法 HTML）
 
 score 参数:
-  --in, -i <path>           TubePilot 原始 JSON（必填）
-  --topic <slug>            话题目录（写入 知识库/youtube/{slug}/ranked.json）
+  --in, -i <path>           raw JSON（必填）
+  --topic <slug>            话题目录
   --out, -o <path>          自定义 ranked 输出路径
   --top <n>                 默认 5
   --min-duration <sec>      默认 300（5min）
@@ -42,9 +42,10 @@ score 参数:
 extract 参数:
   --video-id <id>           单个视频
   --from <ranked.json>      批量（ranked 列表）
-  --lang <codes>            默认 en,en-US
-  --merge-raw               与 --from 联用：输出 transcripts 到 stdout JSON
+  --lang <codes>            默认 en,en-US；中文话题建议 zh,zh-Hans,en
+  --merge-raw               与 --from 联用：写入 scripts_raw.json
   --slug <slug>             写入 scripts_raw.json（需 --from）
+  --no-whisper              跳过 whisper 兜底
 
 research 参数:
   --from <ranked.json>      必填
@@ -52,8 +53,8 @@ research 参数:
   --product <name>          产品名（默认等于 topic）
   --lang <codes>            默认 en,en-US
 
-管线（推荐）:
-  npm run youtube:explore -- --topic <slug> --keyword "..." [--fallback]
+管线:
+  npm run youtube:explore-seeds / explore-trending / explore
 
 配置: workspace/references/youtube-explore-setup.md
 `;
@@ -97,9 +98,11 @@ function readJson(path) {
 /**
  * @param {string} videoId
  * @param {string} lang
- * @param {string} [outFile]
+ * @param {{ outFile?: string, noWhisper?: boolean }} [opts]
  */
-function runExtractPy(videoId, lang, outFile) {
+function runExtractPy(videoId, lang, opts = {}) {
+  const outFile = opts.outFile;
+  const noWhisper = Boolean(opts.noWhisper);
   const r = spawnSync(
     'uv',
     [
@@ -117,12 +120,24 @@ function runExtractPy(videoId, lang, outFile) {
     { encoding: 'utf8', shell: true },
   );
 
-  if (r.status !== 0) {
-    const ytdlp = extractSubtitlesYtdlp(videoId, lang.split(',')[0] || 'en');
+  if (r.status === 0) {
+    const payload = outFile ? readJson(outFile) : JSON.parse(r.stdout || '{}');
+    if (payload.transcript_status === 'ok' || payload.segments?.length) {
+      return enrichTranscript({ ...payload, transcript_status: 'ok' });
+    }
+  }
+
+  // 尝试多语言 yt-dlp 字幕
+  const langParts = String(lang || 'en')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  for (const code of langParts.length ? langParts : ['en']) {
+    const ytdlp = extractSubtitlesYtdlp(videoId, code);
     if (ytdlp?.fullText) {
       const ok = {
         videoId,
-        language: lang.split(',')[0] || 'en',
+        language: code,
         source: 'yt-dlp-subtitles',
         segments: ytdlp.segments,
         fullText: ytdlp.fullText,
@@ -131,18 +146,34 @@ function runExtractPy(videoId, lang, outFile) {
       if (outFile) writeFileSync(outFile, JSON.stringify(ok, null, 2), 'utf8');
       return enrichTranscript(ok);
     }
-
-    const fallback = {
-      videoId,
-      transcript_status: 'unavailable',
-      error: (r.stderr || r.stdout || 'extract failed').trim(),
-    };
-    if (outFile) writeFileSync(outFile, JSON.stringify(fallback, null, 2), 'utf8');
-    return fallback;
   }
 
-  const payload = outFile ? readJson(outFile) : JSON.parse(r.stdout || '{}');
-  return enrichTranscript(payload);
+  if (!noWhisper) {
+    console.error(`[extract] captions failed for ${videoId}, trying whisper...`);
+    const wh = extractTranscriptWhisper(videoId, lang);
+    if (wh?.fullText) {
+      const ok = {
+        videoId,
+        language: wh.language,
+        source: wh.source,
+        segments: wh.segments,
+        fullText: wh.fullText,
+        transcript_status: 'ok',
+      };
+      if (outFile) writeFileSync(outFile, JSON.stringify(ok, null, 2), 'utf8');
+      return enrichTranscript(ok);
+    }
+  }
+
+  const fallback = {
+    videoId,
+    transcript_status: 'unavailable',
+    timed: [],
+    sentences: [],
+    error: (r.stderr || r.stdout || 'extract failed: captions + whisper').trim(),
+  };
+  if (outFile) writeFileSync(outFile, JSON.stringify(fallback, null, 2), 'utf8');
+  return fallback;
 }
 
 /**
@@ -181,7 +212,7 @@ function cmdScore(rest) {
   const ranked = scoreVideos(raw, { top, minDuration, maxDuration });
   const outPath =
     String(opts.out || '') ||
-    (slug ? rankedPath(slug) : join(hermesRoot, '探索', 'YouTube', 'ranked.json'));
+    (slug ? rankedPath(slug) : join(contentRoot, '探索', 'YouTube', 'ranked.json'));
 
   mkdirSync(outPath.replace(/[/\\][^/\\]+$/, ''), { recursive: true });
   const payload = {
@@ -201,6 +232,7 @@ function cmdExtract(rest) {
   const opts = parseArgs(rest);
   const lang = String(opts.lang || 'en,en-US');
   const mergeRaw = Boolean(opts['merge-raw']);
+  const noWhisper = Boolean(opts['no-whisper']);
 
   /** @type {{ videoId: string, title?: string }[]} */
   let targets = [];
@@ -225,12 +257,13 @@ function cmdExtract(rest) {
   const results = [];
 
   for (const t of targets) {
-    const enriched = runExtractPy(t.videoId, lang);
+    const enriched = runExtractPy(t.videoId, lang, { noWhisper });
     transcripts.push(enriched);
     results.push({
       videoId: t.videoId,
       title: t.title,
       status: enriched.transcript_status,
+      source: enriched.source,
       transcript: enriched,
     });
   }

@@ -11,7 +11,7 @@ metadata:
 
 # LinkedIn Skills（未测试通过）
 
-> 端到端发布尚未验证。文稿可生成到 `$HERMES_ROOT/文章/LinkedIn/`，**默认不自动发布**。
+> 端到端发布尚未验证。文稿可生成到 `$CONTENT_ROOT/文章/LinkedIn/`，**默认不自动发布**。
 
 恢复时见 [references/linkedin-api-setup.md](./references/linkedin-api-setup.md)。
 
@@ -39,7 +39,7 @@ npm run linkedin:setup
 $env:OVERSEAS_ALLOW_AUTOMATION = "true"
 npm run linkedin:login
 npm run linkedin:check-login
-npm run linkedin:publish -- --file "$HERMES_ROOT/文章/LinkedIn/post.md"
+npm run linkedin:publish -- --file "$CONTENT_ROOT/文章/LinkedIn/post.md"
 npm run linkedin:stats
 ```
 

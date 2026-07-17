@@ -9,7 +9,7 @@ version: 2.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [xiaohongshu, auth]
     related_skills:
       - xhs-publish

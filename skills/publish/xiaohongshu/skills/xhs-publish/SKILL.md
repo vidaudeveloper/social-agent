@@ -9,7 +9,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [xiaohongshu, publish]
     related_skills:
       - xhs-auth
@@ -144,7 +144,7 @@ metadata:
 - 标题（含字数校验）
 - 正文文件绝对路径
 - 全部配图绝对路径（或 `manifest.json` 路径 + 列表）
-- `HERMES_ROOT` 实际值
+- `CONTENT_ROOT` 实际值
 
 获得明确确认后继续。
 

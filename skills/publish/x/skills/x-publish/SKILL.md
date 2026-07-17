@@ -8,7 +8,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [x, twitter, publish]
     related_skills:
       - x-auth
@@ -39,10 +39,10 @@ metadata:
 npm run x:publish -- --text "Your post #hashtag" --image "path/to.jpg"
 
 # 长文 Article（.md，需 X Premium）
-npm run x:publish -- --file "$HERMES_ROOT/文章/X/article.md"
+npm run x:publish -- --file "$CONTENT_ROOT/文章/X/article.md"
 
 # 视频帖
-npm run x:publish -- --text "Watch this" --video "$HERMES_ROOT/视频/clip.mp4"
+npm run x:publish -- --text "Watch this" --video "$CONTENT_ROOT/视频/clip.mp4"
 ```
 
 默认仅填稿预览；加 `--submit` 或设置 `X_AUTO_SUBMIT=true` 可自动点击 Post。

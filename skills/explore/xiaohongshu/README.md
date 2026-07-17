@@ -4,7 +4,7 @@
 |------|------|
 | [`xhs-explore`](xhs-explore/) | 搜索 / 详情 / 首页 / 用户主页（拉数） |
 | [`xhs-content-ops`](xhs-content-ops/) | 竞品 / 热点 / 创作 / 互动复合流程 |
-| [`xhs-research`](xhs-research/) | **分析落盘**：HTML 报告 + 创作参考.md → `$HERMES_ROOT/知识库/xiaohongshu/` |
+| [`xhs-research`](xhs-research/) | **分析落盘**：HTML 报告 + 创作参考.md → `$CONTENT_ROOT/知识库/xiaohongshu/` |
 
 ## 报告留存（推荐）
 

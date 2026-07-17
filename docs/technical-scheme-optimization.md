@@ -1,6 +1,6 @@
 # social-agent 优化技术方案（v1）
 
-> **核心约束**：本 profile 是 Hermes 编排层，底层重度依赖第三方 CLI / MCP（social-auto-upload、baoyu-post-to-x、reddit-skills、youtube-analytics-cli、linkedin-cli 等）。
+> **核心约束**：本 profile 是 VidAU 编排层，底层重度依赖第三方 CLI / MCP（social-auto-upload、baoyu-post-to-x、reddit-skills、youtube-analytics-cli、linkedin-cli 等）。
 > **方案原则**：只补编排层与统一数据层，**不重写底层、不重复造轮子**。
 
 ## 0. 现状基线（关键发现）

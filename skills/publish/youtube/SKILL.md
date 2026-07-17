@@ -9,7 +9,7 @@ version: 2.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [youtube, publish, overview, sau]
     related_skills:
       - yt-auth
@@ -65,7 +65,7 @@ $env:OVERSEAS_ALLOW_AUTOMATION = "true"
 npm run youtube:login
 
 # 2. 日常只 publish（尽量不 check-login）
-npm run youtube:publish -- --video "$HERMES_ROOT/视频/xxx.mp4" --title "标题" --privacy unlisted
+npm run youtube:publish -- --video "$CONTENT_ROOT/视频/xxx.mp4" --title "标题" --privacy unlisted
 ```
 
 ## check 失败时
@@ -75,7 +75,7 @@ npm run youtube:publish -- --video "$HERMES_ROOT/视频/xxx.mp4" --title "标题
 - 执行 `npm run youtube:patch-sau`
 - 日常可直接 `publish`，sau 会在 cookie 失效时提示
 
-**Hermes 遇问题**：按 [references/sau-runbook.md](./references/sau-runbook.md) 逐步排查。
+**遇问题**：按 [references/sau-runbook.md](./references/sau-runbook.md) 逐步排查。
 
 ## 环境变量
 
@@ -86,13 +86,13 @@ npm run youtube:publish -- --video "$HERMES_ROOT/视频/xxx.mp4" --title "标题
 | `SAU_HEADED=true` | login 时有头浏览器 |
 | `YOUTUBE_CHANNEL_ID` | 频道 ID |
 | `VIDEO_PRIVACY` | public / unlisted / private |
-| `HERMES_ROOT` | 内容归档目录 |
+| `CONTENT_ROOT` | 内容归档目录 |
 
 详见 `references/publishing.md` 与 **`references/sau-runbook.md`**（问题排查 Runbook）。
 
 ## 子技能索引
 
-| Hermes ID / name | 路径 | 用途 |
+| Skill ID / name | 路径 | 用途 |
 |------------------|------|------|
 | `publish/youtube/yt-auth` | `skills/publish/youtube/skills/yt-auth/SKILL.md` | login / check-login |
 | `create/video/tts-narration/yt-create`（name: `yt-create`） | `skills/create/video/tts-narration/yt-create/SKILL.md` | create-video（TTS 口播） |

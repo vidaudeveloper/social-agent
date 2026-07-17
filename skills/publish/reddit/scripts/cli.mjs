@@ -68,7 +68,7 @@ if (!command) {
 
 发布前自动质量检查：
   • 禁止 r/test、r/cicd 等测试版块
-  • 禁止 integration test / please ignore / hermes 等测试文案
+  • 禁止 integration test / please ignore / vidau pipeline test 等测试文案
   • 禁止 #hashtag；正文建议 ≥200 字 / ≥40 词
 
 npm: reddit:check-login | reddit:validate | reddit:publish`);

@@ -1,6 +1,6 @@
 # 故障排查
 
-> **Hermes / Agent 首选**：完整分步清单见 **[sau-runbook.md](../../references/sau-runbook.md)**（安装恢复、check invalid、登录、发布）。
+> **Agent 首选**：完整分步清单见 **[sau-runbook.md](../../references/sau-runbook.md)**（安装恢复、check invalid、登录、发布）。
 
 ## sau 命令找不到 / ModuleNotFoundError
 

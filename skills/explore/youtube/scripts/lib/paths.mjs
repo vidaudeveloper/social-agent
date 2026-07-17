@@ -9,12 +9,27 @@ export const skillRoot = join(scriptsDir, '../..');
 /** social-agent profile 仓库根 */
 export const repoRoot = join(skillRoot, '../../..');
 
-export const hermesRoot = resolve(repoRoot, process.env.HERMES_ROOT || 'content');
+export const contentRoot = resolve(repoRoot, process.env.CONTENT_ROOT || 'content');
 
 /** @deprecated v2 主产出在知识库；仅作内部中间态或 --fallback 调试 */
-export const exploreYoutubeDir = join(hermesRoot, '探索', 'YouTube');
+export const exploreYoutubeDir = join(contentRoot, '探索', 'YouTube');
 
-export const knowledgeYoutubeDir = join(hermesRoot, '知识库', 'youtube');
+export const knowledgeYoutubeDir = join(contentRoot, '知识库', 'youtube');
+
+/** yt-dlp 下载的本地 mp4（crv 输入） */
+export function downloadsDir(videoId) {
+  return join(knowledgeYoutubeDir, '_downloads', String(videoId || 'unknown'));
+}
+
+/**
+ * 字幕/转写工作目录（官方字幕缓存、whisper 音频与 transcript.json）
+ * 默认在知识库：知识库/youtube/_whisper/{videoId}
+ * 可用 WHISPER_TMP 覆盖根目录（仍会按 videoId 分子目录）
+ */
+export function whisperDir(videoId) {
+  const root = process.env.WHISPER_TMP || join(knowledgeYoutubeDir, '_whisper');
+  return join(root, String(videoId || 'unknown'));
+}
 
 export const extractScriptPath = join(scriptsDir, '../extract_transcript.py');
 

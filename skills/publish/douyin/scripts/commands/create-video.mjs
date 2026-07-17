@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import { join, basename as pathBasename } from 'path';
-import { hermesRoot } from '../lib/paths.mjs';
+import { contentRoot } from '../lib/paths.mjs';
 import { loadDouyinProfile } from '../lib/profile.mjs';
 import { parseDouyinScript } from '../lib/script-parse.mjs';
 import { createDouyinTextVideo } from '../lib/video-create.mjs';
@@ -29,7 +29,7 @@ export async function cmdCreateVideo(argv) {
     else if (a === '--voice' || a === '-v') voiceOverride = argv[++i] || '';
   }
 
-  const articleDir = join(hermesRoot, '文章', '抖音');
+  const articleDir = join(contentRoot, '文章', '抖音');
   if (!file && slug) {
     const candidates = [
       join(articleDir, `${slug}.md`),
@@ -58,7 +58,7 @@ export async function cmdCreateVideo(argv) {
   const baseFromFile = pathBasename(file, '.md').replace(/_抖音$/, '');
   const ts = stamp();
   const videoBasename = `${ts}_${baseFromFile}`;
-  const videoDir = outDir || join(hermesRoot, '视频', baseFromFile);
+  const videoDir = outDir || join(contentRoot, '视频', baseFromFile);
 
   mkdirSync(videoDir, { recursive: true });
 

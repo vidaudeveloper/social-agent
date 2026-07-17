@@ -4,7 +4,7 @@
 用户要出视频 → 先选类型（强制）→ Remotion 教程再问两问 → 再制作
 ```
 
-| 类型 | 路径 | 适用场景 | Hermes 前缀 |
+| 类型 | 路径 | 适用场景 | 前缀 |
 |------|------|----------|-------------|
 | **Remotion** | [`remotion/`](remotion/) | 教程（一句一镜）、程序化动效、多场景 | `create/remotion` |
 | **创意成片** | [`creative-agent/`](creative-agent/) | 趋势片、产品宣传、MCP 创意 | `create/creative-agent` |
@@ -24,7 +24,7 @@
 
 | 类型 | 默认目录 |
 |------|----------|
-| Remotion | `$HERMES_ROOT/视频/remotion/{slug}/` |
-| creative-agent | `$HERMES_ROOT/视频/` |
+| Remotion | `$CONTENT_ROOT/视频/remotion/{slug}/` |
+| creative-agent | `$CONTENT_ROOT/视频/` |
 
 对用户说明与确认：**一律简体中文**。

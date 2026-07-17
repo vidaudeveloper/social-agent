@@ -8,7 +8,7 @@ version: 1.1.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [tiktok, publish, overview]
     related_skills:
       - tt-auth
@@ -49,7 +49,7 @@ metadata:
 - 渲染：ffmpeg ASS（复用抖音花字样式，英文字幕换行）
 
 ```powershell
-npm run pipeline:tiktok -- -File "$HERMES_ROOT/文章/TikTok/xxx.md"
+npm run pipeline:tiktok -- -File "$CONTENT_ROOT/文章/TikTok/xxx.md"
 npm run tiktok:voices
 ```
 
@@ -59,7 +59,7 @@ npm run tiktok:voices
 
 ```powershell
 npm run tiktok:login
-npm run tiktok:publish -- --video "$HERMES_ROOT/视频/TikTok/xxx/yyy.mp4" --title "caption #fyp"
+npm run tiktok:publish -- --video "$CONTENT_ROOT/视频/TikTok/xxx/yyy.mp4" --title "caption #fyp"
 ```
 
 ## 环境变量

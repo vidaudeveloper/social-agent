@@ -10,7 +10,7 @@ version: 1.2.0
 author: remotion-dev (rules vendored)
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [video, remotion, react, animation, composition, tutorial]
     related_skills:
       - create/creative-agent
@@ -395,8 +395,8 @@ See [rules/voiceover.md](rules/voiceover.md) for adding AI-generated voiceover t
 
 ### 工作区与产出
 
-- 每个成片建议在 `$HERMES_ROOT/视频/remotion/{slug}/` 下建独立 Remotion 项目
-- 口播稿/素材可从 `$HERMES_ROOT/文章/{平台}/` 复制到项目 `public/`
+- 每个成片建议在 `$CONTENT_ROOT/视频/remotion/{slug}/` 下建独立 Remotion 项目
+- 口播稿/素材可从 `$CONTENT_ROOT/文章/{平台}/` 复制到项目 `public/`
 - 渲染 MP4 输出到同目录 `out/` 或 `output.mp4`
 
 ### 推荐流程

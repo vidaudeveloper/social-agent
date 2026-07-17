@@ -59,7 +59,7 @@ try {
 
     Write-Host ''
     Write-Host '[done] youtube-analytics-cli ready' -ForegroundColor Green
-    Write-Host '公开数据: 在 Hermes/.env 配置 YOUTUBE_API_KEY'
+    Write-Host '公开数据: 在 项目 .env 配置 YOUTUBE_API_KEY'
     Write-Host 'Analytics 报表: 另需 YOUTUBE_CLIENT_ID / SECRET / REFRESH_TOKEN'
     Write-Host '试跑:  npm run youtube:stats -- videos dQw4w9WgXcQ'
     Write-Host '文档: skills/analytics/yt-post-analytics/references/setup.md'

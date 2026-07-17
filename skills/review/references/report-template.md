@@ -1,6 +1,6 @@
 # 审核报告模板
 
-> 由 `review` 生成，保存至 `$HERMES_ROOT/审核/{日期}_{slug}.md`
+> 由 `review` 生成，保存至 `$CONTENT_ROOT/审核/{日期}_{slug}.md`
 
 ---
 

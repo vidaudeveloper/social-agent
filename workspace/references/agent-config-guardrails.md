@@ -45,7 +45,7 @@ $env:OVERSEAS_ALLOW_AUTOMATION = "true"
 npm run tiktok:login
 ```
 
-**禁止**裸 `python scripts/cli.py login`（Vidau/Hermes 自带 venv 无 playwright）。
+**禁止**裸 `python scripts/cli.py login`（VidAU 自带 venv 无 playwright）。
 
 ## 抖音发布（SAU + 系统 Chrome）
 

@@ -8,7 +8,7 @@ version: 1.1.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [reddit, publish, overview]
     related_skills:
       - rd-auth
@@ -52,7 +52,7 @@ metadata:
 | 拦截项 | 说明 |
 |--------|------|
 | 测试版块 | `r/test`、`r/cicd` 等（除非 `REDDIT_ALLOW_TEST_SUBREDDIT=true`） |
-| 测试文案 | `integration test`、`please ignore`、`hermes`、`pipeline test` 等 |
+| 测试文案 | `integration test`、`please ignore`、`vidau`、`pipeline test` 等 |
 | Hashtag | 正文/标题中的 `#标签` |
 | 过短内容 | 标题 <15 字；正文 <200 字或 <40 词 |
 
@@ -61,7 +61,7 @@ npm run reddit:validate -- --subreddit TikTokshop --title-file D:\tmp\title.txt 
 npm run reddit:publish -- --subreddit TikTokshop --title-file ... --body-file ...
 ```
 
-文稿归档：`$HERMES_ROOT/文章/Reddit/`
+文稿归档：`$CONTENT_ROOT/文章/Reddit/`
 
 ## 一次性安装
 

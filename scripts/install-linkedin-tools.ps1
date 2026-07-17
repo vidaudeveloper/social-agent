@@ -52,7 +52,7 @@ try {
     $envFile = Join-Path $CliRoot ".env"
     if ((Test-Path $envExample) -and -not (Test-Path $envFile)) {
         Copy-Item $envExample $envFile
-        Write-Host '[hint] created tool/linkedin-cli/.env - set LINKEDIN_CLIENT_ID in Hermes .env' -ForegroundColor Yellow
+        Write-Host '[hint] created tool/linkedin-cli/.env - set LINKEDIN_CLIENT_ID in 项目 .env' -ForegroundColor Yellow
     }
 
     Write-Host ''

@@ -9,7 +9,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join, resolve } from 'path';
 import { homedir } from 'os';
-import { profileRoot, hermesRoot } from '../../../../scripts/lib/hermes-paths.mjs';
+import { profileRoot, contentRoot } from '../../../../scripts/lib/content-paths.mjs';
 import {
   clearProxyEnv,
   createDraft,
@@ -141,7 +141,7 @@ async function cmdPublish(opts) {
 
   const outDir = opts.out
     ? resolve(opts.out)
-    : join(hermesRoot, '文章', '公众号', 'output');
+    : join(contentRoot, '文章', '公众号', 'output');
   mkdirSync(outDir, { recursive: true });
 
   try {

@@ -16,7 +16,7 @@ npm run deps:check -- --platform youtube-analytics
 | API Key | 公开频道 / 视频统计 | `channels <id>`、`videos <ids>` |
 | OAuth 2.0 | 自家频道 Analytics 报表 | `report`、`groups`、无 ID 的 `channels` |
 
-在 Hermes `.env`（或 profile `.env`）填写：
+在 项目 `.env`（或 profile `.env`）填写：
 
 ```bash
 # 公开数据（与 TubePilot explore 可共用同一把 Key）

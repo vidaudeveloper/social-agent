@@ -8,7 +8,7 @@ version: 1.1.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [video, tts, edge-tts, ffmpeg, narration, deprecated]
     related_skills:
       - create/remotion
@@ -44,5 +44,5 @@ metadata:
 
 ## 产出
 
-- 文稿：`$HERMES_ROOT/文章/{平台}/`
-- 视频：`$HERMES_ROOT/视频/{slug}/` + `manifest.json`（抖音）
+- 文稿：`$CONTENT_ROOT/文章/{平台}/`
+- 视频：`$CONTENT_ROOT/视频/{slug}/` + `manifest.json`（抖音）

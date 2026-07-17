@@ -8,7 +8,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [x, twitter, publish, overview]
     related_skills:
       - x-auth
@@ -51,8 +51,8 @@ node skills/publish/x/scripts/cli.mjs <command>
 ```powershell
 npm run overseas:install
 npm run x:login
-npm run x:publish -- --text "Hello from pipeline!" --image "$HERMES_ROOT/图片/X/cover.jpg"
-npm run x:publish -- --file "$HERMES_ROOT/文章/X/post.md"
+npm run x:publish -- --text "Hello from pipeline!" --image "$CONTENT_ROOT/图片/X/cover.jpg"
+npm run x:publish -- --file "$CONTENT_ROOT/文章/X/post.md"
 ```
 
 ## 与主流水线

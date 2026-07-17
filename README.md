@@ -58,7 +58,7 @@
 
 ## 🛠 技术栈
 
-- **运行时**：VidAU / Hermes（要求 Hermes ≥ 0.12.0），由 `SOUL.md` + `config.yaml` + `skills/` 构成专家本体。
+- **运行时**：VidAU（要求 VidAU ≥ 0.12.0），由 `SOUL.md` + `config.yaml` + `skills/` 构成专家本体。
 - **脚本**：Node.js（ESM）、PowerShell 安装脚本，部分 Python CLI（基于 `uv`）。
 - **按需工具**：各平台 upload CLI、小红书卡片管线等，首次用到时按提示安装（详见[依赖策略](workspace/references/dependency-policy.md)）。
 

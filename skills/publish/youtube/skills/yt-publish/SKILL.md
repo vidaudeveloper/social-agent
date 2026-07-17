@@ -8,7 +8,7 @@ version: 2.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [youtube, publish, sau]
     related_skills:
       - yt-auth
@@ -50,7 +50,7 @@ metadata:
 
 ```powershell
 npm run youtube:publish -- `
-  --video "$HERMES_ROOT/视频/xxx.mp4" `
+  --video "$CONTENT_ROOT/视频/xxx.mp4" `
   --title "视频标题" `
   --description "视频描述" `
   --privacy unlisted

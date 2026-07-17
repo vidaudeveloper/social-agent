@@ -9,7 +9,7 @@ version: 1.1.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [xiaohongshu, explore, ops]
     related_skills:
       - explore/xiaohongshu/xhs-explore
@@ -97,7 +97,7 @@ python scripts/cli.py get-feed-detail \
 4. 整理分析要点（标题/结构/标签/互动），**必须落盘**（见下一步）。
 5. **报告留存（强制）**：切换或内联执行 `explore/xiaohongshu/xhs-research`：
    - `save-raw` → 多篇 `save-details --append` →（可选）`save-insights` → `build`
-   - 产出：`$HERMES_ROOT/知识库/xiaohongshu/{slug}/{slug}_竞品报告.html` 与 `{slug}_创作参考.md`
+   - 产出：`$CONTENT_ROOT/知识库/xiaohongshu/{slug}/{slug}_竞品报告.html` 与 `{slug}_创作参考.md`
 
 **输出格式：**
 
@@ -132,7 +132,7 @@ python scripts/cli.py search-feeds \
 
 1. 确认创作主题。
 2. **先读知识库**（强制）：
-   - `$HERMES_ROOT/知识库/xiaohongshu/LATEST.json`
+   - `$CONTENT_ROOT/知识库/xiaohongshu/LATEST.json`
    - 或同主题 `{slug}_创作参考.md`
    - 若 7 天内已有同关键词报告，默认直接基于创作参考写稿；仅当用户要求「重新分析」时再爬。
 3. 无可用报告时：搜索 + 详情分析，并走 `xhs-research` 落盘后再写稿：

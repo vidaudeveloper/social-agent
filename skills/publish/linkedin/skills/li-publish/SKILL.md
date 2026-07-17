@@ -8,7 +8,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [linkedin, publish]
     related_skills:
       - li-auth
@@ -29,7 +29,7 @@ metadata:
 - 只要登录 → **`li-auth`**
 
 ```powershell
-npm run linkedin:publish -- --file "$HERMES_ROOT/文章/LinkedIn/xxx.md"
+npm run linkedin:publish -- --file "$CONTENT_ROOT/文章/LinkedIn/xxx.md"
 npm run linkedin:publish -- --text "Hello" --visibility public
 npm run linkedin:publish -- --text "标题" --image "./cover.jpg"
 ```

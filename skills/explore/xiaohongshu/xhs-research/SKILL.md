@@ -9,7 +9,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [xiaohongshu, explore, research, knowledge-base]
     related_skills:
       - explore/xiaohongshu/xhs-explore
@@ -41,14 +41,14 @@ metadata:
 ## 技能边界（强制）
 
 - **拉数**：只用 `python skills/publish/xiaohongshu/scripts/cli.py`（`search-feeds` / `get-feed-detail` 等），规则同 `xhs-explore`。
-- **落盘**：只用 `npm run xhs:research -- <子命令>`，写入 `$HERMES_ROOT/知识库/xiaohongshu/{slug}/`。
+- **落盘**：只用 `npm run xhs:research -- <子命令>`，写入 `$CONTENT_ROOT/知识库/xiaohongshu/{slug}/`。
 - **禁止**只在对话里贴长报告却不落盘。
 - **禁止**照抄竞品原文发布；创作参考仅作结构/角度/标签启发。
 
 ## 产出契约
 
 ```text
-$HERMES_ROOT/知识库/xiaohongshu/{slug}/
+$CONTENT_ROOT/知识库/xiaohongshu/{slug}/
   meta.json
   raw.json                 # search-feeds / list-feeds
   details.json             # get-feed-detail 汇总
@@ -56,10 +56,10 @@ $HERMES_ROOT/知识库/xiaohongshu/{slug}/
   {slug}_竞品报告.html     # 给人看
   {slug}_创作参考.md       # 下次写稿优先读（给人/Agent）
 
-$HERMES_ROOT/知识库/xiaohongshu/LATEST.json   # 最近一次报告指针
+$CONTENT_ROOT/知识库/xiaohongshu/LATEST.json   # 最近一次报告指针
 ```
 
-`HERMES_ROOT` 默认仓库内 `content/`。
+`CONTENT_ROOT` 默认仓库内 `content/`。
 
 ## 端到端流程
 
@@ -115,7 +115,7 @@ npm run xhs:research -- build --topic 春招攻略
 
 写小红书母稿 / 跑 `pipeline-orchestrator` 小红书分支前：
 
-1. 读 `$HERMES_ROOT/知识库/xiaohongshu/LATEST.json`（或用户指定 slug）
+1. 读 `$CONTENT_ROOT/知识库/xiaohongshu/LATEST.json`（或用户指定 slug）
 2. **优先读** `{slug}_创作参考.md`；需要图表时再开 HTML
 3. 有 7 天内同关键词报告 → **默认不重新全量爬**，除非用户要求刷新
 4. 对照创作参考生成标题/正文/标签，再走 `pipeline:xhs` / publish
@@ -129,7 +129,7 @@ npm run xhs:research -- build --topic 春招攻略
 
 ```text
 知识库已更新：
-- 报告：$HERMES_ROOT/知识库/xiaohongshu/{slug}/{slug}_竞品报告.html
+- 报告：$CONTENT_ROOT/知识库/xiaohongshu/{slug}/{slug}_竞品报告.html
 - 创作参考：.../{slug}_创作参考.md
 - 洞察：.../insights.json
 ```

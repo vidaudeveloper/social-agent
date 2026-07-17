@@ -8,7 +8,7 @@ version: 1.1.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [video, creative, routing]
     related_skills:
       - create/remotion
@@ -37,7 +37,7 @@ metadata:
 
 1. 在 VidAU 中切换到 **[creative-agent](https://github.com/vidaudeveloper/creative-agent)** profile
 2. 按上游 `docs/SETUP.md` 配置 MCP（可选：`https://creative.vidau.info/mcp`）
-3. 成片输出对齐 `$HERMES_ROOT/视频/`，便于回到 social-agent 做 Step 5 发布
+3. 成片输出对齐 `$CONTENT_ROOT/视频/`，便于回到 social-agent 做 Step 5 发布
 
 ## 与 social-agent 管线
 

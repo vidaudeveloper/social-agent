@@ -8,7 +8,7 @@ version: 1.2.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [pipeline, content-pipeline, create, orchestrator]
     related_skills:
       - create/video/remotion
@@ -68,10 +68,10 @@ metadata:
 搜索用户行业+兴趣领域的最近 24-48h 热点（**须多样化**）：
 
 - web_search：不同切入角关键词
-- 小红书：先读 `$HERMES_ROOT/知识库/xiaohongshu/LATEST.json` / `{slug}_创作参考.md`；过期或缺失再经 **`skill_view("xhs-research")`** 落盘
-- **YouTube 英文赛道**：**`skill_view("yt-viral-research")`**，或读已有 `$HERMES_ROOT/知识库/youtube/{slug}/scripts_raw.json` 与 HTML 报告
+- 小红书：先读 `$CONTENT_ROOT/知识库/xiaohongshu/LATEST.json` / `{slug}_创作参考.md`；过期或缺失再经 **`skill_view("xhs-research")`** 落盘
+- **YouTube 英文赛道**：**`skill_view("yt-viral-research")`**，或读已有 `$CONTENT_ROOT/知识库/youtube/{slug}/scripts_raw.json` 与 HTML 报告
 - 知乎热榜（如已登录）
-- 对照 `$HERMES_ROOT/文章/` 近 30 天标题去重
+- 对照 `$CONTENT_ROOT/文章/` 近 30 天标题去重
 
 详细规则见 `workspace/references/topic-research-diversity.md`。
 
@@ -81,7 +81,7 @@ metadata:
 
 ## Step 3: 母稿生产
 
-按 Step 0 语言偏好决定母稿与改写语言。写入 `$HERMES_ROOT/文章/{平台}/{日期}_{slug}.md`
+按 Step 0 语言偏好决定母稿与改写语言。写入 `$CONTENT_ROOT/文章/{平台}/{日期}_{slug}.md`
 
 **小红书图文**：若存在创作参考或 `LATEST.json`，优先作标题/结构/标签参考（见 `xhs-research`）。若存在发后复盘 `下次创作参考.md`，叠加读取（见 `xhs-post-analytics`）。
 

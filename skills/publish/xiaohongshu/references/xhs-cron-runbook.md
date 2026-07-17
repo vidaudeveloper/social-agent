@@ -1,4 +1,4 @@
-# 小红书 Cron / 发布问题排查 Runbook（Hermes Agent 参考）
+# 小红书 Cron / 发布问题排查 Runbook（Agent 参考）
 
 > **适用场景**：定时任务配图走错路、发布 CLI 超时被误判失败、短时间重复发布触发风控、草稿恢复、发布验收等。  
 > **原则**：先模版卡片 → 再 AI 降级（分交互/定时）；CLI 报错 ≠ 发布失败；禁止 BMP/ffmpeg 手搓图。
@@ -154,7 +154,7 @@ recover 仍失败后：
 
 ---
 
-## Hermes 勾选清单
+## Agent 勾选清单
 
 - [ ] Step 4c：先 `pipeline:xhs`，失败按交互/定时降级
 - [ ] 图片来自 manifest.json PNG 或 tokenware 官方输出（非手搓）

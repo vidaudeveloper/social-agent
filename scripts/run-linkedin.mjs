@@ -32,22 +32,16 @@ function loadEnvFile(filePath, override = false) {
   }
 }
 
-function resolveHermesEnvPath() {
-  if (process.env.HERMES_ENV_PATH?.trim()) {
-    return process.env.HERMES_ENV_PATH.trim();
-  }
-  try {
-    const out = execSync('hermes config env-path', { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
-    if (out && existsSync(out)) return out;
-  } catch {
-    // hermes CLI not available
+function resolveContentEnvPath() {
+  if (process.env.CONTENT_ENV_PATH?.trim()) {
+    return process.env.CONTENT_ENV_PATH.trim();
   }
   return null;
 }
 
 function loadLinkedInEnv() {
   const candidates = [
-    resolveHermesEnvPath(),
+    resolveContentEnvPath(),
     join(profileRoot, '.env'),
     join(cliRoot, '.env'),
   ].filter(Boolean);
@@ -96,7 +90,7 @@ function parsePublishArgs(argv) {
 function ensureCredentials() {
   if (!isConfiguredSecret(process.env.LINKEDIN_CLIENT_ID) || !isConfiguredSecret(process.env.LINKEDIN_CLIENT_SECRET)) {
     console.error('缺少 LINKEDIN_CLIENT_ID / LINKEDIN_CLIENT_SECRET（或仍为占位符 your_client_id）。');
-    console.error('请在 Hermes .env 或 tool/linkedin-cli/.env 配置（见 skills/publish/linkedin/references/linkedin-api-setup.md）');
+    console.error('请在 项目 .env 或 tool/linkedin-cli/.env 配置（见 skills/publish/linkedin/references/linkedin-api-setup.md）');
     process.exit(1);
   }
 }

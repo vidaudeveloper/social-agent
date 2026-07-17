@@ -8,7 +8,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [image, tokenware, pipeline, overview]
     related_skills:
       - xhs-card-render
@@ -38,9 +38,9 @@ metadata:
 
 ```powershell
 npm run image:check-key
-npm run image:generate -- --platform wechat --prompt "公众号封面，科技风" --out "$HERMES_ROOT/图片/公众号/cover.png"
+npm run image:generate -- --platform wechat --prompt "公众号封面，科技风" --out "$CONTENT_ROOT/图片/公众号/cover.png"
 ```
 
-## Hermes 加载
+## 加载
 
 Step 4c：小红书**先** `skill_view("xhs-card-render")` → `npm run pipeline:xhs`；pipeline 失败后可降级 `img-tokenware`（交互须用户确认）。其他平台直接用 `img-tokenware`。

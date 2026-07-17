@@ -8,7 +8,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [douyin, publish, overview]
     related_skills:
       - dy-auth
@@ -74,8 +74,8 @@ metadata:
 
 ```powershell
 npm run overseas:install
-npm run pipeline:douyin -- --file "$HERMES_ROOT/文章/抖音/xxx.md"
+npm run pipeline:douyin -- --file "$CONTENT_ROOT/文章/抖音/xxx.md"
 npm run douyin:login
 npm run douyin:check
-npm run douyin:upload -- --video "$HERMES_ROOT/视频/xxx/yyy.mp4" --title "标题 #话题"
+npm run douyin:upload -- --video "$CONTENT_ROOT/视频/xxx/yyy.mp4" --title "标题 #话题"
 ```

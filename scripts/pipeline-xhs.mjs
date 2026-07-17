@@ -7,7 +7,7 @@ import { join, resolve } from 'path';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { hermesRoot } from './lib/hermes-paths.mjs';
+import { contentRoot } from './lib/content-paths.mjs';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const runCard = join(scriptDir, 'run-xhs-card.mjs');
@@ -17,7 +17,7 @@ function usage() {
   npm run pipeline:xhs -- -Slug <slug>
   npm run pipeline:xhs -- -File <配图.md绝对路径> [-Theme professional] [-Mode auto-split]
 
-输出目录: {HERMES_ROOT}/图片/小红书/<slug或文件名>/manifest.json`);
+输出目录: {CONTENT_ROOT}/图片/小红书/<slug或文件名>/manifest.json`);
   process.exit(2);
 }
 
@@ -46,7 +46,7 @@ function parseArgs(argv) {
 }
 
 function findMdBySlug(slug) {
-  const dir = join(hermesRoot, '文章', '小红书');
+  const dir = join(contentRoot, '文章', '小红书');
   if (!existsSync(dir)) {
     throw new Error(`目录不存在: ${resolve(dir)}`);
   }
@@ -88,7 +88,7 @@ if (!mdPath && opts.slug) {
 
 const baseName = mdPath.split(/[/\\]/).pop().replace(/\.md$/i, '');
 const outSlug = opts.slug || baseName.replace(/^\d{8}_/, '');
-const outDir = join(hermesRoot, '图片', '小红书', outSlug);
+const outDir = join(contentRoot, '图片', '小红书', outSlug);
 
 const cardArgs = [
   runCard,

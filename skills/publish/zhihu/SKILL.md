@@ -8,7 +8,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [zhihu, publish, overview]
     related_skills:
       - zh-auth
@@ -46,16 +46,16 @@ npm run zhihu:check-login
 
 ```powershell
 # 只转 HTML（预览）
-npm run zhihu:convert -- --content-file "$HERMES_ROOT/文章/知乎/xxx.md"
+npm run zhihu:convert -- --content-file "$CONTENT_ROOT/文章/知乎/xxx.md"
 
 # 从 .md 转换并发布
-npm run zhihu:publish -- --title "文章标题" --content-file "$HERMES_ROOT/文章/知乎/xxx.md"
+npm run zhihu:publish -- --title "文章标题" --content-file "$CONTENT_ROOT/文章/知乎/xxx.md"
 
 # 已有 HTML 直接发
-npm run zhihu:publish -- --title-file "D:/tmp/title.txt" --html-file "$HERMES_ROOT/文章/知乎/xxx.html"
+npm run zhihu:publish -- --title-file "D:/tmp/title.txt" --html-file "$CONTENT_ROOT/文章/知乎/xxx.html"
 
 # 带封面图
-npm run zhihu:publish -- --title "标题" --content-file "xxx.md" --image "$HERMES_ROOT/图片/知乎/cover.png"
+npm run zhihu:publish -- --title "标题" --content-file "xxx.md" --image "$CONTENT_ROOT/图片/知乎/cover.png"
 
 # 只生成 HTML 不发
 npm run zhihu:publish -- --title "标题" --content-file "xxx.md" --dry-run
@@ -72,8 +72,8 @@ npm run zhihu:publish -- --title "标题" --content-file "xxx.md" --dry-run
 
 ## 文稿归档
 
-`$HERMES_ROOT/文章/知乎/{日期}_{slug}.md`（母稿）  
-`$HERMES_ROOT/文章/知乎/{日期}_{slug}.html`（发布用 HTML）
+`$CONTENT_ROOT/文章/知乎/{日期}_{slug}.md`（母稿）  
+`$CONTENT_ROOT/文章/知乎/{日期}_{slug}.html`（发布用 HTML）
 
 ## 写稿建议
 

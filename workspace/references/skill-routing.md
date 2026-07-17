@@ -104,7 +104,8 @@
 | 用户说法倾向 | 选 | 不选 |
 |--------------|----|------|
 | 「YouTube 爆款 / Top 视频 / 赛道热门」且只要列表分级 | `yt-viral-discover` | `yt-post-analytics` |
-| 「种子链接 / 热门榜 / 免 API 调研」并要报告 | `yt-viral-research` | 勿因缺 Key 拒绝；勿误走 `yt-post-analytics` |
+| 「种子链接 / 热门榜 / 免 API 调研」并要报告 | `yt-viral-research` | 勿因缺 Key 拒绝；HTML 必须 CLI（禁止手写）；画面走 crv |
+| 「whisper 转写 / crv 拆画面」 | `yt-transcript-extract` / `yt-script-analyze` | 完整报告仍收口 `yt-viral-research` + `youtube:research` |
 | 「分析爆款并沉淀 / 出报告 / 金句库」 | `yt-viral-research` | 仅 discover；勿当发后 analytics |
 | 「我的频道播放 / Analytics / 观看时长」 | `yt-post-analytics` | `yt-viral-*` |
 | 「小红书竞品 / 热点 / 创作参考」 | `xhs-research` | `xhs-post-analytics` |

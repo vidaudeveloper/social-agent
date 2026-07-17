@@ -8,7 +8,7 @@ version: 1.1.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [xiaohongshu, analytics, post-publish, report, creator-export]
     related_skills:
       - xhs-publish
@@ -98,12 +98,12 @@ uv run python skills/publish/xiaohongshu/scripts/cli.py export-note-data --days 
 ## 产出路径
 
 ```text
-$HERMES_ROOT/知识库/xiaohongshu/发布复盘/{accountSlug}/
+$CONTENT_ROOT/知识库/xiaohongshu/发布复盘/{accountSlug}/
   {YYYY-MM-DD}_作品复盘.html
   {YYYY-MM-DD}_作品复盘.json
   {YYYY-MM-DD}_下次创作参考.md
 
-$HERMES_ROOT/知识库/xiaohongshu/发布复盘/LATEST.json
+$CONTENT_ROOT/知识库/xiaohongshu/发布复盘/LATEST.json
 ```
 
 ## 下次创作怎么用

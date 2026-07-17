@@ -35,7 +35,7 @@ sau youtube upload-video \
 
 ```powershell
 node skills/publish/youtube/scripts/cli.mjs publish `
-  --video "$HERMES_ROOT/视频/xxx.mp4" `
+  --video "$CONTENT_ROOT/视频/xxx.mp4" `
   --title "Title" `
   --description "Desc" `
   --privacy unlisted

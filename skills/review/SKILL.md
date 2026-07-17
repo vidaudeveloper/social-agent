@@ -8,7 +8,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [review, content-review, quality-gate, pre-publish]
     related_skills:
       - pipeline-orchestrator
@@ -94,7 +94,7 @@ npm run review:lint -- --platform <platform> --file "<content_file>" [--carrier 
 4. **对照参考手册**逐项软审核：画面/时长/封面/文案/标签/字幕/合规，记录符合项与差距
 5. 按 `[references/report-template.md](references/report-template.md)` 生成报告，写入：
 
-`$HERMES_ROOT/审核/{日期}_{slug}.md`（未设置 `HERMES_ROOT` 时 `./content/审核/`）
+`$CONTENT_ROOT/审核/{日期}_{slug}.md`（未设置 `CONTENT_ROOT` 时 `./content/审核/`）
 
 1. **阻断策略（软审核）**：
   - 与手册严重不符且影响发布/限流 → 建议修复后再发，询问用户是否继续

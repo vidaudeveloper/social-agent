@@ -18,7 +18,7 @@
 - 叶子 `SKILL.md`：`name` + `description`（含触发词）+ `When to use` / `When not to use` + 技能边界
 - `SKILL.md` 尽量精简；长 CLI / 规格下沉到 `references/` 或叶子内一处
 - 链接一律用**相对路径**（从当前文件出发），不要写仓库根式 `skills/...`（在 GitHub 上会断链）
-- frontmatter 统一：`name` / `description` / `version` / `author` / `license` / `metadata.hermes.{tags,related_skills}`；不强制 `emoji` / `os` / `requires` / `source`
+- frontmatter 统一：`name` / `description` / `version` / `author` / `license` / `metadata.vidau.{tags,related_skills}`；不强制 `emoji` / `os` / `requires` / `source`
 
 ## 变更留痕
 

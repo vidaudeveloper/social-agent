@@ -9,10 +9,10 @@ export const skillRoot = join(scriptsDir, '../..');
 /** social-agent profile 仓库根 */
 export const repoRoot = join(skillRoot, '../../..');
 
-export const hermesRoot = resolve(repoRoot, process.env.HERMES_ROOT || 'content');
+export const contentRoot = resolve(repoRoot, process.env.CONTENT_ROOT || 'content');
 
 /** 发布后复盘根目录 */
-export const analyticsXhsDir = join(hermesRoot, '知识库', 'xiaohongshu', '发布复盘');
+export const analyticsXhsDir = join(contentRoot, '知识库', 'xiaohongshu', '发布复盘');
 
 /**
  * @param {string} accountSlug

@@ -3,12 +3,12 @@ name: yt-viral-discover
 description: |
   YouTube 发前爆款发现（explore）。TubePilot 搜索/热点 + score 分级，产出 Top 列表与 ER 分级、Long-form 5–20min 过滤。
   触发：「YouTube 爆款 Top」「赛道热门」「竞品频道视频列表」「只要发现不要完整报告」。
-  口语：分析爆款视频列表、看哪些视频火、赛道 Top、竞品频道数据。
+  口语：分析 YouTube 爆款视频数据、分析爆款视频列表、看哪些视频火、赛道 Top、竞品频道数据。
 version: 2.1.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [youtube, explore, viral, discover]
     related_skills:
       - explore/youtube/yt-viral-research
@@ -60,7 +60,7 @@ metadata:
 
 ## 输出
 
-固定落盘到知识库（相对 `$HERMES_ROOT/知识库/youtube/{topic_slug}/`）：
+固定落盘到知识库（相对 `$CONTENT_ROOT/知识库/youtube/{topic_slug}/`）：
 
 - `raw.json` — 发现结果（seeds / yt-dlp / TubePilot 任一来源）
 - `ranked.json` — 经 `youtube:score` 分级后的 Top 列表（含 `gradeLabel`、ER、时长过滤）
@@ -69,7 +69,7 @@ metadata:
 
 ```powershell
 # ① 有 Key：先由 Agent 用 TubePilot 搜索并写入 raw.json，再做分级
-npm run youtube:score -- --in "$HERMES_ROOT/知识库/youtube/{slug}/raw.json" --topic {slug} --top 5
+npm run youtube:score -- --in "$CONTENT_ROOT/知识库/youtube/{slug}/raw.json" --topic {slug} --top 5
 
 # ② 无 Key：yt-dlp 兜底发现（需 --keyword）
 npm run youtube:explore-full -- --topic {slug} --keyword "TikTok Shop seller guide 2026" --top 5
@@ -86,20 +86,21 @@ npm run youtube:explore-full -- --topic {slug} --keyword "TikTok Shop seller gui
 1. **自动热门榜（推荐，P1）**：`npm run youtube:explore-trending -- --topic {slug} --region US --category all` —— InnerTube `browse` 直连热门/分类榜，**零个人 Key**，自动发现赛道爆款，产出 `raw.json`。
 2. **运营圈定种子（竞品追踪）**：`npm run youtube:explore-seeds -- --seeds config/seeds.json --topic {slug}` —— 读频道/视频种子，yt-dlp 取播放/点赞硬指标。
 3. **关键词兜底**：`npm run youtube:explore-full -- --topic {slug} --keyword "..." --top 5` —— yt-dlp 关键词搜索。
-4. **已知链接直接分析**：用户贴链接 → 走 TubePilot 免费工具 / `yt-transcript-extract`，**不要**因缺 Key 拒绝。
-5. **（P2 可选）要关键词级搜索排名 / 评论区 / 频道趋势**：再补 `YOUTUBE_API_KEY`（免费不绑卡），启用 TubePilot 扩展工具。
+4. **已知链接直接分析**：用户贴链接 → `yt-transcript-extract`（含 whisper）+ `yt-script-analyze`（**crv** 画面）；TubePilot 可选，400 跳过。
+5. **（P2 可选）要关键词级搜索排名 / 评论区 / 频道趋势**：再补 `YOUTUBE_API_KEY`，启用 TubePilot 扩展工具。
 
-> 注意：yt-dlp / InnerTube 属非官方接口，生产环境需加重试与频率控制（建议 ≤ 5 req/10s/IP）。批量抓取注意限流。
+> 注意：yt-dlp / InnerTube 属非官方接口，生产环境需加重试与频率控制（建议 ≤ 5 req/10s/IP）。
 
 ## 分场景决策表（免 API 视角）
 
 | 场景 | 推荐方案 | 需要 API Key？ |
 |------|----------|----------------|
-| 拆单条对标视频的内容 + 画面方法论 | TubePilot 免费工具（`get_transcript` / `get_video_frames` / `deep_analyze_video`）+ crv 逐帧 | **否** |
-| 自动发现赛道热门 / 分类榜 | InnerTube `browse` trending（P1，免 Key，本仓库已实现 `--trending`） | **否** |
-| 圈定一批对标样本做爆款筛选 / 排名 | `seeds.json` + yt-dlp 硬指标（P0） | **否** |
-| 按关键词发现新选题 / 竞品 | yt-dlp 关键词搜索（P0 兜底） | **否** |
-| 关键词级搜索排名 / 拉评论区 / 频道级趋势监控 | YouTube Data API v3（P2，免费不绑卡） | 是 |
+| 拆单条对标：字幕/脚本 | youtube-transcript-api → yt-dlp → **faster-whisper** | **否** |
+| 拆单条对标：画面 | **crv** 逐帧（输出 Temp）；TubePilot 画面可选且失败忽略 | **否** |
+| 自动发现赛道热门 / 分类榜 | InnerTube `--trending` | **否** |
+| 圈定样本筛选 / 排名 | `seeds.json` + yt-dlp 硬指标 | **否** |
+| 按关键词发现新选题 | yt-dlp `--fallback` | **否** |
+| 关键词级搜排名 / 评论区 / 频道监控 | YouTube Data API v3（P2） | 是 |
 
 ## 默认过滤
 
@@ -120,6 +121,6 @@ npm run youtube:explore-full -- --topic {slug} --keyword "TikTok Shop seller gui
 
 ## 下游衔接
 
-- 要完整调研报告 + 知识库沉淀 → **`yt-viral-research`**
-- 要抽字幕供脚本分析 → **`yt-transcript-extract`**
+- 完整调研（含 crv + **CLI 报告**）→ **`yt-viral-research`**（禁止手写 HTML）
+- 抽字幕 / whisper → **`yt-transcript-extract`**
 - 查自己频道发后数据 → **`yt-post-analytics`**

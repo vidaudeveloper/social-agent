@@ -23,10 +23,10 @@ npm run linkedin:setup
 http://localhost:3457/callback
 ```
 
-## 3. Hermes `.env`
+## 3. 项目 `.env`
 
 ```bash
-hermes config env-path
+项目 .env 路径
 ```
 
 ```
@@ -51,7 +51,7 @@ npm run linkedin:login
 ## 5. 发布
 
 ```powershell
-npm run linkedin:publish -- --file "$HERMES_ROOT/文章/LinkedIn/xxx.md" --visibility public
+npm run linkedin:publish -- --file "$CONTENT_ROOT/文章/LinkedIn/xxx.md" --visibility public
 npm run linkedin:publish -- --text "Hello" --visibility public
 npm run linkedin:publish -- --text "带图" --image "./cover.jpg"
 ```

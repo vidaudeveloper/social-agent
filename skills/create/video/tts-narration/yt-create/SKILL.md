@@ -3,12 +3,12 @@ name: yt-create
 description: |
   【已弃用体系子技能】YouTube 黑底花字 TTS 口播创作。父技能 tts-narration 已弃用，不再默认推荐。
   教程/动效请用 create/remotion；创意片请用 create/creative-agent；仅用户明确要「旧口播管线」时才用本技能。
-  Hermes 路径：create/video/tts-narration/yt-create（目录名与 skill name 一致；非 publish/youtube）。
+  Skill 路径：create/video/tts-narration/yt-create（目录名与 skill name 一致；非 publish/youtube）。
 version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [video, tts, youtube, create, deprecated]
     related_skills:
       - create/video/tts-narration
@@ -36,8 +36,8 @@ metadata:
 
 ## 产出
 
-- 口播稿 → `HERMES_ROOT/文章/YouTube/`
-- MP4 → `HERMES_ROOT/视频/`
+- 口播稿 → `CONTENT_ROOT/文章/YouTube/`
+- MP4 → `CONTENT_ROOT/视频/`
 
 ## 依赖
 

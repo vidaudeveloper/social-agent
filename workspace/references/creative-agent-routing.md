@@ -14,7 +14,7 @@
 
 ## 何时用 social-agent（本 profile）
 
-- **Remotion**：在 `$HERMES_ROOT/视频/remotion/{slug}/` 建项目并渲染；教程须加载 `rules/tutorial-beat-video.md`
+- **Remotion**：在 `$CONTENT_ROOT/视频/remotion/{slug}/` 建项目并渲染；教程须加载 `rules/tutorial-beat-video.md`
 - **创意商业片路由**：加载 `create/creative-agent` 叶子，再切换 creative-agent profile 成片
 - 社媒全文管线：选题 → 写稿 → 配图 → 多平台发布（见 `pipeline-orchestrator`）
 
@@ -28,7 +28,7 @@
 
 1. 在 VidAU 中安装/选择 **creative-agent** profile
 2. 按 creative-agent 文档配置 MCP、Vision、Skills
-3. 成片输出路径与 social-agent 的 `$HERMES_ROOT/视频/` 对齐，便于 Step 5 发布
+3. 成片输出路径与 social-agent 的 `$CONTENT_ROOT/视频/` 对齐，便于 Step 5 发布
 
 本 profile **不**内置 creative-agent MCP 配置，避免重复维护。
 

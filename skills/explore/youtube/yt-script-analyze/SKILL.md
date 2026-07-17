@@ -1,89 +1,110 @@
 ---
 name: yt-script-analyze
 description: |
-  YouTube 脚本深拆分析（focused-task，v2）。读 scripts_raw.json，提炼钩子/结构/金句，写回知识库。
-  触发：「分析脚本结构」「沉淀爆款钩子金句」「补充复刻模板」「#1 深拆」。
-  口语：拆解爆款脚本、金句库、结构分析。
-version: 2.0.0
+  YouTube 脚本+画面深拆（focused-task，v2.2）。读 scripts_raw，crv 逐帧补画面，提炼钩子/金句，写回后必须 youtube:research。
+  触发：「分析脚本结构」「沉淀爆款钩子金句」「crv 画面拆解」「#1 深拆」。
+  口语：拆解爆款脚本、金句库、逐帧画面分析。
+version: 2.2.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
-    tags: [youtube, explore, analyze, knowledge-base]
+  vidau:
+    tags: [youtube, explore, analyze, crv, knowledge-base]
     related_skills:
       - yt-viral-research
       - yt-transcript-extract
 ---
 
-# YouTube 脚本分析 + 知识库沉淀（yt-script-analyze）
+# YouTube 脚本分析 + crv 画面（yt-script-analyze）
 
 ## 功能概述
 
-读取已抽好字幕的 `scripts_raw.json`，由 Agent 对爆款视频做**脚本深拆**：提炼钩子（hook）、结构（body / cta）、金句（golden_phrases），并为 Top 条目（至少 #1）补充可复刻模板，写回知识库。本技能**主要靠 Agent 分析驱动**，CLI 仅负责刷新 HTML 与追加金句库。
+读取 `scripts_raw.json`（须已有 `timed`/`sentences` 或明确 `unavailable`），由 Agent：
+
+1. 用 **crv（claude-real-video）** 对 Top1（建议 Top3）做**逐帧画面**拆解  
+2. 提炼 hook / body / cta / 金句 / `deep_dive`  
+3. 写回 `scripts_raw.json`  
+4. **必须**执行 `npm run youtube:research` 刷新 CLI HTML（禁止手写报告）
 
 ## 使用场景
 
-- 已有 `scripts_raw.json`，需要提炼钩子 / 结构 / 金句并写回知识库
-- 典型说法：「分析脚本结构」「沉淀爆款钩子金句」「补充复刻模板」「#1 深拆」
+- 已有 `scripts_raw.json`，需要结构/金句/画面方法论
+- 「#1 深拆」「crv 拆画面」
 
 ## 不适用场景
 
-- 尚未拉取字幕 → 先 **`yt-transcript-extract`**
-- 完整调研编排（发现 → 打分 → 字幕 → 分析） → **`yt-viral-research`**
+- 尚未拉字幕 → 先 **`yt-transcript-extract`**（含 whisper）
+- 完整编排入口 → **`yt-viral-research`**
 
-## 用到的技能 / 工具
+## 画面主路径：crv（必遵）
 
-| 工具 / 技能 | 用途 |
-|------|----------|
-| Agent 脚本深拆（核心） | 读 `scripts_raw.json`，提炼 hook / structure / 金句 / 深拆 |
-| 本仓库 CLI `npm run youtube:research` | 刷新 HTML 报告 + 追加 `金句库.csv` |
-| `references/analysis-schema.yaml` | 输出字段契约（structure / deep_dive 结构） |
-| `workspace/templates/youtube-long-form-structure.yaml` | 通用结构模板（相对仓库根） |
-| 下游：`create/tts-narration/yt-create` → `review:lint` → `publish` | 写 YouTube 口播稿时读 `scripts_raw.json` / HTML 报告 |
+**主工具是 crv，不是 TubePilot。** TubePilot 抽帧若 400 → 忽略，继续 crv。
+
+### Top1 必做；建议 Top3
+
+1. yt-dlp 下载本地 mp4（建议）：
+
+```powershell
+$vid = "<videoId>"
+$dir = "$env:CONTENT_ROOT\知识库\youtube\_downloads\$vid"
+# 若未设 CONTENT_ROOT，用仓库 content\知识库\youtube\_downloads\$vid
+# 字幕/whisper 缓存同知识库：content\知识库\youtube\_whisper\$vid\
+New-Item -ItemType Directory -Force -Path $dir | Out-Null
+uv run yt-dlp -f "bv*+ba/b" --merge-output-format mp4 -o "$dir\%(id)s.%(ext)s" "https://www.youtube.com/watch?v=$vid"
+```
+
+2. **crv 输出目录必须用 Temp**（避免 D: 沙箱 safe-delete 失败）：
+
+```powershell
+$out = Join-Path $env:LOCALAPPDATA "Temp\crv-$vid"
+New-Item -ItemType Directory -Force -Path $out | Out-Null
+# 使用本机 crv venv（可用环境变量 CRV_PYTHON 覆盖）
+$py = if ($env:CRV_PYTHON) { $env:CRV_PYTHON } else { "C:\Users\EDY\.workbuddy\binaries\python\envs\claude-video\Scripts\python.exe" }
+& $py -m crv "$dir\$vid.mp4" --output "$out"
+# 具体子命令以本机 `crv --help` 为准；目标：产出逐帧/拼图/清单供阅读
+```
+
+3. 读 crv 产出，写入该条目 `deep_dive`：
+
+- `visual_style_note` — 画面风格总述  
+- `visual_timeline_note` — 关键节拍 / 时序要点  
+- `viral_points` — 含画面爆点  
+- 可选落盘 `analyses/{videoId}.md`（不替代 `scripts_raw`）
 
 ## 输入
 
-- `$HERMES_ROOT/知识库/youtube/{topic_slug}/scripts_raw.json`（必填，已由 `yt-transcript-extract` 产出）
-- `$HERMES_ROOT/知识库/youtube/{topic_slug}/ranked.json`（可选，提供排序 metadata）
+- `$CONTENT_ROOT/知识库/youtube/{slug}/scripts_raw.json`（必填）
+- `$CONTENT_ROOT/知识库/youtube/{slug}/ranked.json`（可选）
 
-## 输出
-
-写回 **`scripts_raw.json`** 各条目：
+## 输出（写回 scripts_raw）
 
 - `structure.hook / body / cta`
 - `golden_phrases[]`
-- `deep_dive`：`viral_points`、`visual_style_note`、`replicability`、`suggested_owners`、`template_outline`
+- `deep_dive`：`viral_points`、`visual_style_note`、`visual_timeline_note`、`replicability`、`suggested_owners`、`template_outline`
 
-并可选触发金句库更新（`npm run youtube:research` 会 append `金句库.csv`）。
+**禁止**改动已有非空的 `timed` / `sentences`（那是原始时间轴台词）。  
+无字幕条目：可基于简介+crv 推断 structure，并**明确标注**；不得伪造 `timed`/`sentences`。
 
-## Agent 必做
+## Agent 必做（完整调研）
 
-1. 读 `scripts_raw.json`，至少对 **#1（最爆一条）** 做深拆
-2. 对 Top 5 补充 `structure` 与 `golden_phrases`（无字幕条目可基于简介推断并标注）
-3. 写回 `scripts_raw.json`（保留 `timed` / `sentences` 不动）
-4. 可选：执行 `npm run youtube:research -- --from ranked.json --topic {slug}` 刷新 HTML 与金句库
+1. 至少对 **#1** 跑 crv 并写 `visual_*`  
+2. Top 5 补 `structure` + `golden_phrases`  
+3. 写回 `scripts_raw.json`  
+4. **必跑**（刷新 HTML，禁止手写报告）：
+
+```powershell
+npm run youtube:research -- --from "$CONTENT_ROOT/知识库/youtube/{slug}/ranked.json" --topic {slug}
+```
 
 ## Schema
 
 见 [`references/analysis-schema.yaml`](references/analysis-schema.yaml)。
-通用结构模板：`workspace/templates/youtube-long-form-structure.yaml`（相对仓库根）。
-
-## 配置与降级
-
-- 无需 `YOUTUBE_API_KEY`，无外部依赖（纯 Agent 分析 + 本地 CLI）。单视频「内容 + 画面级」爆款分析**完全免 Key**。
-- **画面拆解（免 Key）**：除 Agent 读 `scripts_raw.json` 外，可借 TubePilot 免费工具 `get_video_frames` / `get_video_moment` / `deep_analyze_video`（已知链接即可），或本项目已有的 `crv` 逐帧视觉分析做更细的画面套路提炼。
-- 无字幕条目：基于视频简介 / 画面推断结构 / 金句，并在写回时**明确标注**为推断，不冒充原文。
-
-## 废弃（勿对用户暴露）
-
-- `golden-phrases.jsonl`
-- `analyses/*.yaml`（可作内部草稿，非主交付）
-- `playbooks/*.md`（v2 以 HTML + scripts_raw 为准）
 
 ## 对话交付
 
-分析完成后 **不贴脚本全文**；告知用户报告路径与是否已更新 `scripts_raw` / `金句库.csv`。
+- **不贴**脚本全文；告知已更新 `scripts_raw` / 已执行 `youtube:research`  
+- HTML 路径须来自 CLI；交付前确认含 Chart.js 与「爆款方法论」
 
 ## 下游衔接
 
-- 写 YouTube 口播稿：读 `scripts_raw.json` 或 HTML 报告 → `create/tts-narration/yt-create` → `review:lint` → `publish`
+- 口播稿：`create/tts-narration/yt-create` → `review:lint` → `publish`

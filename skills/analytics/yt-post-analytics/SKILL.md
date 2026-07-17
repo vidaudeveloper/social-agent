@@ -8,7 +8,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [youtube, analytics, post-publish, report]
     related_skills:
       - publish/youtube/skills/yt-publish
@@ -79,11 +79,11 @@ npm run youtube:stats -- archive --start-date 2026-06-15 --end-date 2026-07-15
 产出（对齐小红书复盘：数据 + 关键发现 + 优化建议）：
 
 ```text
-$HERMES_ROOT/知识库/youtube/发布复盘/{channelSlug}/
+$CONTENT_ROOT/知识库/youtube/发布复盘/{channelSlug}/
   {YYYY-MM-DD}_作品复盘.html
   {YYYY-MM-DD}_作品复盘.json
   {YYYY-MM-DD}_下次创作参考.md
-$HERMES_ROOT/知识库/youtube/发布复盘/LATEST.json
+$CONTENT_ROOT/知识库/youtube/发布复盘/LATEST.json
 ```
 
 对话交付：HTML 路径 + 下次创作参考路径 + 1–2 句结论（勿贴长 JSON）。

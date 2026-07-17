@@ -8,7 +8,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [zhihu, publish]
     related_skills:
       - zh-skills
@@ -32,8 +32,8 @@ metadata:
 发布前建议：`npm run review:lint -- --platform zhihu --file <文稿>`
 
 ```powershell
-npm run zhihu:convert -- --content-file "$HERMES_ROOT/文章/知乎/xxx.md"
-npm run zhihu:publish -- --title "文章标题" --content-file "$HERMES_ROOT/文章/知乎/xxx.md"
+npm run zhihu:convert -- --content-file "$CONTENT_ROOT/文章/知乎/xxx.md"
+npm run zhihu:publish -- --title "文章标题" --content-file "$CONTENT_ROOT/文章/知乎/xxx.md"
 ```
 
 详见总览 [`zh-skills`](../../SKILL.md)。

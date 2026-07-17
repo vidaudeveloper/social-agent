@@ -9,7 +9,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [xiaohongshu, explore, search]
     related_skills:
       - explore/xiaohongshu/xhs-content-ops

@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'fs';
 import { join, basename as pathBasename } from 'path';
-import { hermesRoot } from '../lib/paths.mjs';
+import { contentRoot } from '../lib/paths.mjs';
 import { loadTiktokProfile, resolveTiktokVoice } from '../lib/profile.mjs';
 import { parseTiktokScript } from '../lib/script-parse.mjs';
 import { createTiktokTextVideo } from '../lib/video-create.mjs';
@@ -29,7 +29,7 @@ export async function cmdCreateVideo(argv) {
     else if (a === '--voice' || a === '-v') voiceOverride = argv[++i] || '';
   }
 
-  const articleDir = join(hermesRoot, '文章', 'TikTok');
+  const articleDir = join(contentRoot, '文章', 'TikTok');
   if (!file && slug) {
     const candidates = [
       join(articleDir, `${slug}.md`),
@@ -59,7 +59,7 @@ export async function cmdCreateVideo(argv) {
   const baseFromFile = pathBasename(file, '.md').replace(/_TikTok$/i, '').replace(/_tiktok$/, '');
   const ts = stamp();
   const videoBasename = `${ts}_${baseFromFile}`;
-  const videoDir = outDir || join(hermesRoot, '视频', 'TikTok', baseFromFile);
+  const videoDir = outDir || join(contentRoot, '视频', 'TikTok', baseFromFile);
 
   mkdirSync(videoDir, { recursive: true });
 

@@ -5,14 +5,14 @@
 
 ## 产出路径
 
-`$HERMES_ROOT/知识库/xiaohongshu/{slug}/`
+`$CONTENT_ROOT/知识库/xiaohongshu/{slug}/`
 
 - `{slug}_竞品报告.html` — 给人看的完整报告
 - `{slug}_创作参考.md` — **下次写稿优先读**
 - `insights.json` / `details.json` / `raw.json`
 - 全库指针：`知识库/xiaohongshu/LATEST.json`
 
-`HERMES_ROOT` 默认仓库内 `content/`（已 gitignore）。
+`CONTENT_ROOT` 默认仓库内 `content/`（已 gitignore）。
 
 ## 最小流程
 

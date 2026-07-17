@@ -8,7 +8,7 @@ version: 1.0.0
 author: social-agent
 license: MIT
 metadata:
-  hermes:
+  vidau:
     tags: [tiktok, publish, sau]
     related_skills:
       - tt-auth
@@ -30,7 +30,7 @@ metadata:
 
 ```powershell
 npm run tiktok:publish -- `
-  --video "$HERMES_ROOT/视频/xxx.mp4" `
+  --video "$CONTENT_ROOT/视频/xxx.mp4" `
   --title "口播文案 #fyp" `
   --draft `
   --account default
@@ -42,7 +42,7 @@ npm run tiktok:publish -- `
 
 ```powershell
 npm run tiktok:publish -- `
-  --video "$HERMES_ROOT/视频/xxx.mp4" `
+  --video "$CONTENT_ROOT/视频/xxx.mp4" `
   --title "caption #fyp" `
   --account default
 ```
