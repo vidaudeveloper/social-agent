@@ -6,27 +6,30 @@
 ## 实施顺序
 
 ```text
-1. 稳定一级意图识别 + 上下文读取顺序（当前阶段）
+1. 分层意图路由（原子意图 + full-workflow + schedule 识别 + 未命中处理）← 当前
 2. 补缺失叶子 skill（analytics / adapt / interact）
-3. 评估 VidAU 计划调度 + Campaign 素材管理 + 反馈闭环
+3. 实现 schedule 调度器 + Campaign 素材管理 + 反馈闭环
 ```
 
 ---
 
-## 八类业务场景对照
+## 增长场景对照（非一级意图）
 
-| 场景 | 状态 | 现有入口 | 待建设 |
-|------|------|----------|--------|
-| 内容创作 | 已有 | `content-pipeline` / 编排器 | 口语触发词补全 |
-| 选题灵感 | 已有 | Step 1 + `xhs-research` / `yt-viral-*` | 独立选题 skill（可选） |
+| 增长场景 | 状态 | 现有入口 | 待建设 |
+|----------|------|----------|--------|
+| 内容创作 | 已有 | `create` / `full-workflow` | 口语触发词补全 |
+| 选题灵感 | 已有 | `research` + explore 叶子 | 独立选题 skill（可选） |
 | 规划排期 | **未建** | — | `plan-calendar` |
-| 多平台改写 | 部分 | 编排器 Step 3 | `{code}-adapt` |
-| 数据复盘 | 部分 | `yt/xhs/li-post-analytics` | dy/tt/x/zh/rd/wechat analytics |
+| 多平台改写 | 部分 | `create` / 编排器 Step 3 | `{code}-adapt` |
+| 数据复盘 | 部分 | `analytics` 叶子 | dy/tt/x/zh/rd/wechat analytics |
 | 账号定位 | 部分 | `user-profile.md` Step 0 | `position-persona` |
-| 互动社群 | 部分 | `xhs-interact` | 其它平台 interact |
+| 互动社群 | 部分 | `interact` → `xhs-interact` | 其它平台 interact |
 | 活动增长 | **未建** | — | campaign 策划 skill |
+| 定时自动化 | **识别已建 / 执行未建** | `schedule(...)` → capability-gap | 调度器 + 任务持久化 |
 
 **Agent 遇到「未建」场景**：报告 capability gap，指向本表；禁止即兴实现。
+
+一级路由模型见 [`skill-routing.md`](../workspace/references/skill-routing.md)（七类原子意图 + 流程范围 + 门禁）。
 
 ---
 

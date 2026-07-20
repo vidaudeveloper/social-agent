@@ -1,15 +1,15 @@
 ---
 name: pipeline-orchestrator
 description: |
-  多平台内容生产编排器（content-pipeline）。从选题/写稿到一个或多个平台发布。
-  触发：「跑一篇内容」「今日选题」「帮我分发」「全自动流水线」「多平台矩阵」「列出 ≥2 个平台一起发」。
-  不要用于：只发单平台已有稿（用 {code}-publish）；只查发后数据（用 *-analytics）；只调研/配图/审核/登录（用对应叶子）。
-version: 1.2.0
+  多平台内容生产编排器（full-workflow）。仅当用户明确要求从选题/调研做到发布的一条龙时使用。
+  触发：「跑一篇内容」「今日选题并发」「完整流水线」「一条龙」「从选题到发布」「单平台但从选题做到发布」。
+  不要用于：已有稿只发布（用 publish / {code}-publish，即使多平台）；只查发后数据；只调研/配图/审核/登录；定时任务（schedule 当前为缺口）。
+version: 1.3.0
 author: social-agent
 license: MIT
 metadata:
   vidau:
-    tags: [pipeline, content-pipeline, create, orchestrator]
+    tags: [pipeline, full-workflow, create, orchestrator]
     related_skills:
       - create/video/remotion
       - create/video/creative-agent
@@ -25,14 +25,15 @@ metadata:
 # 多平台内容生产编排器
 
 **路由契约**：先读 [`workspace/references/skill-routing.md`](../../../workspace/references/skill-routing.md)。  
-本技能**仅**对应意图 `content-pipeline`。
+本技能**仅**对应 `workflow_scope: full-workflow`（展开 `research → create → review → publish`）。
 
-**触发条件**：用户说「跑一篇内容」「今日选题」「发一篇文章」「帮我分发」「全自动流水线」，或明确多平台 / 矩阵 / 列出 ≥2 平台。  
+**触发条件**：用户明确说「跑一篇内容」「今日选题」「一条龙」「完整流水线」「从选题到发布」，或单平台但要求从选题一直做到发布。  
 **不要用于**：
 
-- 只发布**一个**已有成稿/视频 → `{code}-publish`（如 `xhs-publish`、`yt-publish`）
-- 只查发后数据 → `yt-post-analytics` / `xhs-post-analytics` / `li-analytics`
-- 只写稿不发布 / 只查热点不创作 / 纯翻译纯美工 → 对应 `focused-task` 叶子
+- 已有成稿/视频只发布（可多平台）→ `{code}-publish`
+- 只查发后数据 → analytics 叶子
+- 只写稿不发布 / 只调研 / 纯配图 / 登录 → 对应原子意图叶子
+- 「列出 ≥2 平台」本身**不足以**触发本编排
 
 **平台状态唯一来源**：`workspace/references/platform-status.md`（相对仓库根）
 
@@ -40,8 +41,8 @@ metadata:
 
 加载本技能后**先确认**：
 
-1. 用户是否真要完整生产（选题→发布），而非单点 publish/analytics
-2. 若用户其实只要单平台发布或数据分析 → **停止本编排**，改 `skill_view` 正确叶子并告知用户
+1. 用户是否真要完整生产（选题→发布），而非单点 publish/analytics/create
+2. 若用户其实只要已有素材发布或数据分析 → **停止本编排**，改 `skill_view` 正确叶子并告知用户
 
 确认后再进入 Step 0。
 

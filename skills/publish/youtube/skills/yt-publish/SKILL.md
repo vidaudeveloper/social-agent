@@ -1,7 +1,7 @@
 ---
 name: yt-publish
 description: |
-  YouTube 单平台发布（publish-single）。通过 sau 上传并发布 MP4 到 Studio。
+  YouTube 发布（publish）。通过 sau 上传并发布 MP4 到 Studio。
   触发：「上传 YouTube」「发布这个 MP4」「传到频道」「只发 YouTube」。
   口语：发 YouTube、上传视频、YouTube 发布、把这个视频传上去。
 version: 2.0.0
@@ -20,13 +20,13 @@ metadata:
 
 ## When to use
 
-- 意图 `publish-single`：已有 MP4 + 标题/描述，只发布到 YouTube
+- 意图 `publish`：已有 MP4 + 标题/描述，发布到 YouTube
 - 用户说「只发 YouTube」「上传这个视频」「发布到频道」
-- 登录问题单独出现时先 **`yt-auth`**，发布仍回本技能
+- 登录问题单独出现时先 **`yt-auth`**，发布仍回本技能（gate: `auth_if_required`）
 
 ## When not to use
 
-- 从选题、写稿、多平台分发 → **`pipeline-orchestrator`**
+- 从选题、写稿做到发布 → **`pipeline-orchestrator`**（`full-workflow`）
 - 查频道/视频发后数据 → **`yt-post-analytics`**
 - 发前爆款调研 → **`yt-viral-research`** / **`yt-viral-discover`**
 - 用 MCP/Playwright 操作 Studio → **禁止**（见技能边界）

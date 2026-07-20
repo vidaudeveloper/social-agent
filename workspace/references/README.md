@@ -1,12 +1,12 @@
 # workspace/references — Agent 速查
 
-接到平台相关请求时：**先读** [`skill-routing.md`](skill-routing.md)，再按意图加载叶子 Skill。不要默认打开本目录其它文件。
+接到平台相关请求时：**先读** [`skill-routing.md`](skill-routing.md)，再按分层路由结果加载叶子 Skill。不要默认打开本目录其它文件。
 
 ## 按任务读（Agent）
 
 | 你在做什么 | 读这个 |
 |------------|--------|
-| 任何平台相关请求 | [`skill-routing.md`](skill-routing.md)（意图 + 上下文读取顺序） |
+| 任何平台相关请求 | [`skill-routing.md`](skill-routing.md)（请求域 + 原子意图 + 流程范围 + 未命中处理） |
 | 判断某平台能否自动发 | [`platform-status.md`](platform-status.md) |
 | 缺依赖 / 安装提示 | [`dependency-policy.md`](dependency-policy.md) |
 | 发布前给用户确认路径 | [`publish-confirm-paths.md`](publish-confirm-paths.md) |

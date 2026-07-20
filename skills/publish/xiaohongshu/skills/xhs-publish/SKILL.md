@@ -2,7 +2,7 @@
 
 name: xhs-publish
 description: |
-  小红书单平台发布（publish-single）。图文/视频/长文发布、定时、标签与可见性。
+  小红书发布（publish）。图文/视频/长文发布、定时、标签与可见性。
   触发：「发小红书」「上传笔记」「只发小红书」「发布图文/视频到小红书」。
   口语：发笔记、上传小红书、小红书发布、把这篇发到小红书。
 version: 1.0.0
@@ -28,13 +28,13 @@ metadata:
 
 ## When to use
 
-- 意图 `publish-single`：已有文稿/图/视频，只发布到小红书
+- 意图 `publish`：已有文稿/图/视频，发布到小红书（可与其它平台并列分发，仍用各平台 publish 叶子）
 - 用户说「只发小红书」「上传这篇笔记」「发布图文/视频」
-- 登录问题 → 先 **`xhs-auth`**，发布仍回本技能
+- 登录问题 → 先 **`xhs-auth`**，发布仍回本技能（gate: `auth_if_required`）
 
 ## When not to use
 
-- 从选题写到多平台分发 → **`pipeline-orchestrator`**
+- 从选题写到发布的一条龙 → **`pipeline-orchestrator`**（`full-workflow`）
 - 发前竞品调研落盘 → **`xhs-research`**
 - 自家发后数据复盘 → **`xhs-post-analytics`**
 - 生成配图卡片 → **`xhs-card-render`**（发布前步骤，非本技能主责）

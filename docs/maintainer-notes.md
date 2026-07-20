@@ -6,7 +6,8 @@
 
 | 改了… | 必须同步… |
 |---------|-----------|
-| 技能路由 / When 边界 | `skill-routing.md` + `tests/skill-routing/cases.yaml` |
+| 技能路由 / When 边界 | `skill-routing.md` + `tests/skill-routing/cases.yaml` + `npm run skill-routing:eval` |
+| 复合意图 / schedule / 未命中状态 | 同步 `expect_chain` / `expect_schedule` / `expect_route_status` 用例 |
 | 视频主线 | `skills/create/video/README.md` + `creative-agent-routing.md` |
 | 平台可用性 | **仅** `platform-status.md` |
 | 依赖 / MCP | `dependency-policy.md` + 相关 setup |

@@ -1,7 +1,7 @@
 ---
 name: x-publish
 description: |
-  X/Twitter 单平台发布（publish-single）。常规帖、视频帖、X Article（baoyu-post-to-x）。
+  X/Twitter 发布（publish）。常规帖、视频帖、X Article（baoyu-post-to-x）。
   触发：「发推」「发 X」「发推特」「发布到 X」「tweet」「post to X」。
   口语：发一条推、发推特、X 发帖、上传 X 视频帖。
 version: 1.0.0
@@ -20,12 +20,12 @@ metadata:
 
 ## When to use
 
-- 意图 `publish-single`：已有文案/图/视频/Article，只发布到 X
+- 意图 `publish`：已有文案/图/视频/Article，发布到 X
 - 典型说法：「发推」「发推特」「post to X」「发一条 X」
 
 ## When not to use
 
-- 从选题到多平台分发 → **`pipeline-orchestrator`**
+- 从选题到发布的一条龙 → **`pipeline-orchestrator`**（`full-workflow`）
 - 只要登录检查 → **`x-auth`**
 - 用 MCP/Playwright 操作 X 网页 → **禁止**（走 `npm run x:publish`）
 

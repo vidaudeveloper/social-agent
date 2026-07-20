@@ -2,6 +2,26 @@
 
 > 运行规则见 `workspace/references/`；本文件只记录**已修复问题**的背景，供排障参考。
 
+## 2026-07-20 — 四类意图混维导致误路由（分层路由改造）
+
+**现象**：
+- 「已有稿同时发两平台」被当成完整流水线
+- 「只写稿先别发」容易进编排器
+- 「审核后发布 / 登录后发帖」缺少复合链表达
+- 定时任务、对话归档、能力缺口请求被硬塞进社媒叶子
+
+**根因**：旧四类意图（content-pipeline / publish-single / analytics-post / focused-task）把流程范围、平台数量与业务动作混在同一层；`focused-task` 过宽；评测 Top-1 名不副实且 forbid 不计失败。
+
+**修复**：
+- `skill-routing.md` 改为：请求域 + 七类原子意图 + `schedule` 包装 + `workflow_scope` + gates + `route_status` 未命中处理
+- 重写 `eval-skill-routing.mjs` 与 `tests/skill-routing/cases.yaml`（77 条）
+- 同步 `SOUL.md`、`config.yaml` environment_hint、`pipeline-orchestrator`、主 publish 叶子、路线图与评测 skill 文档
+
+**验证**：
+- `npm run skill-routing:eval` → Overall pass 100%，Intent 100%，Strict Top-1 98.1%，Recall@3 100%，forbid=0
+- `npm run skill-routing:eval -- --k 5` → Overall pass 100%，Recall@5 100%，forbid 门禁仍按 Top-3 窗口
+- Agent dry-run（无副作用）：对矩阵样例只输出 `request_domain / route_status / primary_intent / intent_chain / workflow_scope / automation / gates / expect_skills`，确认不登录、不发布、不创建真实定时任务、不裸调 CLI
+
 ## 2026-07-16 — Skill 文档硬伤与跨文件不一致
 
 **现象**：

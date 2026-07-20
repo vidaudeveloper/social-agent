@@ -1,356 +1,810 @@
-# 技能路由评测用例
-
+# 分层技能路由评测用例
 # 运行：npm run skill-routing:eval
-# 每条：user 用户原话；expect_intent 四类意图；expect_skills 期望叶子 name 列表；
-#       forbid_skills 禁止误选；keywords 可选加分词（用于离线路由打分）
+# 字段：
+#   user / expect_domain / expect_intent / expect_route_status / expect_workflow_scope
+#   expect_chain / expect_skills / forbid_skills / expect_schedule / capability_gap
+#   needs_clarification / forbid_actions / forbid_context / recall_any / strict_top1
 
-- id: pipeline-full-1
+# --- full-workflow ---
+
+- id: full-workflow-1
+  user: 从选题到发布一条龙做完，发到各平台
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: matched
+  expect_workflow_scope: full-workflow
+  expect_chain: [research, create, review, publish]
+  expect_skills: [pipeline-orchestrator]
+  forbid_skills: [yt-post-analytics]
+  strict_top1: true
+
+- id: full-workflow-2
+  user: 帮我跑完整内容流水线，全自动从调研写到发
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: matched
+  expect_workflow_scope: full-workflow
+  expect_chain: [research, create, review, publish]
+  expect_skills: [pipeline-orchestrator]
+  forbid_skills: [yt-post-analytics]
+  strict_top1: true
+
+- id: full-workflow-xhs-only
+  user: 只做小红书，但从选题、配图、审核一直做到发布
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: matched
+  expect_workflow_scope: full-workflow
+  expect_chain: [research, create, review, publish]
+  expect_skills: [pipeline-orchestrator]
+  forbid_skills: [yt-publish]
+  strict_top1: true
+
+- id: full-workflow-matrix
   user: 今日选题，帮我跑一篇内容发到各平台
-  expect_intent: content-pipeline
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: matched
+  expect_workflow_scope: full-workflow
+  expect_chain: [research, create, review, publish]
   expect_skills: [pipeline-orchestrator]
-  forbid_skills: [xhs-publish, yt-publish, yt-post-analytics]
+  forbid_skills: [xhs-post-analytics]
+  strict_top1: true
 
-- id: pipeline-full-2
-  user: 全自动流水线，从选题到分发
-  expect_intent: content-pipeline
-  expect_skills: [pipeline-orchestrator]
-  forbid_skills: [xhs-research]
+- id: neg-full-write-only
+  user: 只写一篇小红书种草笔记，先别发
+  expect_domain: social-operation
+  expect_intent: create
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_chain: [create]
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator, xhs-publish]
+  strict_top1: false
 
-- id: pipeline-multi-platform
-  user: 这篇稿同时发小红书和知乎
-  expect_intent: content-pipeline
-  expect_skills: [pipeline-orchestrator]
-  forbid_skills: [xhs-publish]
-
-- id: publish-xhs-only
-  user: 只发小红书，图文已经准备好了
-  expect_intent: publish-single
+- id: neg-full-multi-publish-ready
+  user: 稿子和图片都准备好了，同时发小红书和知乎
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_chain: [publish]
   expect_skills: [xhs-publish]
-  forbid_skills: [pipeline-orchestrator, xhs-research, xhs-post-analytics]
-
-- id: publish-xhs-upload
-  user: 把这个视频上传发布到小红书
-  expect_intent: publish-single
-  expect_skills: [xhs-publish]
-  forbid_skills: [pipeline-orchestrator, xhs-card-render]
-
-- id: publish-yt-only
-  user: 只发 YouTube，MP4 在这 D:\videos\demo.mp4
-  expect_intent: publish-single
-  expect_skills: [yt-publish]
-  forbid_skills: [pipeline-orchestrator, yt-viral-research, yt-post-analytics]
-
-- id: publish-yt-upload
-  user: 上传这个视频到 YouTube 频道
-  expect_intent: publish-single
-  expect_skills: [yt-publish]
-  forbid_skills: [yt-viral-discover]
-
-- id: publish-x-tweet
-  user: 发一条推，文案写好了
-  expect_intent: publish-single
-  expect_skills: [x-publish]
-  forbid_skills: [pipeline-orchestrator, x-auth]
-  keywords: [发推, 推特, tweet]
-
-- id: publish-x-twitter
-  user: post this to X / Twitter
-  expect_intent: publish-single
-  expect_skills: [x-publish]
   forbid_skills: [pipeline-orchestrator]
+  recall_any: true
+  strict_top1: false
 
-- id: publish-zhihu
-  user: 只发知乎，文章路径有了
-  expect_intent: publish-single
-  expect_skills: [zh-publish]
-  forbid_skills: [pipeline-orchestrator]
+# --- research ---
 
-- id: publish-reddit
-  user: 帮我把这篇发到 Reddit
-  expect_intent: publish-single
-  expect_skills: [rd-publish]
-  forbid_skills: [pipeline-orchestrator]
-
-- id: publish-wechat-draft
-  user: 公众号进草稿，不要直接发
-  expect_intent: publish-single
-  expect_skills: [wechat-publish]
-  forbid_skills: [pipeline-orchestrator]
-
-- id: publish-tt
-  user: 只发 TikTok 这个竖屏视频
-  expect_intent: publish-single
-  expect_skills: [tt-publish]
-  forbid_skills: [pipeline-orchestrator]
-
-- id: analytics-yt-channel
-  user: 看下我 YouTube 频道上周播放和观看时长
-  expect_intent: analytics-post
-  expect_skills: [yt-post-analytics]
-  forbid_skills: [yt-publish, yt-viral-research, pipeline-orchestrator]
-
-- id: analytics-yt-report
-  user: YouTube Analytics 报表落盘 HTML
-  expect_intent: analytics-post
-  expect_skills: [yt-post-analytics]
-  forbid_skills: [yt-viral-discover, yt-publish]
-
-- id: analytics-xhs-post
-  user: 小红书发后复盘，创作者中心导出的数据
-  expect_intent: analytics-post
-  expect_skills: [xhs-post-analytics]
-  forbid_skills: [xhs-research, xhs-publish, pipeline-orchestrator]
-
-- id: analytics-xhs-notes
-  user: 我发的笔记曝光点击怎么样
-  expect_intent: analytics-post
-  expect_skills: [xhs-post-analytics]
-  forbid_skills: [xhs-research]
-
-- id: analytics-linkedin
-  user: LinkedIn 帖子表现数据
-  expect_intent: analytics-post
-  expect_skills: [li-analytics]
-  forbid_skills: [li-publish, pipeline-orchestrator]
-
-- id: explore-yt-discover
+- id: research-yt-discover
   user: YouTube 赛道 Top 爆款视频列表，只要发现不要完整报告
-  expect_intent: focused-task
+  expect_domain: social-operation
+  expect_intent: research
+  expect_route_status: matched
+  expect_workflow_scope: atomic
   expect_skills: [yt-viral-discover]
-  forbid_skills: [yt-post-analytics, yt-publish, yt-viral-research]
+  forbid_skills: [yt-post-analytics, yt-publish]
+  strict_top1: true
 
-- id: explore-yt-research
+- id: research-yt-report
   user: 分析 YouTube 爆款并沉淀报告和金句库
-  expect_intent: focused-task
-  expect_skills: [yt-viral-research]
-  forbid_skills: [yt-viral-discover, yt-post-analytics]
-
-- id: explore-yt-research-2
-  user: 写稿前做 YouTube 竞品调研，要落盘 HTML
-  expect_intent: focused-task
+  expect_domain: social-operation
+  expect_intent: research
+  expect_route_status: matched
+  expect_workflow_scope: atomic
   expect_skills: [yt-viral-research]
   forbid_skills: [yt-post-analytics]
+  strict_top1: true
 
-- id: explore-xhs-research
+- id: research-yt-prewrite
+  user: 写稿前做 YouTube 竞品调研，要落盘 HTML
+  expect_domain: social-operation
+  expect_intent: research
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [yt-viral-research]
+  forbid_skills: [yt-post-analytics]
+  strict_top1: true
+
+- id: research-xhs
   user: 小红书竞品分析，生成创作参考并落盘
-  expect_intent: focused-task
+  expect_domain: social-operation
+  expect_intent: research
+  expect_route_status: matched
+  expect_workflow_scope: atomic
   expect_skills: [xhs-research]
   forbid_skills: [xhs-post-analytics, xhs-publish]
+  strict_top1: true
 
-- id: explore-xhs-hot
+- id: research-xhs-hot
   user: 小红书热点调研，要留存报告
-  expect_intent: focused-task
+  expect_domain: social-operation
+  expect_intent: research
+  expect_route_status: matched
+  expect_workflow_scope: atomic
   expect_skills: [xhs-research]
   forbid_skills: [pipeline-orchestrator]
+  strict_top1: true
 
-- id: focused-xhs-card
-  user: 给这篇小红书笔记做卡片配图 pipeline:xhs
-  expect_intent: focused-task
-  expect_skills: [xhs-card-render]
-  forbid_skills: [img-tokenware, xhs-publish]
+- id: research-topics
+  user: 给我五个热点选题，先不要写稿发布
+  expect_domain: social-operation
+  expect_intent: research
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: []
+  forbid_skills: [xhs-publish, yt-publish]
+  strict_top1: false
 
-- id: focused-img-tokenware
-  user: 给公众号生一张 AI 封面图
-  expect_intent: focused-task
-  expect_skills: [img-tokenware]
-  forbid_skills: [xhs-card-render]
-
-- id: focused-img-not-xhs
-  user: 出一张 YouTube 视频封面，AI 生图
-  expect_intent: focused-task
-  expect_skills: [img-tokenware]
-  forbid_skills: [xhs-card-render]
-
-- id: focused-review
-  user: 发布前检查这篇小红书稿格式
-  expect_intent: focused-task
-  expect_skills: [review]
-  forbid_skills: [xhs-publish, xhs-auth]
-
-- id: focused-review-2
-  user: content review 知乎这篇
-  expect_intent: focused-task
-  expect_skills: [review]
-  forbid_skills: [pipeline-orchestrator]
-
-- id: auth-xhs
-  user: 登录小红书，扫码
-  expect_intent: focused-task
-  expect_skills: [xhs-auth]
-  forbid_skills: [xhs-publish, xhs-research]
-
-- id: auth-yt
-  user: YouTube cookie 失效了，要登录
-  expect_intent: focused-task
-  expect_skills: [yt-auth]
-  forbid_skills: [yt-publish, yt-viral-research]
-
-- id: auth-x
-  user: 检查 X 推特登录态
-  expect_intent: focused-task
-  expect_skills: [x-auth]
-  forbid_skills: [x-publish]
-
-- id: confuse-yt-viral-vs-analytics
-  user: 分析 YouTube 爆款视频数据
-  expect_intent: focused-task
-  expect_skills: [yt-viral-discover, yt-viral-research]
-  forbid_skills: [yt-post-analytics]
-  recall_any: true
-
-- id: confuse-yt-my-channel
-  user: 我的 YouTube 频道播放数据
-  expect_intent: analytics-post
-  expect_skills: [yt-post-analytics]
-  forbid_skills: [yt-viral-discover, yt-viral-research]
-
-- id: confuse-xhs-research-vs-analytics
-  user: 小红书竞品数据分析报告落盘
-  expect_intent: focused-task
-  expect_skills: [xhs-research, xhs-post-analytics]
-  forbid_skills: [pipeline-orchestrator]
-  recall_any: true
-
-- id: confuse-xhs-own-notes
-  user: 我自己发的小红书笔记数据复盘
-  expect_intent: analytics-post
-  expect_skills: [xhs-post-analytics]
-  forbid_skills: [xhs-research]
-
-- id: negative-pipeline-single
-  user: 只发小红书
-  expect_intent: publish-single
-  expect_skills: [xhs-publish]
-  forbid_skills: [pipeline-orchestrator]
-
-- id: negative-analytics-not-publish
-  user: 查 YouTube 观看时长，不要发布
-  expect_intent: analytics-post
-  expect_skills: [yt-post-analytics]
-  forbid_skills: [yt-publish, pipeline-orchestrator]
-
-- id: negative-research-not-analytics
-  user: 竞品小红书笔记怎么写，发前调研
-  expect_intent: focused-task
+- id: research-oral
+  user: 扒一下竞品怎么写跨境电商
+  expect_domain: social-operation
+  expect_intent: research
+  expect_route_status: matched
+  expect_workflow_scope: atomic
   expect_skills: [xhs-research]
   forbid_skills: [xhs-post-analytics]
+  recall_any: true
+  strict_top1: false
 
-- id: remotion-focused
-  user: 做一个 Remotion 教程动效视频
-  expect_intent: focused-task
-  expect_skills: [remotion]
-  forbid_skills: [pipeline-orchestrator, creative-agent]
+- id: neg-research-own-channel
+  user: 看看我自己 YouTube 频道上周播放量
+  expect_domain: social-operation
+  expect_intent: analytics
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [yt-post-analytics]
+  forbid_skills: [yt-viral-discover, yt-viral-research]
+  strict_top1: true
 
-- id: creative-focused
-  user: 商业创意宣传片，不用 Remotion 教程结构
-  expect_intent: focused-task
-  expect_skills: [creative-agent]
-  forbid_skills: [remotion]
+# --- create ---
 
-- id: img-fallback-xhs
-  user: pipeline:xhs 失败了，用户确认后用 AI 降级配图
-  expect_intent: focused-task
+- id: create-xhs-copy
+  user: 写一篇小红书种草笔记，口语一点，先别发
+  expect_domain: social-operation
+  expect_intent: create
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator, xhs-publish]
+  strict_top1: false
+
+- id: create-xhs-card
+  user: 给这篇小红书笔记做卡片配图 pipeline:xhs
+  expect_domain: social-operation
+  expect_intent: create
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [xhs-card-render]
+  forbid_skills: [xhs-publish]
+  strict_top1: true
+
+- id: create-img-wechat
+  user: 给公众号生一张 AI 封面图
+  expect_domain: social-operation
+  expect_intent: create
+  expect_route_status: matched
+  expect_workflow_scope: atomic
   expect_skills: [img-tokenware]
-  forbid_skills: [xhs-card-render]
+  forbid_skills: [xhs-publish]
+  strict_top1: true
 
-- id: vague-need-platform
-  user: 帮我发一下
-  expect_intent: null
+- id: create-img-yt
+  user: 出一张 YouTube 视频封面，AI 生图
+  expect_domain: social-operation
+  expect_intent: create
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [img-tokenware]
+  forbid_skills: [xhs-publish]
+  strict_top1: true
+
+- id: create-remotion
+  user: 做一个 Remotion 教程动效视频
+  expect_domain: social-operation
+  expect_intent: create
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [remotion]
+  forbid_skills: [pipeline-orchestrator]
+  strict_top1: true
+
+- id: create-creative
+  user: 商业创意宣传片，不用 Remotion 教程结构
+  expect_domain: social-operation
+  expect_intent: create
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [creative-agent]
+  forbid_skills: [pipeline-orchestrator]
+  strict_top1: true
+
+- id: create-adapt-script
+  user: 把这篇长文改成短视频口播稿，先不发布
+  expect_domain: social-operation
+  expect_intent: create
+  expect_route_status: matched
+  expect_workflow_scope: atomic
   expect_skills: []
-  needs_clarification: [platform, material_path]
+  forbid_skills: [pipeline-orchestrator, xhs-publish]
+  strict_top1: false
 
-- id: vague-analytics
-  user: 看下数据
-  expect_intent: null
-  expect_skills: []
-  needs_clarification: [platform]
-
-- id: distractor-mcp-xhs
-  user: 用 MCP 发小红书
-  expect_intent: publish-single
+- id: chain-create-publish
+  user: 写完这篇小红书直接发布
+  expect_domain: social-operation
+  expect_intent: create
+  expect_route_status: matched
+  expect_workflow_scope: chain
+  expect_chain: [create, publish]
   expect_skills: [xhs-publish]
   forbid_skills: [pipeline-orchestrator]
-  forbid_actions: [mcp_browser, ad_hoc_script]
+  recall_any: true
+  strict_top1: false
 
-- id: distractor-bare-npx-yt
-  user: npx youtube-analytics-cli 拉报表
-  expect_intent: analytics-post
-  expect_skills: [yt-post-analytics]
-  forbid_actions: [bare_npx]
+# --- review ---
 
-# --- 二级业务场景 / capability gap（未实现能力） ---
+- id: review-xhs
+  user: 发布前检查这篇小红书稿格式
+  expect_domain: social-operation
+  expect_intent: review
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [review]
+  forbid_skills: [xhs-publish, xhs-auth]
+  strict_top1: true
 
-- id: gap-plan-calendar
-  user: 帮我排一周小红书发布计划，生成内容日历
-  expect_intent: null
-  expect_skills: []
-  capability_gap: true
-  forbid_skills: [pipeline-orchestrator, xhs-publish, xhs-research]
-  keywords: [排期, 日历, 计划]
+- id: review-zhihu
+  user: content review 知乎这篇
+  expect_domain: social-operation
+  expect_intent: review
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [review]
+  forbid_skills: [pipeline-orchestrator]
+  strict_top1: true
 
-- id: gap-position-persona
-  user: 定位这个账号人设，写品牌运营方案
-  expect_intent: focused-task
-  expect_skills: []
-  capability_gap: true
-  forbid_skills: [pipeline-orchestrator, xhs-publish]
-  keywords: [定位, 人设, 品牌]
-
-- id: gap-campaign-growth
-  user: 策划一个涨粉活动，写转发抽奖文案
-  expect_intent: null
-  expect_skills: []
-  capability_gap: true
-  forbid_skills: [pipeline-orchestrator, xhs-publish]
-  keywords: [活动, 涨粉, 抽奖]
-
-- id: gap-platform-adapt
-  user: 把这篇长文改成小红书版，同一篇适配视频号
-  expect_intent: content-pipeline
-  expect_skills: []
-  capability_gap: true
+- id: review-can-publish
+  user: 看看这篇能不能发，先过一遍稿
+  expect_domain: social-operation
+  expect_intent: review
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [review]
   forbid_skills: [xhs-publish]
-  keywords: [改成, 适配, 改写]
+  strict_top1: true
 
-# --- 上下文读取：单点任务不应误触知识库/爬数 ---
+- id: chain-review-publish
+  user: 审核后再发到知乎
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: chain
+  expect_chain: [review, publish]
+  expect_skills: [zh-publish]
+  forbid_skills: [pipeline-orchestrator]
+  recall_any: true
+  strict_top1: false
 
-- id: context-publish-no-research
-  user: 只发小红书，图文路径都有了，不要调研
-  expect_intent: publish-single
-  expect_skills: [xhs-publish]
-  forbid_skills: [xhs-research, xhs-post-analytics, pipeline-orchestrator]
-  forbid_context: [knowledge_base, live_crawl]
-
-- id: context-auth-no-kb
-  user: 登录小红书扫码，不要发布
-  expect_intent: focused-task
-  expect_skills: [xhs-auth]
-  forbid_skills: [xhs-publish, xhs-research, pipeline-orchestrator]
-  forbid_context: [knowledge_base]
-
-- id: context-review-no-publish
+- id: review-no-publish
   user: 审核这篇知乎稿格式，先别发
-  expect_intent: focused-task
+  expect_domain: social-operation
+  expect_intent: review
+  expect_route_status: matched
+  expect_workflow_scope: atomic
   expect_skills: [review]
   forbid_skills: [zh-publish, pipeline-orchestrator]
   forbid_context: [knowledge_base, live_crawl]
+  strict_top1: true
 
-- id: focused-xhs-interact
+- id: neg-review-vs-auth
+  user: 检查登录状态，不要审核文稿
+  expect_domain: social-operation
+  expect_intent: auth
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: []
+  forbid_skills: []
+  strict_top1: false
+
+# --- publish ---
+
+- id: publish-xhs-only
+  user: 只发小红书，图文已经准备好了
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [xhs-publish]
+  forbid_skills: [pipeline-orchestrator, xhs-research, xhs-post-analytics]
+  strict_top1: true
+
+- id: publish-xhs-upload
+  user: 把这个视频上传发布到小红书
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [xhs-publish]
+  forbid_skills: [pipeline-orchestrator, xhs-card-render]
+  strict_top1: true
+
+- id: publish-yt
+  user: 只发 YouTube，MP4 在这 D:\videos\demo.mp4
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [yt-publish]
+  forbid_skills: [pipeline-orchestrator, yt-viral-research, yt-post-analytics]
+  strict_top1: true
+
+- id: publish-yt-upload
+  user: 上传这个视频到 YouTube 频道
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [yt-publish]
+  forbid_skills: [yt-viral-discover]
+  strict_top1: true
+
+- id: publish-x-tweet
+  user: 发一条推，文案写好了
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [x-publish]
+  forbid_skills: [pipeline-orchestrator, x-auth]
+  strict_top1: true
+
+- id: publish-x-twitter
+  user: post this to X / Twitter
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [x-publish]
+  forbid_skills: [pipeline-orchestrator]
+  strict_top1: true
+
+- id: publish-zhihu
+  user: 只发知乎，文章路径有了
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [zh-publish]
+  forbid_skills: [pipeline-orchestrator]
+  strict_top1: true
+
+- id: publish-wechat
+  user: 公众号进草稿，不要直接发
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [wechat-publish]
+  forbid_skills: [pipeline-orchestrator]
+  strict_top1: true
+
+- id: publish-tt
+  user: 只发 TikTok 这个竖屏视频
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [tt-publish]
+  forbid_skills: [pipeline-orchestrator]
+  strict_top1: true
+
+- id: publish-reddit
+  user: 帮我把这篇发到 Reddit
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [rd-publish]
+  forbid_skills: [pipeline-orchestrator]
+  strict_top1: true
+
+- id: publish-no-research
+  user: 只发小红书，图文路径都有了，不要调研
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [xhs-publish]
+  forbid_skills: [pipeline-orchestrator]
+  forbid_context: [knowledge_base, live_crawl]
+  strict_top1: true
+
+- id: distractor-mcp-xhs
+  user: 用 MCP 发小红书
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [xhs-publish]
+  forbid_skills: [pipeline-orchestrator]
+  forbid_actions: [mcp_browser, ad_hoc_script]
+  strict_top1: true
+
+# --- auth ---
+
+- id: auth-xhs
+  user: 登录小红书，扫码
+  expect_domain: social-operation
+  expect_intent: auth
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [xhs-auth]
+  forbid_skills: [xhs-publish, xhs-research]
+  strict_top1: true
+
+- id: auth-yt
+  user: YouTube cookie 失效了，要登录
+  expect_domain: social-operation
+  expect_intent: auth
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [yt-auth]
+  forbid_skills: [yt-publish, yt-viral-research]
+  strict_top1: true
+
+- id: auth-x
+  user: 检查 X 推特登录态
+  expect_domain: social-operation
+  expect_intent: auth
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [x-auth]
+  forbid_skills: []
+  strict_top1: true
+
+- id: auth-no-kb
+  user: 登录小红书扫码，不要发布
+  expect_domain: social-operation
+  expect_intent: auth
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [xhs-auth]
+  forbid_skills: [xhs-publish, xhs-research, pipeline-orchestrator]
+  forbid_context: [knowledge_base]
+  strict_top1: true
+
+- id: chain-auth-publish
+  user: 登录后把这篇稿发到小红书
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: matched
+  expect_workflow_scope: chain
+  expect_chain: [auth, publish]
+  expect_skills: [xhs-publish]
+  forbid_skills: [pipeline-orchestrator]
+  recall_any: true
+  strict_top1: false
+
+# --- analytics ---
+
+- id: analytics-yt
+  user: 看下我 YouTube 频道上周播放和观看时长
+  expect_domain: social-operation
+  expect_intent: analytics
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [yt-post-analytics]
+  forbid_skills: [yt-publish, yt-viral-research, pipeline-orchestrator]
+  strict_top1: true
+
+- id: analytics-yt-html
+  user: YouTube Analytics 报表落盘 HTML
+  expect_domain: social-operation
+  expect_intent: analytics
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [yt-post-analytics]
+  forbid_skills: [yt-viral-discover, yt-publish]
+  strict_top1: true
+
+- id: analytics-xhs
+  user: 小红书发后复盘，创作者中心导出的数据
+  expect_domain: social-operation
+  expect_intent: analytics
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [xhs-post-analytics]
+  forbid_skills: [xhs-research, xhs-publish, pipeline-orchestrator]
+  strict_top1: true
+
+- id: analytics-xhs-notes
+  user: 我发的笔记曝光点击怎么样
+  expect_domain: social-operation
+  expect_intent: analytics
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [xhs-post-analytics]
+  forbid_skills: [xhs-research]
+  strict_top1: true
+
+- id: analytics-linkedin
+  user: LinkedIn 帖子表现数据
+  expect_domain: social-operation
+  expect_intent: analytics
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [li-analytics]
+  forbid_skills: [li-publish, pipeline-orchestrator]
+  strict_top1: true
+
+- id: analytics-no-publish
+  user: 查 YouTube 观看时长，不要发布
+  expect_domain: social-operation
+  expect_intent: analytics
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [yt-post-analytics]
+  forbid_skills: [yt-publish, pipeline-orchestrator]
+  strict_top1: true
+
+- id: distractor-bare-npx-yt
+  user: npx youtube-analytics-cli 拉报表
+  expect_domain: social-operation
+  expect_intent: analytics
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [yt-post-analytics]
+  forbid_actions: [bare_npx]
+  strict_top1: true
+
+- id: confuse-yt-viral-vs-analytics
+  user: 分析 YouTube 爆款视频数据
+  expect_domain: social-operation
+  expect_intent: research
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [yt-viral-discover, yt-viral-research]
+  forbid_skills: [yt-post-analytics]
+  recall_any: true
+  strict_top1: false
+
+# --- interact ---
+
+- id: interact-xhs-reply
   user: 回复这条小红书评论，内容我已经写好
-  expect_intent: focused-task
+  expect_domain: social-operation
+  expect_intent: interact
+  expect_route_status: matched
+  expect_workflow_scope: atomic
   expect_skills: [xhs-interact]
   forbid_skills: [xhs-publish, xhs-research, pipeline-orchestrator]
+  strict_top1: true
 
-- id: scene-topic-inspire
-  user: 今天有啥可蹭的热点，给我5个选题
-  expect_intent: content-pipeline
-  expect_skills: [pipeline-orchestrator]
-  forbid_skills: [xhs-publish, yt-publish]
-  keywords: [选题, 热点]
-
-- id: scene-write-xhs-copy
-  user: 写一篇小红书种草笔记，口语一点
-  expect_intent: content-pipeline
-  expect_skills: [pipeline-orchestrator]
+- id: interact-xhs-like
+  user: 帮我点赞收藏这批小红书笔记
+  expect_domain: social-operation
+  expect_intent: interact
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [xhs-interact]
   forbid_skills: [xhs-publish]
-  keywords: [写, 种草]
+  strict_top1: true
+
+- id: interact-dm-gap
+  user: 整理小红书私信回复模板并自动发送
+  expect_domain: social-operation
+  expect_intent: interact
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [xhs-interact]
+  forbid_skills: [pipeline-orchestrator]
+  strict_top1: false
+
+- id: gap-yt-interact
+  user: 回复 YouTube 最新 20 条评论
+  expect_domain: social-operation
+  expect_intent: interact
+  expect_route_status: capability-gap
+  capability_gap: true
+  expect_skills: []
+  forbid_skills: [yt-publish, pipeline-orchestrator]
+  missing_capabilities: [yt-interact]
+
+# --- schedule ---
+
+- id: schedule-research-daily
+  user: 每天早上 9 点生成 5 个小红书选题
+  expect_domain: social-operation
+  expect_intent: research
+  expect_route_status: capability-gap
+  expect_schedule: true
+  capability_gap: true
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator, xhs-publish]
+  missing_capabilities: [scheduler]
+
+- id: schedule-analytics-weekly
+  user: 每周一拉取 YouTube 数据报告
+  expect_domain: social-operation
+  expect_intent: analytics
+  expect_route_status: capability-gap
+  expect_schedule: true
+  capability_gap: true
+  expect_skills: []
+  forbid_skills: [yt-publish]
+  missing_capabilities: [scheduler]
+
+- id: schedule-publish-once
+  user: 明晚 8 点发布这篇稿到小红书
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: capability-gap
+  expect_schedule: true
+  capability_gap: true
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator]
+  missing_capabilities: [scheduler]
+
+- id: schedule-list
+  user: 列出所有自动任务
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: capability-gap
+  expect_schedule: true
+  capability_gap: true
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator]
+
+- id: schedule-pause
+  user: 暂停上周创建的定时任务
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: capability-gap
+  expect_schedule: true
+  capability_gap: true
+  expect_skills: []
+  forbid_skills: [xhs-publish]
+
+- id: schedule-vague
+  user: 以后定期帮我发
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: needs-clarification
+  expect_schedule: true
+  needs_clarification: [schedule_time, platform, material_path]
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator, xhs-publish]
+
+- id: schedule-data-vague
+  user: 每天看看数据
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: needs-clarification
+  expect_schedule: true
+  needs_clarification: [platform, metrics]
+  expect_skills: []
+  forbid_skills: []
+
+- id: schedule-delete-vague
+  user: 删除定时任务
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: needs-clarification
+  expect_schedule: true
+  needs_clarification: [task_id]
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator]
+
+# --- meta / unmatched ---
+
+- id: meta-session-log
+  user: 把我和 AI 的沟通过程整理成文档并保存到 D:\test\cursor\docs\AI对话
+  expect_domain: meta-workspace
+  expect_intent: null
+  expect_route_status: capability-gap
+  capability_gap: true
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator, xhs-publish, yt-viral-research]
+
+- id: meta-with-preload
+  user: 我加载了 pipeline-orchestrator，帮我分析这次对话的提问模式
+  expect_domain: meta-workspace
+  expect_intent: null
+  expect_route_status: capability-gap
+  capability_gap: true
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator]
+
+- id: meta-routing-eval
+  user: 跑一下 skill routing 路由评测
+  expect_domain: meta-workspace
+  expect_intent: null
+  expect_route_status: matched
+  expect_skills: [skill-routing-eval]
+  forbid_skills: [pipeline-orchestrator]
+  strict_top1: true
+
+- id: research-with-path
+  user: 把小红书竞品调研结果保存到 D:\tmp\report.md
+  expect_domain: social-operation
+  expect_intent: research
+  expect_route_status: matched
+  expect_workflow_scope: atomic
+  expect_skills: [xhs-research]
+  forbid_skills: [pipeline-orchestrator]
+  strict_top1: true
+
+- id: vague-publish
+  user: 帮我发一下
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: needs-clarification
+  needs_clarification: [platform, material_path]
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator]
+
+- id: vague-analytics
+  user: 看下数据
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: needs-clarification
+  needs_clarification: [platform]
+  expect_skills: []
+  forbid_skills: []
+
+- id: gap-instagram
+  user: 做 Instagram 自动发布
+  expect_domain: social-operation
+  expect_intent: publish
+  expect_route_status: capability-gap
+  capability_gap: true
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator, xhs-publish]
+  missing_capabilities: [instagram-publish]
+
+- id: partial-li-adapt
+  user: 分析 LinkedIn 后改写成下周草稿
+  expect_domain: social-operation
+  expect_intent: analytics
+  expect_route_status: partial-support
+  expect_workflow_scope: chain
+  expect_chain: [analytics, create]
+  expect_skills: [li-analytics]
+  forbid_skills: [pipeline-orchestrator]
+  missing_capabilities: [platform-adapt]
+  strict_top1: false
+
+- id: out-of-scope-weather
+  user: 今天北京天气预报怎么样
+  expect_domain: out-of-scope
+  expect_intent: null
+  expect_route_status: out-of-scope
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator, xhs-publish, review]
+
+- id: gap-plan-calendar
+  user: 帮我排一周小红书发布计划，生成内容日历
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: capability-gap
+  capability_gap: true
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator, xhs-publish, xhs-research]
+
+- id: gap-campaign
+  user: 策划一个涨粉活动，写转发抽奖文案
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: capability-gap
+  capability_gap: true
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator, xhs-publish]
+
+- id: gap-persona
+  user: 定位这个账号人设，写品牌运营方案
+  expect_domain: social-operation
+  expect_intent: null
+  expect_route_status: capability-gap
+  capability_gap: true
+  expect_skills: []
+  forbid_skills: [pipeline-orchestrator, xhs-publish]

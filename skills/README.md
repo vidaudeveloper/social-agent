@@ -10,12 +10,19 @@ explore → create → review → publish → analytics
 
 先读 [`../workspace/references/skill-routing.md`](../workspace/references/skill-routing.md)，再加载**最小必要叶子**：
 
-| 用户要什么 | 意图 | 入口 |
-|------------|------|------|
-| 选题→写稿→多平台 | `content-pipeline` | `pipeline-orchestrator` |
-| 只发一个平台 | `publish-single` | `{code}-publish` |
-| 发后数据 | `analytics-post` | `*-post-analytics` / `li-analytics` |
-| 登录/调研/配图/审核 | `focused-task` | 对应叶子 |
+| 用户要什么 | 意图 / 范围 | 入口 |
+|------------|-------------|------|
+| 明确一条龙到发布 | `full-workflow` | `pipeline-orchestrator` |
+| 发前调研/选题/爆款 | `research` | `xhs-research` / `yt-viral-*` |
+| 写稿/配图/成片（不默认发） | `create` | `xhs-card-render` / `remotion` 等 |
+| 发布前审核 | `review` | `review` |
+| 已有素材发布（可多平台） | `publish` | `{code}-publish` |
+| 登录/鉴权 | `auth` | `{code}-auth` |
+| 发后数据 | `analytics` | `*-post-analytics` / `li-analytics` |
+| 评论互动 | `interact` | `xhs-interact` |
+| 定时自动化 | `schedule(...)` | 当前 capability-gap |
+
+五层目录与上述原子意图正交：目录管能力存放，意图管本次走哪条路。
 
 Reference 速查：[`../workspace/references/README.md`](../workspace/references/README.md)  
 路由回归：`npm run skill-routing:eval`  
