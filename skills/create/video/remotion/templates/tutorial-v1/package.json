@@ -1,0 +1,27 @@
+{
+  "name": "remotion-tutorial-template-v1",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vendored Remotion tutorial template (visual system v9 + beat narrative). Clone via remotion init-tutorial; replace beats/scenes/assets only.",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render TutorialComposition out/tutorial.mp4",
+    "still": "remotion still TutorialComposition out/preview.png --frame=30",
+    "check:assets": "node scripts/check-assets.mjs",
+    "check:kit": "node scripts/check-kit-imports.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.486",
+    "@remotion/media": "4.0.486",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.486"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "typescript": "5.7.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

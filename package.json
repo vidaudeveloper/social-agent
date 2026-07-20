@@ -64,6 +64,7 @@
     "review:sync-specs": "node skills/review/scripts/sync-publish-specs.mjs",
     "skill-routing:eval": "node scripts/eval-skill-routing.mjs",
     "remotion:check": "node scripts/remotion-skill-check.mjs",
+    "remotion:init": "node skills/create/video/remotion/scripts/init-tutorial.mjs",
     "wechat:check-login": "node skills/publish/wechat/scripts/cli.mjs check-login",
     "wechat:publish": "node skills/publish/wechat/scripts/cli.mjs publish"
   }

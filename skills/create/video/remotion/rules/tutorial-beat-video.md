@@ -11,10 +11,20 @@ metadata:
 
 # 网站操作教程视频（Beat 分镜）
 
-本规则来自已验证成片：`content/视频/remotion/morelogin-tutorial/`  
+本规则视觉/叙事底座已 **vendored**：
 
-- **叙事定稿**：**v10**（钩子 → 原因 → 选型 → 方案 → 实操 → 升华）  
-- **视觉定稿**：**v9**（统一底色、极淡装饰、深色字、截图托底、概念镜吉祥物）
+`skills/create/video/remotion/templates/tutorial-v1/`（版本见该目录 `package.json`）
+
+源自已验证成片 `content/视频/remotion/morelogin-tutorial/`（本地参考，**不进 Git**）：
+
+- **叙事定稿**：**v10**（钩子 → 原因 → 选型 → 方案 → 实操 → 升华）
+- **视觉定稿**：**v9**（统一黄底、极淡装饰、深色字、截图托底、概念镜吉祥物）
+
+**新项目必须**用脚手架复制模板，再只改 beats / scenes / 素材：
+
+```powershell
+npm run remotion:init -- {slug}
+```
 
 **对用户全程简体中文**（代码标识、路径、CLI 可保留英文）。
 
@@ -69,7 +79,7 @@ metadata:
 
 - 元素之间必须错开：落下+风尘、左右滑入、淡入上浮、翻转、弹压等  
 - **禁止**全片同一种 `scale` 砸入（PPT 感）  
-- 参考 `motion.ts`：`slamIn` / `flyBounce` / `impactShake` / `beatEnter`  
+- 参考模板 `src/components/motion.ts`：`slamIn` / `flyBounce` / `impactShake` / `beatEnter` / `ratioProgress`
 
 ### 禁止
 
@@ -177,20 +187,21 @@ F 升华     「不只是单一因素」→ 回顾 → CTA
 - 截图镜：深色描边 + 浅色内衬托底，与背景分离；角标可用 emoji/Logo，不挡控件  
 - 纯文字镜：不合格——必须加大字 + 大图标，或改成上表中的信息图形态  
 
-参考组件：`PopLayout`、`LycheeMascot`（或项目吉祥物）、`ScreenshotFocus`、`InfographicScenes`（含对比卡、思维导图类场景）。
+参考组件（均在 tutorial-v1，经 `src/kit` 导出）：`PromoLayout`（=`PopLayout`）、`BrandBar`、`SubtitleBar`、`ScreenshotFocus`、`ScreenshotCard`、`DotGlobe`、`GenericMascot`、通用信息图 scene（Hook / Compare / Mindmap / FeatureGrid / CTA）。
 
 ---
 
 ## 工作流
 
-1. 类型选型（Remotion / Creative）  
-2. 两问确认（须拆成两次提问，每问独立选项）  
-3. 分镜表：**镜头号 | 时长 | 景别 | 旁白 | 画面**（旁白与画面分列；画面注明形态：导图/对比卡/截图等）→ 用户确认  
-4. 素材：文档真截图 + **unDraw / OpenMoji|Twemoji / logos** 落入 `public/`；禁止假界面、禁止热链  
-5. 逐 beat TTS → `voiceover-meta.json` + vtt；语速加速则同步缩放 meta  
-6. 实现 beats + 场景；动效库混用；Concept 镜挂大图标/Logo  
-7. 抽帧自检 → 全量渲染  
-8. **成片交付（强制）**：见下方「成片后必须给用户看」  
+1. 类型选型（Remotion / Creative）
+2. **脚手架**：`npm run remotion:init -- {slug}` → `npm install`（禁止空白工程重造底座）
+3. 两问确认（须拆成两次提问，每问独立选项）
+4. 分镜表：**镜头号 | 时长 | 景别 | 旁白 | 画面**（旁白与画面分列；画面注明形态）→ 用户确认
+5. 素材：文档真截图 + **unDraw / OpenMoji|Twemoji / logos** 落入 `public/`；禁止假界面、禁止热链
+6. 逐 beat TTS → `voiceover-meta.json` + vtt；语速加速则同步缩放 meta（无 TTS 时可先跑 `node scripts/estimate-voiceover-meta.mjs`）
+7. 改 `beats.ts` + 必要 scene；**从 `src/kit` 导入** theme / motion / PromoLayout；`npm run check:kit`
+8. 抽帧自检 → 全量渲染
+9. **成片交付（强制）**：见下方「成片后必须给用户看」
 
 Windows 中文路径易炸：可同步到 `D:\tmp\{slug}` 再 `npx remotion render`。
 
@@ -211,12 +222,20 @@ Windows 中文路径易炸：可同步到 `D:\tmp\{slug}` 再 `npx remotion rend
 ## 项目结构（摘要）
 
 ```
-content/视频/remotion/{slug}/
-├── src/data/beats.ts / screenshots.ts / voiceoverMeta.ts
-├── src/components/PopLayout · InfographicScenes · ScreenshotFocus · motion
-├── public/
-│   ├── screenshots/ · illustrations/ · emoji/ · logos/
-│   ├── voiceover.mp3 · voiceover-meta.json · captions.vtt
+skills/create/video/remotion/templates/tutorial-v1/   # 进 Git 的固化模板
+├── src/kit.ts                    # 强制入口：theme / motion / PromoLayout / 积木
+├── src/theme/                    # 视觉 token（勿在 scene 重定义）
+├── src/components/               # motion · PromoLayout · BrandBar · DotGlobe · …
+├── src/components/scenes/        # 通用参数化积木（Hook/Compare/Mindmap/…）
+├── src/data/beats.ts             # 示例分镜（脚手架后替换）
+├── public/                       # 占位截图 PNG + 静音配音
+└── scripts/check-kit-imports.mjs
+
+content/视频/remotion/{slug}/     # 业务项目（gitignore）
+├── TEMPLATE_ORIGIN.json
+├── src/data/beats.ts · screenshots.ts · voiceoverMeta.ts
+├── src/scenes/                   # 仅业务编排；必须 import kit
+├── public/screenshots · logos · voiceover*
 └── out/
 ```
 
@@ -240,10 +259,9 @@ content/视频/remotion/{slug}/
 
 ## 参考实现
 
-| 项目 | 说明 |
+| 路径 | 说明 |
 |------|------|
-| `content/视频/remotion/morelogin-tutorial/` | 定稿参考：**叙事 v10 + 视觉 v9** |
-| `out/morelogin-lycheeip-tutorial-v10.mp4` | 结构样片 |
-| `out/morelogin-lycheeip-tutorial-v9.mp4` | 视觉样片 |
+| `skills/create/video/remotion/templates/tutorial-v1/` | **固化模板**（通用 CloudDesk 示例，可渲染） |
+| `content/视频/remotion/morelogin-tutorial/` | 本地定稿参考（叙事 v10 + 视觉 v9，不进 Git） |
 
-新项目复制该目录结构，替换 beats / screenshots / 旁白即可。
+新项目：**只能** `npm run remotion:init -- {slug}`，再替换 beats / screenshots / 旁白；不要整目录复制品牌项目。

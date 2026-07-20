@@ -1,0 +1,10 @@
+node_modules/
+out/
+.remotion/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+
+_verify/

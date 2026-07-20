@@ -6,8 +6,8 @@ description: |
   网站/软件操作教程必须先加载 rules/tutorial-beat-video.md（冲击开场、大字多色、声画同步、差异化动效、unDraw/emoji、思维导图与卡片对比、网站图标）。
   商业创意片请用 create/creative-agent。不要用黑底花字口播做教程。
   对用户对话一律简体中文。
-version: 1.2.0
-author: remotion-dev (rules vendored)
+version: 1.3.0
+author: remotion-dev (rules vendored) + tutorial-v1 template
 license: MIT
 metadata:
   vidau:
@@ -17,13 +17,44 @@ metadata:
       - create/pipeline-orchestrator
 ---
 
+## 适用场景
+
+- Remotion 代码编写 / 调试 / 渲染
+- **网站/软件操作教程**、配置演示、how-to（一句一镜、信息图 + 真截图）
+- 需要**统一视觉风格**的教程片（从 vendored `templates/tutorial-v1` 初始化）
+
+## 不适用场景
+
+- 趋势片、产品 URL 一键创意片、MCP/Vision 商业创意 → **`creative-agent`**
+- 黑底花字口播（已弃用）→ 不用；改用本技能或 `creative-agent`
+- 仅发布已有成片、无需合成 → 平台 `{code}-publish`
+- 竖版短视频营销片若明确不要教程结构 → 另选布局或 creative-agent
+
+## 输入
+
+- 教程主题 / 产品名 / 官方文档链接（可选）
+- 两问门闩答案：背景风格+吉祥物；素材来源（现成 / 抓取 / 后补）
+- 用户确认后的分镜表（旁白 | 画面）
+
+## 输出
+
+- `$CONTENT_ROOT/视频/remotion/{slug}/` 下可渲染 Remotion 工程（由 **tutorial-v1** 复制）
+- `out/*.mp4` 成片 + 预览或绝对路径交付
+
+## 其他约束
+
+- 教程片**必须**从 `templates/tutorial-v1` 脚手架，禁止空白 `create-video` 后重造视觉系统
+- 新 scene **必须** `import { theme, motion|slamIn, PromoLayout } from '../kit'`（或等价路径）
+- 禁止 scene 自建全局色板 / 全屏背景；禁止 Mock UI 代替真截图；素材本地 `public/`
+- 画幅默认 **1920×1080**；Remotion 依赖版本以模板 `package.json` pin 为准
+
 ## 对用户语言
 
 与用户确认、分镜、验收说明：**一律简体中文**。代码、路径、CLI、库名可英文。
 
 ## When to use
 
-Use this skill whenever you are dealing with Remotion code, or when the user wants a **tutorial / how-to / configuration demo video** (not a black-screen caption口播片).
+Use this skill whenever you are dealing with Remotion code, or when the user wants a **tutorial / how-to / configuration demo video** (not a black-screen caption口播片). For tutorials, always scaffold from `templates/tutorial-v1`.
 
 ## When not to use
 
@@ -33,17 +64,26 @@ Use this skill whenever you are dealing with Remotion code, or when the user wan
 
 ## New project setup
 
-When in an empty folder or workspace with no existing Remotion project, scaffold one using:
+### 教程片（强制模板）
+
+```powershell
+npm run remotion:init -- <slug>
+# 等价：node skills/create/video/remotion/scripts/init-tutorial.mjs <slug>
+```
+
+这会把 [`templates/tutorial-v1/`](templates/tutorial-v1/) 复制到 `$CONTENT_ROOT/视频/remotion/{slug}/`（默认 `content/视频/remotion/{slug}/`）。**不要**用空白 `create-video` 手写黄底网络/动效库。
+
+已存在目录默认拒绝覆盖；确认后可加 `--force`。
+
+### 非教程 / 实验空白工程
 
 ```bash
 npx create-video@latest --yes --blank --no-tailwind my-video
 ```
 
-Replace `my-video` with a suitable project name.
-
 ## Designing a video
 
-For **website/software tutorial videos** (how-to, configuration, one sentence per beat), **always** load [rules/tutorial-beat-video.md](rules/tutorial-beat-video.md) first — including the 2-question gate, impact opening, AV sync, and differentiated motion. Reference: `content/视频/remotion/morelogin-tutorial/`（叙事 v10 + 视觉 v9）. Default 1920×1080, do not ask.
+For **website/software tutorial videos** (how-to, configuration, one sentence per beat), **always** load [rules/tutorial-beat-video.md](rules/tutorial-beat-video.md) first — including the 2-question gate, impact opening, AV sync, and differentiated motion. Visual system is **vendored** in `templates/tutorial-v1` (叙事 v10 + 视觉 v9). Default 1920×1080, do not ask.
 
 Before designing other visual scenes, layouts, promos, or text-heavy non-tutorial videos, load [rules/video-layout.md](rules/video-layout.md).
 
@@ -395,24 +435,26 @@ See [rules/voiceover.md](rules/voiceover.md) for adding AI-generated voiceover t
 
 ### 工作区与产出
 
-- 每个成片建议在 `$CONTENT_ROOT/视频/remotion/{slug}/` 下建独立 Remotion 项目
-- 口播稿/素材可从 `$CONTENT_ROOT/文章/{平台}/` 复制到项目 `public/`
-- 渲染 MP4 输出到同目录 `out/` 或 `output.mp4`
+- 教程片：`npm run remotion:init -- {slug}` → `$CONTENT_ROOT/视频/remotion/{slug}/`
+- 模板源（进 Git）：`skills/create/video/remotion/templates/tutorial-v1/`
+- 业务成片与截图留在 `content/`（gitignore，不进仓库）
+- 渲染 MP4 输出到项目 `out/`
 
-### 推荐流程
+### 操作流程（教程片）
 
-1. 确认 Node.js ≥ 18、`ffmpeg` 可用
-2. 空目录脚手架：`npx create-video@latest --yes --blank --no-tailwind {slug}`（在项目子目录执行）
-3. 按本 SKILL 与 `rules/` 编写 Composition
-4. 预览：`npx remotion studio`
-5. 渲染：`npx remotion render [composition-id] out/video.mp4`
-6. **成片交付**：优先让用户预览；做不到则给出 MP4 **绝对路径**
-7. 回到 social-agent Step 5 用 `publish/*` 或 computer-use 发布
+1. 类型选型（Remotion 教程 / Creative）→ 两问门闩
+2. `npm run remotion:init -- {slug}` → `cd` 到目标目录 → `npm install`
+3. 分镜表确认 → 改 `src/data/beats.ts` / `screenshots.ts`，换 `public/` 素材与配音
+4. 新增 scene 只改内容编排，**从 `src/kit` 导入** theme / motion / PromoLayout
+5. `npm run check:kit` / `npm run check:assets` → `npm run studio` → `npm run render`
+6. **成片交付**：预览或绝对路径
+7. 发布走 `publish/*`
 
 ### 技能检查
 
 ```powershell
 npm run remotion:check
+npm run remotion:init -- demo-tutorial
 ```
 
 ### 视频类型选型（强制）
@@ -421,19 +463,19 @@ npm run remotion:check
 
 | 需求 | 选 |
 |------|-----|
-| **网站/软件操作教程**、一句一镜、信息图+真截图 | `create/remotion` + [rules/tutorial-beat-video.md](rules/tutorial-beat-video.md) |
+| **网站/软件操作教程**、一句一镜、信息图+真截图 | `create/remotion` + [rules/tutorial-beat-video.md](rules/tutorial-beat-video.md) + **tutorial-v1** |
 | 品牌动效、图表、精细转场（非教程） | `create/remotion` + [rules/video-layout.md](rules/video-layout.md) |
 | 创意商业短片、趋势片 | `create/creative-agent` |
 
-教程片**默认走 Remotion**，不要落到黑底花字口播。
+教程片**默认走 Remotion + tutorial-v1**，不要落到黑底花字口播。
 
 ### 教程片快速路径
 
 用户要「教程 / 操作演示 / 配置 / 怎么用」时：
 
 1. 读 [rules/tutorial-beat-video.md](rules/tutorial-beat-video.md)（**整份**，含两问门闩）
-2. 问完两问 → 分镜表（旁白\|画面分列）→ 用户确认
-3. 抓真图 / 写 `beats.ts` → 逐 beat 配音 → `Series` 对齐声画
-4. 开场要冲击力大标题；**大图标/网站 Logo**；讲述用思维导图、卡片对比等多种形态；概念镜引用 **unDraw + OpenMoji/Twemoji**（见 tutorial-beat 素材栈）
-5. 参考 `content/视频/remotion/morelogin-tutorial/`（**叙事 v10 + 视觉 v9**）
-6. **渲染完成后必须给用户预览；无法预览则发送成片绝对路径**（见 tutorial-beat「成片后必须给用户看」）
+2. `npm run remotion:init -- {slug}`（复制 vendored 模板，**不要**从 `content/.../morelogin-tutorial` 整包抄）
+3. 问完两问 → 分镜表（旁白\|画面分列）→ 用户确认
+4. 抓真图 / 改 `beats.ts` → 逐 beat 配音 → `Series` 对齐声画
+5. 开场冲击大标题；大图标/网站 Logo；导图/对比卡等形态；unDraw + OpenMoji/Twemoji（见 tutorial-beat）
+6. **渲染完成后必须给用户预览；无法预览则发送成片绝对路径**
